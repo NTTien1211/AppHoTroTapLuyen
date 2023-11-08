@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_button"
+    tools:context=".login_regis.Information_regist_old_Activity">
+    <TextView
+        android:id="@+id/tell_us_abo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="23dp"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/white"
+        android:text="@string/old"
+        android:fontFamily="@font/poppinssemibold"
+        android:lineSpacingExtra="0sp"
+        android:gravity="center_horizontal|top"
+        tools:ignore="SpUsage" />
+    <TextView
+        android:id="@+id/tell_us_abo_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_below="@+id/tell_us_abo"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="@string/help"
+        android:fontFamily="@font/poppinsmedium"
+        android:lineSpacingExtra="0sp"
+        android:gravity="center_horizontal|top"
+        tools:ignore="SpUsage" />
+    <NumberPicker
+        android:id="@+id/numberPicker_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="20dp"
+
+        />
+    <RelativeLayout
+        android:padding="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/BackButton_infor_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_arrow_back_ios_24"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/nextButton_infor_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:background="@drawable/gradient_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

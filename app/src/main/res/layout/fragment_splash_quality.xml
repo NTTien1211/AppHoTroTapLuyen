@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    tools:context=".gym.splash.SplashFragment_quality">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rectangle_60"
+            app:layout_constraintVertical_bias="0.4"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="360dp"
+            android:layout_height="380dp"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="-50dp"
+            android:src="@drawable/rectangle_59"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/rectangle_3"
+            android:layout_width="193dp"
+            android:layout_height="170dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/logo_while"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/unlock_your"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/exper"
+            android:textColor="@color/gray"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.3"
+            android:gravity="center_horizontal|top"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/button_splash"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="@color/gray"
+            android:padding="18dp"
+            android:text="Start"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">TienGym</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unlock_your">Unlock your full potential with our app
+        where workouts become
+        extraordinary!</string>
+    <string name="Nourish">Nourish your body with healthy fuel
+        and sculpt your way to success with
+        our gym app</string>
+    <string name="together">Together we thrive, with a supportive
+        community by your side – powered by
+        our gym app!</string>
+    <string name="exper">Experience excellence in every
+        workout, as we bring you the ultimate
+        gym app for quality results!</string>
+    <string name="tell">Tell us about yourself!</string>
+    <string name="givegender">To give you a better experience we need
+        to know your gender</string>
+    <string name="old">How old are you ?</string>
+    <string name="help">This helps us create your personalized plan</string>
+
+
+    <!--    -->
+    <string name="dwfox_git">https://github.com/dwfox/DWRulerView</string>
+    <string name="dwfox_blog">http://dwfox.tistory.com/50</string>
+</resources>

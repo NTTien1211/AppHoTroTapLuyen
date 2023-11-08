@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <!-- res/layout/item_grid.xml -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/rounded_background2"
+        android:orientation="vertical">
+
+       <TextView
+           android:id="@+id/textViewName_HomeU"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/poppinsbold"
+           android:textSize="18dp"
+           android:text="Mr.Khoi"
+           android:gravity="center"
+           />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:src="@drawable/ellipse_57"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_access_time_24" /> <!-- Đặt biểu tượng ở đây -->
+
+                    <TextView
+                        android:id="@+id/exper_pt_homeU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/icon"
+                        android:layout_marginLeft="10dp"
+                        android:text="DA NANG" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_people_24" /> <!-- Đặt biểu tượng ở đây -->
+
+                    <TextView
+                        android:id="@+id/member_homeU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/icon2"
+                        android:layout_marginLeft="10dp"
+                        android:text="35 Member" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/icon3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_star_24" /> <!-- Đặt biểu tượng ở đây -->
+
+                    <TextView
+                        android:id="@+id/rate_homeU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/icon3"
+                        android:layout_marginLeft="10dp"
+                        android:text="4" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_pt_homeUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@color/Gr"
+            android:text="View"/>
+    </LinearLayout>
+
+</LinearLayout>

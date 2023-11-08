@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".gym.splash.SplashActivity">
+
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/splash_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đây là nội dung của ViewPager sẽ được đọc thành giọng"
+            android:contentDescription="Văn bản này sẽ được đọc bởi dịch vụ Truy cập" />
+    </androidx.viewpager.widget.ViewPager>
+    <TextView
+        android:id="@+id/splash_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="16dp"
+        android:text="Skip"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
+
+    <RelativeLayout
+        android:id="@+id/splash_layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/splash_circleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="30dp"
+            android:orientation="horizontal" />
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

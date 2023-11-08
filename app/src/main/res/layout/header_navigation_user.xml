@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="bottom"
+    android:background="@drawable/header_back"
+    android:layout_height="220dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_while"/>
+    <TextView
+        android:id="@+id/UserName_UserMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsbold"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:text="Thanh Tien"/>
+    <TextView
+        android:id="@+id/Gmai_UserMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppinssemibold"
+        android:text="ThanhTien@gmail.com"/>
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/Phone_UserMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinssemibold"
+        android:text="0865264564"/>
+</LinearLayout>

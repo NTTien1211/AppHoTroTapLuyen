@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_button"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/logo_while"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Enter OTP sent to your phone number"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppinsbold"
+        android:textSize="25dp"
+        android:padding="20dp"/>
+    <EditText
+        android:id="@+id/Regis_OTP_Editex"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:padding="8dp"
+        android:background="@color/white"
+        android:maxLength="6"
+        android:layout_margin="20dp"
+        android:hint="OTP"/>
+    <Button
+        android:id="@+id/Regis_OTP_btnSend"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:text="SEND OTP"
+        android:background="@color/white"
+        android:layout_margin="20dp"/>
+    <ProgressBar
+        android:id="@+id/progress_otp"
+        android:layout_width="42dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:indeterminateTint="@color/purple_200"
+        android:layout_margin="20dp"
+        />
+
+    <TextView
+        android:id="@+id/timeSecon_OTP"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="Enter OTP in 60s"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppinsmedium"
+        android:textSize="18dp"
+        android:gravity="center"
+        />
+
+
+
+</LinearLayout>

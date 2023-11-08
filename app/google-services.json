@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "927577562455",
+    "project_id": "appandroidhttlcn-9f0c5",
+    "storage_bucket": "appandroidhttlcn-9f0c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927577562455:android:b77a4d77c1210a3c6ef212",
+        "android_client_info": {
+          "package_name": "com.example.app_hotrotapluyen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI5JAgb0BaxbgIHvO9rxyby300SE6kF6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".gym.User_screen.User_Home_Fragment">
+<!--    <androidx.drawerlayout.widget.DrawerLayout-->
+<!--        android:id="@+id/drawer_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <com.google.android.material.navigation.NavigationView-->
+<!--            android:id="@+id/navigationview_mainUser"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--           app:headerLayout="@layout/header_navigation_user"-->
+<!--            app:menu="@menu/left_menu_nav"/>-->
+
+<!--    </androidx.drawerlayout.widget.DrawerLayout>-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/left_cate_HomeU"
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/category"
+            android:backgroundTint="@color/white"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_whatshot_24"
+                android:backgroundTint="@color/white"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_notifications_none_24"
+                android:backgroundTint="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOME"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_margin="12dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Schedule"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Trainer"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPTrainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
