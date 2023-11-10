@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_Adapter;
+import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_UserPT_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.app_hotrotapluyen.gym.User_screen;
+package com.example.app_hotrotapluyen.gym.User_screen.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.User_screen.HomeU_pt;
 
 import java.util.List;
 

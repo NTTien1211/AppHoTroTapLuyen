@@ -1,19 +1,19 @@
-package com.example.app_hotrotapluyen.gym.User_screen;
+package com.example.app_hotrotapluyen.gym.User_screen.Model;
 
 import java.sql.Timestamp;
 
-public class User {
+public class UserModel {
     private String idUser;
     private String name;
     private String phone;
     private Timestamp creatTimestamp;
 
     // Constructors
-    public User() {
+    public UserModel() {
         // Empty constructor
     }
 
-    public User(String idUser, String name, String phone) {
+    public UserModel(String idUser, String name, String phone) {
         this.idUser = idUser;
         this.name = name;
         this.phone = phone;

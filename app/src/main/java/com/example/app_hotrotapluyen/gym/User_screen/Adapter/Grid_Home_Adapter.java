@@ -1,20 +1,14 @@
-package com.example.app_hotrotapluyen.gym.User_screen;
+package com.example.app_hotrotapluyen.gym.User_screen.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-import com.example.app_hotrotapluyen.R;
 import java.util.List;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.List;
 
 public class Grid_Home_Adapter extends RecyclerView.Adapter<Grid_Home_Adapter.ViewHolder> {
     private List<Integer> items;

@@ -2,7 +2,7 @@ package com.example.app_hotrotapluyen.gym.login_regis;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,18 +16,13 @@ import com.example.app_hotrotapluyen.gym.until.FirebaseUntil;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app_hotrotapluyen.R;
-import com.example.app_hotrotapluyen.gym.User_screen.User;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.User_screen.User_Main_Activity;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -36,17 +31,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import kotlin.text.UStringsKt;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     TextView signupText;
     Button loginButton;
-    User user;
+    UserModel userModel;
     String nameFir, phonFir;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -136,9 +127,9 @@ public class LoginActivity extends AppCompatActivity {
 //        return null; // Trả về giá trị mặc định, thay vì trả về từ AsyncTask
 //    }
     public void loginAndFetchUserDetails(final String UserName, final String pass) {
-        new AsyncTask<Void, Void, User>() {
+        new AsyncTask<Void, Void, UserModel>() {
             @Override
-            protected User doInBackground(Void... params) {
+            protected UserModel doInBackground(Void... params) {
                 Connection connection = JdbcConnect.connect();
                 if (connection != null) {
                     try {
@@ -152,7 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                             String userId = resultSet.getString("ID_User");
                             String name = resultSet.getString("Name");
                             String phone = resultSet.getString("Phone");
-                            return new User(userId, name, phone);
+
+                            return new UserModel(userId, name, phone);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -168,14 +160,18 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onPostExecute(User userDetails) {
+            protected void onPostExecute(UserModel userDetails) {
                 if (userDetails != null) {
                     String nameFir = userDetails.getName();
                     String phonFir = userDetails.getPhone();
-                    User user = new User(userDetails.getIdUser(), nameFir, phonFir);
+                    UserModel user = new UserModel(userDetails.getIdUser(), nameFir, phonFir);
                     setUsername(user);
-                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công " + nameFir + " " + phonFir + " " + userDetails.getIdUser(), Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userID",userDetails.getIdUser());
+                    editor.apply();
 //                    setUsername(nameFir, phonFir); // Gọi hàm để đặt thông tin người dùng
+
                     Intent intent = new Intent(LoginActivity.this, User_Main_Activity.class);
                     startActivity(intent);
                 } else {
@@ -193,22 +189,71 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
     }
 
-    void setUsername(User user) {
-        FirebaseUntil.allUserCollectionReference().add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//    void setUsername(User user) {
+//        FirebaseUntil.allUserCollectionReference().add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        // Tài liệu đã được thêm thành công
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                // Xử lý lỗi ở đây
+//                Log.e("Firebase", "Lỗi: " + e.getMessage());
+//            }
+//        });
+//        ;
+//    }
+void setUsername(final UserModel user) {
+    String username = user.getName();
+    if (userModel != null) {
+        userModel.setName(username);
+    } else {
+//        userModel = new UserModel(user.getPhone(), user.getName(), FirebaseUntil.currentUserId());
+
+        // Kiểm tra xem người dùng đã tồn tại hay chưa bằng số điện thoại
+        FirebaseUntil.allUserCollectionReference()
+                .whereEqualTo("phone", user.getPhone())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        // Tài liệu đã được thêm thành công
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        if (querySnapshot.isEmpty()) {
+                            // Người dùng chưa tồn tại, thêm vào cơ sở dữ liệu
+                            FirebaseUntil.allUserCollectionReference()
+                                    .add(user)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            // Tài liệu đã được thêm thành công
+                                            userModel = new UserModel(user.getPhone(), user.getName(), FirebaseUntil.currentUserId());
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Xử lý lỗi ở đây
+                                            Log.e("Firebase", "Lỗi khi thêm người dùng: " + e.getMessage());
+                                        }
+                                    });
+                        } else {
+                            // Người dùng đã tồn tại, xử lý theo ý của bạn
+                            Log.d("Firebase", "Người dùng đã tồn tại");
+                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Xử lý lỗi ở đây
-                Log.e("Firebase", "Lỗi: " + e.getMessage());
-            }
-        });
-        ;
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xử lý lỗi khi kiểm tra người dùng tồn tại hay không
+                        Log.e("Firebase", "Lỗi khi kiểm tra người dùng: " + e.getMessage());
+                    }
+                });
+        Toast.makeText(this, "ID"+ FirebaseUntil.currentUserId(), Toast.LENGTH_SHORT).show();
     }
+
 
 //    void getUsername(){
 //        FirebaseUntil.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -225,5 +270,5 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
 
-
+}
 }

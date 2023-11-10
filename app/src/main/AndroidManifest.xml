@@ -16,26 +16,30 @@
         android:theme="@style/Theme.App_HoTroTapLuyen"
         tools:targetApi="31">
         <activity
-            android:name=".gym.login_regis.Register_OTP_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".gym.login_regis.RegisterActivity"
+            android:name=".gym.User_screen.User_PT_Inf_Activity"
             android:exported="true" >
-
-        </activity>
-        <activity
-            android:name=".gym.User_screen.User_Main_Activity"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".gym.login_regis.LoginActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".gym.User_screen.User_Mess_Chat_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".gym.login_regis.Register_OTP_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".gym.login_regis.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".gym.User_screen.User_Main_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".gym.login_regis.LoginActivity"
+            android:exported="true">
+
         </activity>
         <activity
             android:name=".gym.splash.SplashActivity"

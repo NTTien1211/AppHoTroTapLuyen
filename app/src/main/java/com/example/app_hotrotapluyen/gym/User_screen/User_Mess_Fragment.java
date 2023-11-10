@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
+import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Search_UserRecy_MessAdapter;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.until.FirebaseUntil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
@@ -53,11 +54,11 @@ public class User_Mess_Fragment extends Fragment {
     void setupRecycleview(String searchIN) {
 
         Query query = FirebaseUntil.allUserCollectionReference()
-                .whereGreaterThanOrEqualTo("name",searchIN)
-                .whereLessThanOrEqualTo("name",searchIN+'\uf8ff');
+                .whereGreaterThanOrEqualTo("phone",searchIN)
+                .whereLessThanOrEqualTo("phone",searchIN+'\uf8ff');
 
-        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query,User.class).build();
+        FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>()
+                .setQuery(query, UserModel.class).build();
 
         searchUserRecyMessAdapter = new Search_UserRecy_MessAdapter(options,requireContext());
         recyclerViewMessage.setLayoutManager(new LinearLayoutManager(requireContext()));

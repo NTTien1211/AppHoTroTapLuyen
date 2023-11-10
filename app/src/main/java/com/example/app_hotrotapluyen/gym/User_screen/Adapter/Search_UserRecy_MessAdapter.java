@@ -1,6 +1,7 @@
-package com.example.app_hotrotapluyen.gym.User_screen;
+package com.example.app_hotrotapluyen.gym.User_screen.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +12,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
+import com.example.app_hotrotapluyen.gym.User_screen.User_Mess_Chat_Activity;
+import com.example.app_hotrotapluyen.gym.until.AndroidUtil;
+import com.example.app_hotrotapluyen.gym.until.FirebaseUntil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class Search_UserRecy_MessAdapter  extends FirestoreRecyclerAdapter<User, Search_UserRecy_MessAdapter.UserViewHolder> {
+public class Search_UserRecy_MessAdapter  extends FirestoreRecyclerAdapter<UserModel, Search_UserRecy_MessAdapter.UserViewHolder> {
     Context context;
-    public Search_UserRecy_MessAdapter(@NonNull FirestoreRecyclerOptions<User> options, Context context) {
+    public Search_UserRecy_MessAdapter(@NonNull FirestoreRecyclerOptions<UserModel> options, Context context) {
         super(options);
         this.context =context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
+    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull UserModel model) {
         holder.userName.setText(model.getName());
         holder.userPhone.setText(model.getPhone());
+        if (model.getIdUser().equals(FirebaseUntil.currentUserId())){
+            holder.userName.setText(model.getName() + "(Me)");
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, User_Mess_Chat_Activity.class);
+                AndroidUtil.passUserModelAsIntent(intent,model);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     @NonNull

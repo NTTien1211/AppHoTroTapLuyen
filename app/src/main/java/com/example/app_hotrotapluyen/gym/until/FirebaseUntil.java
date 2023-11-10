@@ -1,7 +1,11 @@
 package com.example.app_hotrotapluyen.gym.until;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +21,7 @@ public class FirebaseUntil {
     public static String currentUserId(){
         return FirebaseAuth.getInstance().getUid();
     }
+
 
     public static boolean isLoggedIn(){
         if(currentUserId()!=null){
@@ -41,13 +46,19 @@ public class FirebaseUntil {
         return getChatroomReference(chatroomId).collection("chats");
     }
 
-    public static String getChatroomId(String userId1,String userId2){
-        if(userId1.hashCode()<userId2.hashCode()){
-            return userId1+"_"+userId2;
-        }else{
-            return userId2+"_"+userId1;
+    public static String getChatroomId(String userId1, String userId2) {
+        if (userId1 != null && userId2 != null) {
+            if (userId1.hashCode() < userId2.hashCode()) {
+                return userId1 + "_" + userId2;
+            } else {
+                return userId2 + "_" + userId1;
+            }
+        } else {
+            // Xử lý trường hợp mà hoặc userId1 hoặc userId2 là null
+            return "defaultChatroomId"; // Bạn có thể thay thế điều này bằng giá trị mặc định hoặc xử lý theo nhu cầu của ứng dụng
         }
     }
+
 
     public static CollectionReference allChatroomCollectionReference(){
         return FirebaseFirestore.getInstance().collection("chatrooms");
@@ -78,6 +89,5 @@ public class FirebaseUntil {
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(otherUserId);
     }
-
 
 }
