@@ -24,6 +24,7 @@ public class Search_UserRecy_MessAdapter  extends FirestoreRecyclerAdapter<UserM
     public Search_UserRecy_MessAdapter(@NonNull FirestoreRecyclerOptions<UserModel> options, Context context) {
         super(options);
         this.context =context;
+        notifyDataSetChanged();
     }
 
     @Override

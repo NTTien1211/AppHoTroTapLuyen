@@ -2,12 +2,18 @@ package com.example.app_hotrotapluyen.gym.User_screen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,46 +55,60 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_mess_chat);
-        otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
-
+        otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
         ChatRoomID = FirebaseUntil.getChatroomId(idUser,otherUser.getIdUser());
+//        Toast.makeText(this, "" + FirebaseUntil.currentUserId() + " hbfqf " + otherUser.getIdUser(), Toast.LENGTH_SHORT).show();
+
+        Toolbar actionBar = findViewById(R.id.toolbarCgat);
+        setToolbar(actionBar, "CHATMESS");
+
         anhxa();
 
 
         SelecDatabase selecDatabase = new SelecDatabase();
         selecDatabase.execute(idUser);
 
-        backChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                onBackPressed();
-            }
-        });
+//        backChat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//        public void onClick(View view) {
+////                onBackPressed();
+//        }
+//    });
         profile_Username_chatMess.setText(otherUser.getName());
-        getOrCreateChatroomModel();
+
 
         sendChat.setOnClickListener((v -> {
             String message = chat_message_input.getText().toString().trim();
-            Toast.makeText(this, "qfqfqfqf "+message, Toast.LENGTH_SHORT).show();
-            if(message.isEmpty()){
-                return;
+            if(!message.isEmpty()){
+                sendMessToUser(message , idUser);
             }
-            else {
-                sendMessToUser(message);
-            }
+
 
         }));
 
-
+        getOrCreateChatroomModel();
         setupChatRecyclerView();
 
 
 
 
     }
+    private void setToolbar(Toolbar toolbar, String name){
+        setSupportActionBar(toolbar);
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(spannableString);
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
+    }
     void setupChatRecyclerView(){
         Query query = FirebaseUntil.getChatroomMessageReference(ChatRoomID)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
@@ -96,30 +116,33 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
         FirestoreRecyclerOptions<ChatMessModel> options = new FirestoreRecyclerOptions.Builder<ChatMessModel>()
                 .setQuery(query,ChatMessModel.class).build();
 
-        chatRecyclerAdapter = new ChatRecyclerAdapter(options,getApplicationContext());
+        chatRecyclerAdapter = new ChatRecyclerAdapter(options,getApplicationContext() , idUser);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(chatRecyclerAdapter);
         chatRecyclerAdapter.startListening();
-        chatRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                recyclerView.smoothScrollToPosition(0);
-            }
-        });
+//        chatRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//            @Override
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                super.onItemRangeInserted(positionStart, itemCount);
+//                recyclerView.smoothScrollToPosition(0);
+//            }
+//        });
     }
 
-    void sendMessToUser(String mess) {
+    void sendMessToUser(String mess , String idUser) {
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
         chatroomModel.setLastMessageSenderId(idUser);
+        chatroomModel.setLastMessage(mess);
         FirebaseUntil.getChatroomReference(ChatRoomID).set(chatroomModel);
+        String currentUserId = FirebaseUntil.currentUserId();
+        Log.d("User_Mess_Chat_Activity", "Sending message from user: " + currentUserId);
+        ChatMessModel chatMessageModel = new ChatMessModel(mess,idUser,Timestamp.now());
 
-        ChatMessModel chatMessModel = new ChatMessModel(mess, idUser,Timestamp.now());
-        Toast.makeText(this, " " + mess + " " + idUser + " " +Timestamp.now(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, " " + mess + " " + FirebaseUntil.currentUserId() + " " +Timestamp.now(), Toast.LENGTH_SHORT).show();
         // Cập nhật mô hình phòng chat và sau đó gửi tin nhắn
-        FirebaseUntil.getChatroomMessageReference(ChatRoomID).add(chatMessModel)
+        FirebaseUntil.getChatroomMessageReference(ChatRoomID).add(chatMessageModel)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -151,7 +174,7 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
     private void anhxa() {
         profile_Username_chatMess = findViewById(R.id.profile_Username_chatMess);
         chat_message_input = findViewById(R.id.chat_message_input);
-        backChat = findViewById(R.id.back_chatMessU);
+//        backChat = findViewById(R.id.back_chatMessU);
         sendChat = findViewById(R.id.message_send_btn);
         recyclerView = findViewById(R.id.Recycl_chatMessU);
 

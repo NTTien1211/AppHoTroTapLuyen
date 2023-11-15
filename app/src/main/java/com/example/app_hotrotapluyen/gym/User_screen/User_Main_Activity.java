@@ -39,6 +39,7 @@ public class User_Main_Activity extends AppCompatActivity {
         selecDatabase.execute(idUser);
         final Fragment HomeU = new User_Home_Fragment();
         final Fragment MessU = new User_Mess_Fragment();
+        final Fragment List = new User_listProFoo_Fragment();
         loadFragment(HomeU);
         bottomNavigationView =findViewById(R.id.menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,15 +50,14 @@ public class User_Main_Activity extends AppCompatActivity {
                     selectedFragment =  HomeU;
                 }else if (item.getItemId() == R.id.menu_Mess){
                     selectedFragment = MessU ;
+                }else if (item.getItemId() == R.id.menu_prog){
+                    selectedFragment = List ;
                 }
                 loadFragment(selectedFragment);
                 return true;
             }
         });
-
-
     }
-
     private class  SelecDatabase extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... strings) {

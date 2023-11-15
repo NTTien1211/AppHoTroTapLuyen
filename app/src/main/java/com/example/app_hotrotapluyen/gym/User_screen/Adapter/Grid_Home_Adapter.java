@@ -15,6 +15,7 @@ public class Grid_Home_Adapter extends RecyclerView.Adapter<Grid_Home_Adapter.Vi
 
     public Grid_Home_Adapter(List<Integer> items) {
         this.items = items;
+        notifyDataSetChanged();
     }
 
     @NonNull

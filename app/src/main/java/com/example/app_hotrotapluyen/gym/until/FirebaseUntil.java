@@ -19,7 +19,8 @@ import java.util.List;
 public class FirebaseUntil {
 
     public static String currentUserId(){
-        return FirebaseAuth.getInstance().getUid();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        return (currentUser != null) ? currentUser.getUid() : null;
     }
 
 

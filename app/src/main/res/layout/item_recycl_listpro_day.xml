@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@drawable/rounded_background2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/listpro_day_name"
+                android:text="Ngày 1"
+                android:fontFamily="@font/poppinsbold"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/listpro_day_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="34" />
+            <TextView
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppinsmedium"
+                android:layout_toEndOf="@id/listpro_day_number"
+                android:layout_marginLeft="10dp"
+                android:text="Bài tập" />
+
+        </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_turned_in_24"/>
+    </LinearLayout>
+</LinearLayout>

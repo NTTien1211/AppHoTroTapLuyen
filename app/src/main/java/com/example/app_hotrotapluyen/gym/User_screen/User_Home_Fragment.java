@@ -1,5 +1,6 @@
 package com.example.app_hotrotapluyen.gym.User_screen;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,18 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_UserPT_Adapter;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User_Home_Fragment extends Fragment {
     private RecyclerView recyclerView2;
     private Grid_Home_UserPT_Adapter userAdapter2;
-
+    List<HomeU_pt> userList;
     private DrawerLayout drawerLayout;
     private Button btnOpenDrawer;
     public User_Home_Fragment() {
@@ -49,16 +58,19 @@ public class User_Home_Fragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<HomeU_pt> userList = new ArrayList<>();
-        userList.add(new HomeU_pt("User 1", 5, 2, 4.5));
-        userList.add(new HomeU_pt("User 2", 3, 1, 4.2));
-        userList.add(new HomeU_pt("User 3", 7, 3, 4.8));
 
-        userAdapter2 = new Grid_Home_UserPT_Adapter(userList);
-        recyclerView2.setAdapter(userAdapter2);
+//        userList.add(new HomeU_pt("User 1", 5, 2, 4.5));
+//        userList.add(new HomeU_pt("User 2", 3, 1, 4.2));
+//        userList.add(new HomeU_pt("User 3", 7, 3, 4.8));
+
+
 
         Grid_Home_Adapter adapter = new Grid_Home_Adapter(items);
         recyclerView.setAdapter(adapter);
+        userList = new ArrayList<>();
+
+        SelecDatabase selecDatabase = new SelecDatabase();
+        selecDatabase.execute();
 
 //        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,4 +84,55 @@ public class User_Home_Fragment extends Fragment {
 //        });
         return view;
     }
+
+    private class SelecDatabase extends AsyncTask<String, Void, List<HomeU_pt> > {
+        List<HomeU_pt> userList = new ArrayList<>();
+        @Override
+        protected List<HomeU_pt>  doInBackground(String... strings) {
+            Connection connection = JdbcConnect.connect();
+            if (connection != null) {
+                try {
+
+                    String query = "SELECT * FROM PTrainer ";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    while (resultSet.next()) {
+                        String name = resultSet.getString("Name");
+                        Float rate = resultSet.getFloat("Rate");
+                        DecimalFormat decimalFormat = new DecimalFormat("#,#");
+                        float rateFormat = Float.parseFloat(decimalFormat.format(rate));
+                        int people = resultSet.getInt("People");
+                        int Experience = resultSet.getInt("Experience");
+                        HomeU_pt pt = new HomeU_pt(name,Experience,people, rateFormat);
+                        userList.add(pt);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return  userList ;
+        }
+
+        @Override
+        protected void onPostExecute(List<HomeU_pt> userList) {
+            super.onPostExecute(userList);
+            if (userList != null && userList.size() > 0) {
+                // TODO: Use the result (UserModel) as needed
+                userAdapter2 = new Grid_Home_UserPT_Adapter(userList , getActivity());
+                recyclerView2.setAdapter(userAdapter2);
+            } else {
+                Toast.makeText(getActivity(), "User not found or error occurred", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

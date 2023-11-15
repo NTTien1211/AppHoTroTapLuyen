@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/rounded_background">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/card"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:padding="20dp"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/name_profoo_program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wake up call"
+                android:textColor="@color/white"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/nameUS_profoo_program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mr.Khs"
+                android:textColor="@color/white"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppinsmedium"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+                    <View
+                        android:id="@+id/gachDoc"
+                        android:layout_width="2dp"
+                        android:layout_height="20dp"
+                        android:background="@color/colorAccent" />
+                    <TextView
+                        android:id="@+id/number_program"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/xanhla"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/gachDoc"
+                        android:text="6" />
+                    <TextView
+                        android:id="@+id/level_profoo_program"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/xanhla"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/number_program"
+                        android:text="Workouts for Beginer" />
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.12"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:layout_height="wrap_content"
+                    android:text="PRO"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

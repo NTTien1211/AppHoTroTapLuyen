@@ -4,30 +4,30 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:gravity="bottom"
-    android:background="@drawable/header_back"
+    android:background="@drawable/whirk"
     android:layout_height="220dp">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/logo_while"/>
+        android:src="@drawable/logo_black"/>
     <TextView
         android:id="@+id/UserName_UserMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppinsbold"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18dp"
         android:text="Thanh Tien"/>
     <TextView
         android:id="@+id/Gmai_UserMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:fontFamily="@font/poppinssemibold"
         android:text="ThanhTien@gmail.com"/>
     <TextView
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:id="@+id/Phone_UserMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

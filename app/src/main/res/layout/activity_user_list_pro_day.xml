@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".gym.User_screen.User_listPro_Day_Activity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:popupTheme="@android:color/black" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_background">
+        <LinearLayout
+            android:padding="10dp"
+            android:background="@drawable/whirk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/icon1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_flash_on_24" /> <!-- Đặt biểu tượng ở đây -->
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/icon1"
+                        android:src="@drawable/baseline_flash_on_24" />
+                    <ImageView
+                        android:id="@+id/icon3"
+                        android:layout_toEndOf="@id/icon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_flash_on_24" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/icon3"
+                        android:layout_marginLeft="10dp"
+                        android:text="Basic" />
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start at today"
+                    android:textSize="20sp"
+                    android:padding="8dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:padding="8dp">
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Now Or Never" />
+<!--                    <View-->
+<!--                        android:id="@+id/gachDoc"-->
+<!--                        android:layout_below="@id/text"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="2dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:background="@color/lavender" />-->
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="match_parent"
+                        app:lottie_rawRes="@raw/prog_bar"
+                        android:id="@+id/bar_anim"
+                        app:lottie_autoPlay="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="8dp"
+                        app:lottie_loop="true"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_lispro_day_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"/>
+</LinearLayout>

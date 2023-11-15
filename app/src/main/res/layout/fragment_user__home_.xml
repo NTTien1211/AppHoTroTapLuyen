@@ -7,18 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".gym.User_screen.User_Home_Fragment">
-<!--    <androidx.drawerlayout.widget.DrawerLayout-->
-<!--        android:id="@+id/drawer_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-<!--        <com.google.android.material.navigation.NavigationView-->
-<!--            android:id="@+id/navigationview_mainUser"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--           app:headerLayout="@layout/header_navigation_user"-->
-<!--            app:menu="@menu/left_menu_nav"/>-->
 
-<!--    </androidx.drawerlayout.widget.DrawerLayout>-->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

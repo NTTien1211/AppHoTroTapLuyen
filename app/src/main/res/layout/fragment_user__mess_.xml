@@ -63,10 +63,22 @@
             android:src="@drawable/baseline_search_24"
             android:backgroundTint="@color/white"/>
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMessage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMessage_History"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
 
 </LinearLayout>

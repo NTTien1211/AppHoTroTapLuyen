@@ -57,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String userPassword = password.getText().toString();
                 String confirmPassword = rePassword.getText().toString();
                 userPhone = countryCodePicker.getFullNumberWithPlus();
+                String tax = userPhone.replace("+84","0");
                 if (name.isEmpty() || userEmail.isEmpty() || userPhone.isEmpty() || userPassword.isEmpty()) {
                     showErrorMessage("Please fill in all fields");
                 } else if (!userPassword.equals(confirmPassword)) {
@@ -64,7 +65,13 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (userPassword.length() < 6) {
                     showErrorMessage("Password must be at least 6 characters");
                 } else {
-                    new RegisterUserTask().execute(name, userEmail, userPhone, userPassword);
+                    Intent intent= new Intent(RegisterActivity.this, Register_OTP_Activity.class);
+                    intent.putExtra("name" ,name);
+                    intent.putExtra("userEmail" ,userEmail);
+                    intent.putExtra("userPhone" ,tax);
+                    intent.putExtra("userPassword" ,userPassword);
+                    intent.putExtra("phone" , countryCodePicker.getFullNumberWithPlus());
+                    startActivity(intent);
                 }
             }
         });
@@ -83,68 +90,5 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private class RegisterUserTask extends AsyncTask<String, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... params) {
-            Connection connection = JdbcConnect.connect();
-            if (connection != null) {
-                try {
-                    String name = params[0];
-                    String email = params[1];
-                    String phone = params[2];
-                    String pass = params[3];
 
-                    String query = "SELECT Email FROM Users WHERE Email = ?";
-                    PreparedStatement preparedStatement = connection.prepareStatement(query);
-                    preparedStatement.setString(1, email);
-
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return false;
-                    } else {
-                        query = "INSERT INTO Users (Name, Email, Phone, Pass) VALUES (?, ?, ?, ?)";
-                        preparedStatement = connection.prepareStatement(query);
-                        preparedStatement.setString(1, name);
-                        preparedStatement.setString(2, email);
-                        preparedStatement.setString(3, phone);
-                        preparedStatement.setString(4, pass);
-
-                        int rowsInserted = preparedStatement.executeUpdate();
-                        return rowsInserted > 0;
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            progressBar.setVisibility(View.GONE);
-            if (success) {
-                showSuccessMessage("Registration successful");
-                Intent intent = new Intent(RegisterActivity.this, Register_OTP_Activity.class);
-                intent.putExtra("phone" , countryCodePicker.getFullNumberWithPlus());
-                startActivity(intent);
-            } else {
-                showErrorMessage("Registration failed");
-            }
-        }
-    }
-
-    private void showSuccessMessage(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
