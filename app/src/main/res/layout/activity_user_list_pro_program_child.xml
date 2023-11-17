@@ -20,13 +20,12 @@
             android:background="@drawable/whirk"
             app:popupTheme="@android:color/black" />
         <LinearLayout
-            android:layout_below="@id/toolbarChild"
             android:padding="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
@@ -34,16 +33,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Start at today"
+                    android:layout_marginLeft="50dp"
                     android:textSize="20sp"
                     android:padding="8dp"
                     android:fontFamily="@font/poppinsmedium"
                     />
                     <TextView
                         android:id="@+id/text"
-                        android:layout_gravity="end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
                         android:text="Now Or Never" />
             </LinearLayout>
         </LinearLayout>
@@ -154,14 +153,19 @@
            android:layout_marginTop="10dp"
            android:layout_marginEnd="10dp"
            android:layout_marginBottom="10dp" />
+
        <Button
+           android:id="@+id/start_chill_exce"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="Start"
-           android:padding="10dp"
-           android:layout_margin="10dp"
-           android:backgroundTint="@color/lavender"
            android:layout_alignParentBottom="true"
-           android:fontFamily="@font/poppinsbold"/>
+           android:layout_marginStart="10dp"
+           android:layout_marginTop="10dp"
+           android:layout_marginEnd="10dp"
+           android:layout_marginBottom="10dp"
+           android:backgroundTint="@color/lavender"
+           android:fontFamily="@font/poppinsbold"
+           android:padding="10dp"
+           android:text="Start" />
    </RelativeLayout>
 </LinearLayout>

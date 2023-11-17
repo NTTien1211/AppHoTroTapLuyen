@@ -41,7 +41,6 @@ public class Program_UserPR_Adapter extends RecyclerView.Adapter<Program_UserPR_
         ProgramModel item = programModels.get(position);
         holder.name_profoo_program.setText(item.getNamePro());
         int id = item.getID_Pro();
-
         holder.nameUS_profoo_program.setText(item.getNameUserAdd());
         holder.level_profoo_program.setText(item.getLevel());
         holder.itemView.setOnClickListener(new View.OnClickListener() {

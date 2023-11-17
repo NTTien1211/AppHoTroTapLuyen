@@ -100,7 +100,7 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
         SpannableString spannableString = new SpannableString(name);
         spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getSupportActionBar().setTitle(spannableString);
-        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

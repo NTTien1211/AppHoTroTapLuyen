@@ -2,6 +2,7 @@ package com.example.app_hotrotapluyen.gym.User_screen.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.example.app_hotrotapluyen.gym.User_screen.Model.DayPRo_model;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.ProgramModel;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.Program_child_Model;
+import com.example.app_hotrotapluyen.gym.User_screen.ProChil_Inf_NextBack_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.User_Mess_Chat_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.User_PT_Inf_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.User_listPro_Day_Activity;
@@ -45,17 +47,20 @@ public class Program_Day_User_Child_Adapter extends RecyclerView.Adapter<Program
         // Assuming item.getImg() now returns a URL or resource ID
 //        Picasso.get().load(item.getImg()).into(holder.img_proChild);
 
-        holder.listpro_dayChiil_unil.setText(item.getUnil());
+        holder.listpro_dayChiil_unil.setText(String.valueOf(item.getUnil()));
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 //                long itemID = item.getID_Program_Child();
-////                Intent intent = new Intent(context, User_listPro_ProgramChild_Activity.class);
-////                intent.putExtra("id_item" , itemID);
-////                context.startActivity(intent);
-//            }
-//        });
+//                SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("GymTien",view.getContext().MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putLong("id_item",itemID);
+//                editor.apply();
+                Intent intent = new Intent(view.getContext(), ProChil_Inf_NextBack_Activity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

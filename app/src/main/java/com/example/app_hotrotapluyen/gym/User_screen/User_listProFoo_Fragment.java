@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_UserPT_Adapter;
+import com.example.app_hotrotapluyen.gym.User_screen.Adapter.ProGram_Day_User_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Program_UserPR_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.ProgramModel;
@@ -47,12 +49,9 @@ public class User_listProFoo_Fragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_profoo_recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        programViewModel = new ViewModelProvider(this).get(ProgramViewModel.class);
-
-
-
-            SelecDatabase selecDatabase1 = new SelecDatabase();
-            selecDatabase1.execute();
+        itemList = new ArrayList<>();
+        SelecDatabase selecDatabase1 = new SelecDatabase();
+        selecDatabase1.execute();
 
         return view;
     }
@@ -79,7 +78,6 @@ public class User_listProFoo_Fragment extends Fragment {
                         String name = resultSet.getString("ProgramName");
                         String PTname = resultSet.getString("TrainerName");
                         String level = resultSet.getString("Level");
-
                         ProgramModel pt = new ProgramModel(idPro,name, PTname, level);
                         programModel.add(pt);
                     }
@@ -101,9 +99,7 @@ public class User_listProFoo_Fragment extends Fragment {
             super.onPostExecute(programModel);
             if (programModel != null && programModel.size() > 0) {
                 // TODO: Use the result (UserModel) as needed
-                programViewModel.setProgramModelList(programModel);
-
-                // Khởi tạo Adapter và set cho RecyclerView
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
                 programUserPRAdapter = new Program_UserPR_Adapter(programModel);
                 recyclerView.setAdapter(programUserPRAdapter);
 

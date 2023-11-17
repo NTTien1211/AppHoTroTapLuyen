@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".gym.User_screen.Pro_StartPlan_Activity">
+
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:id="@+id/layout_mainwait">
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rested"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:id="@+id/ưew"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_margin="20dp"
+            />
+        <RelativeLayout
+            android:layout_below="@+id/ưew"
+            android:id="@+id/jjjj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ProgressBar
+                android:id="@+id/view_progress_barwait"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/countdowntimerd" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_timerwait"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+        <Button
+            android:id="@+id/btn_nextCoudwait"
+            android:layout_below="@+id/jjjj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/lavender"
+            android:padding="10dp"
+            android:layout_centerHorizontal="true"/>
+       <RelativeLayout
+           android:id="@+id/mm"
+           android:layout_below="@+id/btn_nextCoudwait"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+           <TextView
+               android:background="@drawable/rounded_background2"
+               android:id="@+id/ew"
+               android:padding="10dp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Next ProGram: "
+               android:textColor="@color/black"
+               android:textSize="20dp"
+               android:fontFamily="@font/poppinsbold"
+               android:layout_margin="20dp"
+               />
+           <TextView
+               android:background="@drawable/rounded_background2"
+               android:padding="10dp"
+               android:layout_toEndOf="@id/ew"
+               android:id="@+id/tv_nextprogram"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Next ProGram"
+               android:textColor="@color/black"
+               android:textSize="20dp"
+               android:fontFamily="@font/poppinsbold"
+                android:layout_marginTop="20dp"
+               />
+       </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_Nextprogram_starplan"
+            android:layout_below="@id/mm"
+            android:background="@drawable/rounded_background2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:id="@+id/layout_main">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_timer"
+            android:fontFamily="@font/poppinsbold"
+            android:padding="20dp"
+            android:text="Name Program"
+            android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/img_program_starplan"
+            android:layout_below="@id/et_timer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+       <RelativeLayout
+           android:layout_marginTop="20dp"
+           android:layout_below="@+id/img_program_starplan"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <ProgressBar
+               android:id="@+id/view_progress_bar"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="250dp"
+               android:layout_height="250dp"
+               android:layout_centerInParent="true"
+               android:layout_gravity="center"
+               android:progressDrawable="@drawable/countdowntimerd" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/tv_timer"
+               android:layout_centerInParent="true"
+               />
+       </RelativeLayout>
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_skip_previous_24"
+                android:id="@+id/btn_previ_startplan"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/purple_nhat"
+                android:layout_alignParentBottom="true"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/baseline_skip_next_24"
+                android:id="@+id/btn_next_startplan"
+                android:backgroundTint="@color/purple_nhat"
+                android:layout_alignParentBottom="true"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +45,8 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
     RecyclerView recycle_lispro_day_user;
     TextView tNameday,tSlbtapChild,tTimeChild;
     long idDay ;
+    Button start_chill_exce;
+    String dayname = "";
     List<Program_child_Model> DAYMODEL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +58,19 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
         tNameday = findViewById(R.id.tNameDayChild);
         tSlbtapChild = findViewById(R.id.tSlbtapChild);
         tTimeChild = findViewById(R.id.tTimeChild);
+        start_chill_exce = findViewById(R.id.start_chill_exce);
         Toolbar actionBar = findViewById(R.id.toolbarChild);
-        setToolbar(actionBar, "Day");
+        setToolbar(actionBar, "");
         DAYMODEL = new ArrayList<>();
         SelecDatabase selecDatabase1 = new SelecDatabase();
         selecDatabase1.execute();
-
+        start_chill_exce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(User_listPro_ProgramChild_Activity.this, Pro_StartPlan_Activity.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -69,7 +80,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
         SpannableString spannableString = new SpannableString(name);
         spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getSupportActionBar().setTitle(spannableString);
-        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,17 +105,17 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setLong(1, idDay);
 
-
                     ResultSet resultSet = preparedStatement.executeQuery();
-                    int i = 0;
+
                     while (resultSet.next()) {
-                        i++;
                         String name = resultSet.getString("ProgramChildName");
                         String unil = resultSet.getString("ProgramChildUnit");
-                        Log.d("TAG", "DayName: " + name);
-                        Program_child_Model pt = new Program_child_Model(name, unil);
+                        dayname = resultSet.getString("DayName");
+                        Program_child_Model pt = new Program_child_Model(name,  Long.valueOf(unil));
                         DAYMODEL.add(pt);
                     }
+
+
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 } finally {
@@ -124,9 +135,9 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
                 recycle_lispro_day_user.setLayoutManager(new LinearLayoutManager(User_listPro_ProgramChild_Activity.this,RecyclerView.VERTICAL,false));
                 proGramDayUserAdapter = new Program_Day_User_Child_Adapter(program_child_Model);
                 recycle_lispro_day_user.setAdapter(proGramDayUserAdapter);
-                for (Program_child_Model programChildModel : program_child_Model){
-                    tNameday.setText(programChildModel.getNameDay());
-                }
+                tNameday.setText(dayname);
+                tSlbtapChild.setText(String.valueOf(program_child_Model.size()));
+
             } else {
                 Toast.makeText(User_listPro_ProgramChild_Activity.this, "AAAAAA ", Toast.LENGTH_SHORT).show();
             }
