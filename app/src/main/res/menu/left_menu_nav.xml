@@ -22,10 +22,6 @@
     <item android:title="Account">
             <menu>
                 <item
-                    android:id="@+id/Profile"
-                    android:title="Setting"
-                    android:icon="@drawable/person_icon"/>
-                <item
                     android:id="@+id/menu_Update_pt"
                     android:title="Update_PT"
                     android:icon="@drawable/oval"/>

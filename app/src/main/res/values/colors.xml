@@ -11,6 +11,7 @@
     <color name="rednhat">#FFF4F4</color>
 
     <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_dam">#6D2BBF</color>
     <color name="purple_nhat">#F6F5FB</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -21,4 +22,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="lavender">#8692f7</color>
     <color name="Gr">#394867</color>
+    <color name="bmi_underweight">#FF0000</color>
+    <color name="bmi_normal_weight">#FFFF00</color>
+    <color name="bmi_overweight">#00FF00</color>
+    <color name="bmi_obesity">#FFA500</color>
+
 </resources>

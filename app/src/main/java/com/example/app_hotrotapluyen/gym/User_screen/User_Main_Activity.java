@@ -55,6 +55,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         final Fragment HomeU = new User_Home_Fragment();
         final Fragment MessU = new User_Mess_Fragment();
         final Fragment List = new User_listProFoo_Fragment();
+        final Fragment User = new User_Profile_Fragment();
         loadFragment(HomeU);
         bottomNavigationView =findViewById(R.id.menu);
         toolbar = findViewById(R.id.toobal_main);
@@ -80,6 +81,8 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                     selectedFragment = MessU ;
                 }else if (item.getItemId() == R.id.menu_prog){
                     selectedFragment = List ;
+                }else if (item.getItemId() == R.id.menu_user) {
+                    selectedFragment = User;
                 }
                 loadFragment(selectedFragment);
                 return true;

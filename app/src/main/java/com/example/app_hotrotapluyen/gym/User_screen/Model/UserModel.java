@@ -7,11 +7,19 @@ public class UserModel {
     private String name;
     private String phone;
     private String Email;
+    private String cretificate;
+    private String prize;
+    private String Evaluate;
+    private String weight;
+    private String hight;
+    private String gender;
     private Timestamp creatTimestamp;
     private  int Level;
+
     private int experience;
     private int managers;
     private float rate;
+
 
     // Constructors
     public UserModel() {
@@ -43,6 +51,36 @@ public class UserModel {
         this.experience = experience;
         this.managers = managers;
         this.rate = rate;
+    }
+
+    public UserModel(String idUser, String name, int experience, int managers, float rate) {
+        this.idUser = idUser;
+        this.name = name;
+        this.experience = experience;
+        this.managers = managers;
+        this.rate = rate;
+    }
+
+    public UserModel(String idUser, String name, String phone, String cretificate, String prize, String evaluate, int experience, int managers, float rate) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        this.cretificate = cretificate;
+        this.prize = prize;
+        Evaluate = evaluate;
+        this.experience = experience;
+        this.managers = managers;
+        this.rate = rate;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -81,6 +119,30 @@ public class UserModel {
         this.experience = experience;
     }
 
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getHight() {
+        return hight;
+    }
+
+    public void setHight(String hight) {
+        this.hight = hight;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public int getManagers() {
         return managers;
     }
@@ -117,6 +179,28 @@ public class UserModel {
         this.phone = phone;
     }
 
+    public String getCretificate() {
+        return cretificate;
+    }
 
+    public void setCretificate(String cretificate) {
+        this.cretificate = cretificate;
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
+
+    public String getEvaluate() {
+        return Evaluate;
+    }
+
+    public void setEvaluate(String evaluate) {
+        Evaluate = evaluate;
+    }
 }
 

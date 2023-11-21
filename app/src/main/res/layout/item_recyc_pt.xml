@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <!-- res/layout/item_grid.xml -->
 
     <LinearLayout
@@ -101,15 +101,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-        <Button
-            android:id="@+id/btn_pt_homeUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="20dp"
-            android:backgroundTint="@color/Gr"
-            android:text="View"/>
     </LinearLayout>
 
 </LinearLayout>

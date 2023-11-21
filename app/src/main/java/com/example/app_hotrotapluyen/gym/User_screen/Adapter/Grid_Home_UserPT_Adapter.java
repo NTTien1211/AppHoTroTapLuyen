@@ -36,6 +36,7 @@ public class Grid_Home_UserPT_Adapter extends RecyclerView.Adapter<Grid_Home_Use
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         UserModel user = userList.get(position);
+        String id = user.getIdUser();
         holder.textViewName.setText(user.getName());
         holder.textViewExperience.setText("Experience: " + user.getExperience());
         holder.textViewManagers.setText("Managers: " + user.getManagers());
@@ -44,14 +45,10 @@ public class Grid_Home_UserPT_Adapter extends RecyclerView.Adapter<Grid_Home_Use
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int adapterPosition = holder.getAdapterPosition();
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    UserModel user = userList.get(adapterPosition);
-                    // Truyền ID của item sang User_Mess_Chat_Activity
                     Intent intent = new Intent(context, User_PT_Inf_Activity.class);
-                    intent.putExtra("PT_ID", user.getIdUser());
+                    intent.putExtra("PT_ID", id);
                     context.startActivity(intent);
-                }
+
             }
         });
 

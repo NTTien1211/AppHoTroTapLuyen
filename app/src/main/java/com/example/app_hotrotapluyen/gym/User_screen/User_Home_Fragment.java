@@ -60,11 +60,6 @@ public class User_Home_Fragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-//        userList.add(new HomeU_pt("User 1", 5, 2, 4.5));
-//        userList.add(new HomeU_pt("User 2", 3, 1, 4.2));
-//        userList.add(new HomeU_pt("User 3", 7, 3, 4.8));
-
-
 
         Grid_Home_Adapter adapter = new Grid_Home_Adapter(items);
         recyclerView.setAdapter(adapter);
@@ -73,16 +68,6 @@ public class User_Home_Fragment extends Fragment {
         SelecDatabase selecDatabase = new SelecDatabase();
         selecDatabase.execute();
 
-//        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (drawerLayout.isDrawerOpen(drawerLayout.getChildAt(1))) {
-//                    drawerLayout.closeDrawer(drawerLayout.getChildAt(1));
-//                } else {
-//                    drawerLayout.openDrawer(drawerLayout.getChildAt(1));
-//                }
-//            }
-//        });
         return view;
     }
 
@@ -102,12 +87,13 @@ public class User_Home_Fragment extends Fragment {
 
                     while (resultSet.next()) {
                         String name = resultSet.getString("Name");
+                        String Userid = resultSet.getString("ID_User");
                         Float rate = resultSet.getFloat("Rate");
                         DecimalFormat decimalFormat = new DecimalFormat("#,#");
                         float rateFormat = Float.parseFloat(decimalFormat.format(rate));
                         int people = resultSet.getInt("People");
                         int Experience = resultSet.getInt("Experience");
-                        UserModel pt = new UserModel(name,Experience,people, rateFormat);
+                        UserModel pt = new UserModel(Userid , name,Experience, people , rateFormat);
                         userList.add(pt);
                     }
                 } catch (SQLException e) {
