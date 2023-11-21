@@ -1,5 +1,7 @@
 package com.example.app_hotrotapluyen.gym.User_screen;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -38,6 +40,7 @@ import java.util.List;
 public class User_listProFoo_Fragment extends Fragment {
     RecyclerView recyclerView ;
     private List<ProgramModel> itemList;
+    String Ranks;
     Program_UserPR_Adapter programUserPRAdapter;
     private ProgramViewModel programViewModel;
     @Override
@@ -48,10 +51,13 @@ public class User_listProFoo_Fragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.list_profoo_recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("GymTien", Context.MODE_PRIVATE);
+        Ranks = sharedPreferences.getString("RankID","");
         itemList = new ArrayList<>();
         SelecDatabase selecDatabase1 = new SelecDatabase();
         selecDatabase1.execute();
+
+
 
         return view;
     }
@@ -63,14 +69,12 @@ public class User_listProFoo_Fragment extends Fragment {
             if (connection != null) {
                 try {
 
-                    String query = "SELECT Program.ID_Pro AS ProgramId, Program.Name AS ProgramName, PTrainer.Name AS TrainerName, Program.Level " +
+                    String query = "SELECT Program.ID_Pro AS ProgramId, Program.Name AS ProgramName, Users.Name AS TrainerName, Program.Level " +
                             "FROM Program " +
-                            "INNER JOIN PTrainer ON Program.ID_PT = PTrainer.ID_PT";
+                            "INNER JOIN Users ON Program.ID_User = Users.ID_User";
 
 
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
-
-
                     ResultSet resultSet = preparedStatement.executeQuery();
 
                     while (resultSet.next()) {

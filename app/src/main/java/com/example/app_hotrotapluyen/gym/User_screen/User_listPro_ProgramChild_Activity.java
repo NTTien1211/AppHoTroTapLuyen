@@ -114,8 +114,6 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
                         Program_child_Model pt = new Program_child_Model(name,  Long.valueOf(unil));
                         DAYMODEL.add(pt);
                     }
-
-
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 } finally {

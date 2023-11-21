@@ -17,7 +17,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_pt_inf);
         back = findViewById(R.id.Pt_User_infor_back);
-        idPT = getIntent().getExtras().getString("PT_ID");
+//        idPT = getIntent().getExtras().getString("PT_ID");
         Toast.makeText(this, "" +idPT, Toast.LENGTH_SHORT).show();
         back.setOnClickListener(new View.OnClickListener() {
             @Override

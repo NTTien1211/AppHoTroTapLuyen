@@ -1,9 +1,11 @@
 package com.example.app_hotrotapluyen.gym.User_screen;
 
+import androidx.annotation.NavigationRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,22 +14,35 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class User_Main_Activity extends AppCompatActivity {
+public class User_Main_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottomNavigationView;
     String idUser;
-
+    TextView nameLeft, emailLeft , phoneLeft;
+    DrawerLayout drawerLayout ;
+    Toolbar toolbar ;
+    UserModel userModel;
+    NavigationView navigationView;
+    private static final int Fagment_food = 0;
+    int mCurrenFagment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +57,19 @@ public class User_Main_Activity extends AppCompatActivity {
         final Fragment List = new User_listProFoo_Fragment();
         loadFragment(HomeU);
         bottomNavigationView =findViewById(R.id.menu);
+        toolbar = findViewById(R.id.toobal_main);
+        drawerLayout =findViewById(R.id.Drawlayout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(User_Main_Activity.this , drawerLayout, toolbar ,
+                                            R.string.navigation_draw_open , R.string.navigation_draw_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView = findViewById(R.id.navigrionbar_main);
+        navigationView.setNavigationItemSelectedListener(User_Main_Activity.this);
+        View headerView = navigationView.getHeaderView(0);
+        nameLeft = headerView.findViewById(R.id.UserName_UserMain);
+        emailLeft = headerView.findViewById(R.id.Gmai_UserMain);
+        phoneLeft = headerView.findViewById(R.id.Phone_UserMain);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -58,21 +86,54 @@ public class User_Main_Activity extends AppCompatActivity {
             }
         });
     }
-    private class  SelecDatabase extends AsyncTask<String, Void, Boolean> {
+
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id  = item.getItemId();
+        Fragment selectedFragment = null;
+        if(item.getItemId() == R.id.menu_food){
+            selectedFragment = new User_listProFoo_Food_Fragment();
+
+        }
+
+        replaceFagment(selectedFragment);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
+    private  void  replaceFagment(Fragment fragment){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout , fragment);
+        transaction.commit();
+    }
+    private class  SelecDatabase extends AsyncTask<String, Void, UserModel> {
         @Override
-        protected Boolean doInBackground(String... strings) {
+        protected UserModel  doInBackground(String... strings) {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
-                    String query = "SELECT Name, Phone FROM Users WHERE Id_User = ?";
+                    String query = "SELECT * FROM Users WHERE Id_User = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setString(1,idUser );
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
-                       return true;
-                    } else {
-                        return false;
+                        String id = resultSet.getString("ID_User");
+                        String Name = resultSet.getString("Name");
+                        String Email = resultSet.getString("Email");
+                        String Phone = resultSet.getString("Phone");
+                        userModel = new UserModel(id, Name, Email , Phone);
+                        return userModel;
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -84,13 +145,15 @@ public class User_Main_Activity extends AppCompatActivity {
                     }
                 }
             }
-            return false;
+            return userModel;
         }
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(UserModel result) {
             super.onPostExecute(result);
-            if (result) {
-                Toast.makeText(User_Main_Activity.this, "User found", Toast.LENGTH_SHORT).show();
+            if (result!= null) {
+                    nameLeft.setText(result.getName());
+                    emailLeft.setText(result.getEmail());
+                    phoneLeft.setText(result.getPhone());
             } else {
                 Toast.makeText(User_Main_Activity.this, "User not found or error occurred", Toast.LENGTH_SHORT).show();
             }

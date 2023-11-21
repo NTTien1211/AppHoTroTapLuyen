@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/Drawlayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,26 +8,53 @@
     android:layout_height="match_parent"
     android:background="@color/lavender"
     tools:context=".gym.User_screen.User_Main_Activity">
-
-    <FrameLayout
+    <RelativeLayout
+        android:layout_above="@+id/bottomAppBar"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/frame_layout"/>
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:id="@+id/ms"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toobal_main"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomAppBar"
-        android:layout_gravity="bottom"
-        android:background="@drawable/rounded_background2"
-       >
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        </com.google.android.material.appbar.AppBarLayout>
+        <FrameLayout
+            android:layout_below="@id/ms"
+            android:layout_above="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/frame_layout"/>
+        <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/menu"
-            android:background="@color/lanhat"
-            app:menu="@menu/bottom_menu"/>
-    </com.google.android.material.bottomappbar.BottomAppBar>
+            android:id="@+id/bottomAppBar"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_background2"
+            tools:ignore="BottomAppBar">
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu"
+                android:background="@color/lanhat"
+                app:menu="@menu/bottom_menu"/>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </RelativeLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigrionbar_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/header_navigation_user"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        app:menu="@menu/left_menu_nav"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
 <!--    app:labelVisibilityMode="labeled"-->

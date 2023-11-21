@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_Home"
-        android:title="Home"
-        android:icon="@drawable/baseline_home_24"
+        android:id="@+id/menu_food"
+        android:title="Food"
+        android:icon="@drawable/baseline_fastfood_24" />
+    <item
+        android:id="@+id/setting"
+        android:title="Setting"
+        android:icon="@drawable/baseline_settings_24"
         />
     <item
-        android:id="@+id/menu_Mess"
-        android:title="Mess"
-        android:icon="@drawable/baseline_whatshot_24" />
-    <item
-        android:id="@+id/menu_Over"
-        android:title="Over"
-        android:icon="@drawable/oval"
+        android:id="@+id/History_book"
+        android:title="History"
+        android:icon="@drawable/baseline_history_24"
         />
     <item
-        android:id="@+id/menu_prog"
-        android:title="Program"
-        android:icon="@drawable/baseline_checklist_24" />
-    <item
-        android:id="@+id/menu_user"
-        android:title="User"
-        android:icon="@drawable/baseline_people_24" />
-
+        android:id="@+id/feedbackApp"
+        android:title="Rate App"
+        android:icon="@drawable/baseline_star_24"
+        />
     <item android:title="Account">
             <menu>
                 <item
-                    android:id="@+id/menu_seeting"
+                    android:id="@+id/Profile"
                     android:title="Setting"
-                    android:icon="@drawable/baseline_settings_24"/>
+                    android:icon="@drawable/person_icon"/>
                 <item
                     android:id="@+id/menu_Update_pt"
                     android:title="Update_PT"

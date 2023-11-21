@@ -24,4 +24,6 @@
     <!--    -->
     <string name="dwfox_git">https://github.com/dwfox/DWRulerView</string>
     <string name="dwfox_blog">http://dwfox.tistory.com/50</string>
+    <string name="navigation_draw_open">Open Navigation Drawer</string>
+    <string name="navigation_draw_close">Close Navigation Drawer</string>
 </resources>

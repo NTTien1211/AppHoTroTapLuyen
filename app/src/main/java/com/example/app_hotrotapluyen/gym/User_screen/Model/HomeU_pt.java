@@ -5,7 +5,22 @@ public class HomeU_pt {
     private String name;
     private int experience;
     private int managers;
+    private String phone;
     private float rate;
+
+    public HomeU_pt(String idPT, String name, String phone) {
+        this.idPT = idPT;
+        this.name = name;
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public HomeU_pt(String name, int experience, int managers, float rate) {
         this.name = name;

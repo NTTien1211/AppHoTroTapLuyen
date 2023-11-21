@@ -19,6 +19,7 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_UserPT_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 
 import java.sql.Connection;
@@ -32,7 +33,7 @@ import java.util.List;
 public class User_Home_Fragment extends Fragment {
     private RecyclerView recyclerView2;
     private Grid_Home_UserPT_Adapter userAdapter2;
-    List<HomeU_pt> userList;
+    List<UserModel> userList;
     private DrawerLayout drawerLayout;
     private Button btnOpenDrawer;
     public User_Home_Fragment() {
@@ -85,15 +86,15 @@ public class User_Home_Fragment extends Fragment {
         return view;
     }
 
-    private class SelecDatabase extends AsyncTask<String, Void, List<HomeU_pt> > {
-        List<HomeU_pt> userList = new ArrayList<>();
+    private class SelecDatabase extends AsyncTask<String, Void, List<UserModel> > {
+        List<UserModel> userList = new ArrayList<>();
         @Override
-        protected List<HomeU_pt>  doInBackground(String... strings) {
+        protected List<UserModel>  doInBackground(String... strings) {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
 
-                    String query = "SELECT * FROM PTrainer ";
+                    String query = "SELECT * FROM Users WHERE Level = 1";
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
 
 
@@ -106,7 +107,7 @@ public class User_Home_Fragment extends Fragment {
                         float rateFormat = Float.parseFloat(decimalFormat.format(rate));
                         int people = resultSet.getInt("People");
                         int Experience = resultSet.getInt("Experience");
-                        HomeU_pt pt = new HomeU_pt(name,Experience,people, rateFormat);
+                        UserModel pt = new UserModel(name,Experience,people, rateFormat);
                         userList.add(pt);
                     }
                 } catch (SQLException e) {
@@ -123,7 +124,7 @@ public class User_Home_Fragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<HomeU_pt> userList) {
+        protected void onPostExecute(List<UserModel> userList) {
             super.onPostExecute(userList);
             if (userList != null && userList.size() > 0) {
                 // TODO: Use the result (UserModel) as needed

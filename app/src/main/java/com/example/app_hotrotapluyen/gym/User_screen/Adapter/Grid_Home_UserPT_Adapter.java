@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_hotrotapluyen.R;
-import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.User_screen.User_Mess_Chat_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.User_PT_Inf_Activity;
 import com.example.app_hotrotapluyen.gym.until.AndroidUtil;
@@ -18,10 +18,10 @@ import com.example.app_hotrotapluyen.gym.until.AndroidUtil;
 import java.util.List;
 
 public class Grid_Home_UserPT_Adapter extends RecyclerView.Adapter<Grid_Home_UserPT_Adapter.ViewHolder> {
-    private List<HomeU_pt> userList;
+    private List<UserModel> userList;
     private Context context;
 
-    public Grid_Home_UserPT_Adapter(List<HomeU_pt> userList , Context context) {
+    public Grid_Home_UserPT_Adapter(List<UserModel> userList , Context context) {
         this.userList = userList;
         this.context = context;
         notifyDataSetChanged();
@@ -35,7 +35,7 @@ public class Grid_Home_UserPT_Adapter extends RecyclerView.Adapter<Grid_Home_Use
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        HomeU_pt user = userList.get(position);
+        UserModel user = userList.get(position);
         holder.textViewName.setText(user.getName());
         holder.textViewExperience.setText("Experience: " + user.getExperience());
         holder.textViewManagers.setText("Managers: " + user.getManagers());
@@ -46,10 +46,10 @@ public class Grid_Home_UserPT_Adapter extends RecyclerView.Adapter<Grid_Home_Use
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    HomeU_pt user = userList.get(adapterPosition);
+                    UserModel user = userList.get(adapterPosition);
                     // Truyền ID của item sang User_Mess_Chat_Activity
                     Intent intent = new Intent(context, User_PT_Inf_Activity.class);
-                    intent.putExtra("PT_ID", user.getIdPT());
+                    intent.putExtra("PT_ID", user.getIdUser());
                     context.startActivity(intent);
                 }
             }

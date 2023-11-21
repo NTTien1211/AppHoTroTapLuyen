@@ -7,39 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".gym.User_screen.User_Home_Fragment">
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/left_cate_HomeU"
-            android:layout_margin="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/category"
-            android:backgroundTint="@color/white"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:layout_marginEnd="8dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_whatshot_24"
-                android:backgroundTint="@color/white"/>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_notifications_none_24"
-                android:backgroundTint="@color/white"/>
-        </LinearLayout>
-    </LinearLayout>
+    
 
     <TextView
         android:layout_width="wrap_content"

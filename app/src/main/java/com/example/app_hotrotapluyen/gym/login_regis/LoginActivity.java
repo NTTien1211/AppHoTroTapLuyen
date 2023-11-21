@@ -7,10 +7,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
 import com.example.app_hotrotapluyen.gym.until.FirebaseUntil;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,8 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView signupText;
     Button loginButton;
     UserModel userModel;
+    HomeU_pt homeUPt;
     String nameFir, phonFir;
-
+    Spinner spinner;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +63,17 @@ public class LoginActivity extends AppCompatActivity {
         click();
 
 
+
+
     }
 
     private void click() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (username.getText().toString().equals("user") && password.getText().toString().equals("1234")) {
-//                    Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-//                }
                 String UserName = username.getText().toString();
                 String PassWords = password.getText().toString();
-//                setUsername();
                 loginAndFetchUserDetails(UserName, PassWords);
-
-
             }
         });
         signupText.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 Connection connection = JdbcConnect.connect();
                 if (connection != null) {
                     try {
-                        String query = "SELECT ID_User, Name, Email, Pass, Phone FROM Users WHERE (Email = ? OR Phone = ?) AND Pass = ?";
+                        String query = "SELECT ID_User, Name, Email, Pass, Phone, Level FROM Users WHERE (Email = ? OR Phone = ?) AND Pass = ?";
                         PreparedStatement preparedStatement = connection.prepareStatement(query);
                         preparedStatement.setString(1, UserName);
                         preparedStatement.setString(2, UserName);
@@ -103,7 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                             String userId = resultSet.getString("ID_User");
                             String name = resultSet.getString("Name");
                             String phone = resultSet.getString("Phone");
-                            return new UserModel(userId, name, phone);
+                            int level = resultSet.getInt("Level");
+                            return new UserModel(userId, name, phone , level);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -129,9 +130,9 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("userID",userDetails.getIdUser());
+                    editor.putBoolean(String.valueOf(userDetails.getLevel())  , false);
                     editor.apply();
 //                    setUsername(nameFir, phonFir); // Gọi hàm để đặt thông tin người dùng
-
                     Intent intent = new Intent(LoginActivity.this, User_Main_Activity.class);
                     startActivity(intent);
                 } else {
@@ -141,12 +142,14 @@ public class LoginActivity extends AppCompatActivity {
         }.execute();
     }
 
+
     @SuppressLint("WrongViewCast")
     private void until() {
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
         signupText = findViewById(R.id.loginsignupText);
         loginButton = findViewById(R.id.loginButton);
+
     }
 
 //    void setUsername(User user) {
@@ -173,7 +176,7 @@ void setUsername(final UserModel user) {
         if (userModel != null) {
             userModel.setName(username);
         } else {
-            userModel = new UserModel(userId, user.getName(), user.getPhone());
+            userModel = new UserModel(userId, user.getName(), user.getPhone(),1);
             FirebaseUntil.allUserCollectionReference()
                     .whereEqualTo("phone", user.getPhone())
                     .get()
@@ -215,19 +218,7 @@ void setUsername(final UserModel user) {
         // Kiểm tra xem người dùng đã tồn tại hay chưa bằng số điện thoại
 }
 
-//     void getUsername(){
-//        FirebaseUntil.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if(task.isSuccessful()){
-//                    userModel =    task.getResult().toObject(UserModel.class);
-//                    if(userModel!=null){
-////                        usernameInput.setText(userModel.getUsername());
-//                    }
-//                }
-//            }
-//        });
-//    }
+
 
 
 

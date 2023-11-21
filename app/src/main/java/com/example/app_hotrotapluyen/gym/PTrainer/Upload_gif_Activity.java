@@ -16,88 +16,95 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.example.app_hotrotapluyen.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Upload_gif_Activity extends AppCompatActivity {
-    private static final int IMAGE_REQ = 1;
-    private Uri imagePath;
-    private ImageView imageView;
-    private Button button;
+
+    private Button uploadButton;
+    private ImageView uploadedImageView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_gif);
 
-        imageView = findViewById(R.id.imageView);
-        button = findViewById(R.id.button);
-
-        Map<String, String> config = new HashMap<>();
+        // Khởi tạo Cloudinary (thay thế bằng cloud_name, api_key, và api_secret thực của bạn)
+        Map config = new HashMap();
         config.put("cloud_name", "dlpqr1jhm");
         config.put("api_key", "187745367395712");
         config.put("api_secret", "-_7wEP5n5Il_4lpiZRm2f1XgAxg");
         MediaManager.init(this, config);
 
-        button.setOnClickListener(view -> {
+        // Ánh xạ các thành phần giao diện
+        uploadButton = findViewById(R.id.button);
+        uploadedImageView = findViewById(R.id.imageView);
+
+        // Thiết lập sự kiện khi nhấn nút tải lên
+        uploadButton.setOnClickListener(view -> {
+            // Mở Intent để chọn ảnh từ thư viện
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
-            startActivityForResult(intent, IMAGE_REQ);
+            startActivityForResult(intent, 1);
         });
     }
 
     @Override
-    // ...
-
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == IMAGE_REQ && resultCode == RESULT_OK && data != null) {
-            imagePath = data.getData();
-            Picasso.get().load(imagePath).into(imageView);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
 
-            // Tạo folder tự động
-            String folderName = "ProGram"; // Thay đổi thành tên folder mong muốn
-
-            // Sử dụng Picasso để tải ảnh lên Cloudinary
-            MediaManager.get().upload(Uri.parse(imagePath.toString()))
-                    .option("folder", folderName)
-                    .unsigned("ml_default")
-                    .callback(new UploadCallback() {
-                        @Override
-                        public void onStart(String requestId) {
-                            // Gọi khi quá trình tải lên bắt đầu
-                        }
-
-                        @Override
-                        public void onProgress(String requestId, long bytes, long totalBytes) {
-                            // Gọi trong quá trình tải lên để báo cáo tiến trình
-                        }
-
-                        @Override
-                        public void onSuccess(String requestId, Map resultData) {
-                            // Gọi khi quá trình tải lên thành công
-                            // Lấy thông tin về ảnh đã tải lên từ resultData
-
-                            // Hiển thị thông báo cho người dùng
-                            Toast.makeText(Upload_gif_Activity.this, "Ảnh đã được tải lên thành công", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onError(String requestId, ErrorInfo error) {
-                            // Gọi khi có lỗi xảy ra trong quá trình tải lên
-                            // Hiển thị thông báo cho người dùng nếu có lỗi
-                            Toast.makeText(Upload_gif_Activity.this, "Lỗi khi tải lên ảnh", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onReschedule(String requestId, ErrorInfo error) {
-                            // Gọi khi quá trình tải lên cần được lên lịch lại
-                        }
-                    }).dispatch();
+            // Tải ảnh lên Clouddinary
+            try {
+                uploadImageToCloudinary(imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(Upload_gif_Activity.this, "Lỗi khi tải lên ảnh", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-// ...
+    private void uploadImageToCloudinary(Uri imageUri) throws IOException {
+        // Chỉ định các tùy chọn cho việc tải lên
+        Map<String, Object> options = new HashMap<>();
+        options.put("public_id", "android_upload_" + System.currentTimeMillis()); // Đảm bảo mỗi lần tải lên là duy nhất
 
+        // Thực hiện tải lên ảnh
+        MediaManager.get().upload(imageUri)
+                .option("tags", "android_upload")
+                .option("upload_preset", "ml_default") // Thay thế bằng upload preset thực tế của bạn
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        Toast.makeText(Upload_gif_Activity.this, "Đang tải lên...", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                        // Xử lý sự thay đổi trong quá trình tải lên
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        String imageUrl = (String) resultData.get("secure_url");
+                        Picasso.get().load(imageUrl).into(uploadedImageView);
+                        Toast.makeText(Upload_gif_Activity.this, "Tải lên thành công!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        Toast.makeText(Upload_gif_Activity.this, "Tải lên thất bại: " + error.getDescription(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+                        // Xử lý khi cần lên lịch lại việc tải lên
+                    }
+                })
+                .option("folder", "android_upload")
+                .dispatch();
+    }
 }

@@ -192,12 +192,13 @@ public class Register_OTP_Activity extends AppCompatActivity {
                     if (resultSet.next()) {
                         return false;
                     } else {
-                        query = "INSERT INTO Users (Email, Name,Pass, Phone ) VALUES (?, ?, ?, ?)";
+                        query = "INSERT INTO Users (Email, Name,Pass, Phone,Level ) VALUES (?, ?, ?, ? , ?)";
                         preparedStatement = connection.prepareStatement(query);
                         preparedStatement.setString(1, email);
                         preparedStatement.setString(2, name);
                         preparedStatement.setString(3, pass);
                         preparedStatement.setString(4, phone);
+                        preparedStatement.setString(5, String.valueOf(0));
 //                        preparedStatement.setInt(5, level);
 
                         int rowsInserted = preparedStatement.executeUpdate();
