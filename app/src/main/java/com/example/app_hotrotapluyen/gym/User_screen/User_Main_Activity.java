@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.PTrainer.PTrainer_Update_Level_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.example.app_hotrotapluyen.gym.login_regis.LoginActivity;
+import com.example.app_hotrotapluyen.gym.notification.AlertDialogManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -45,8 +49,14 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     UserModel userModel;
     NavigationView navigationView;
     TextView logout_av;
+    String bmii;
     private static final int Fagment_food = 0;
     int mCurrenFagment;
+    final Fragment HomeU = new User_Home_Fragment();
+    final Fragment MessU = new User_Mess_Fragment();
+    final Fragment List = new User_listProFoo_Fragment();
+    final Fragment User = new User_Profile_Fragment();
+    AlertDialogManager alertDialogManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +66,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         idUser = sharedPreferences.getString("userID","");
         SelecDatabase selecDatabase = new SelecDatabase();
         selecDatabase.execute(idUser);
-        final Fragment HomeU = new User_Home_Fragment();
-        final Fragment MessU = new User_Mess_Fragment();
-        final Fragment List = new User_listProFoo_Fragment();
-        final Fragment User = new User_Profile_Fragment();
+        alertDialogManager = new AlertDialogManager();
         loadFragment(HomeU);
         bottomNavigationView =findViewById(R.id.menu);
         toolbar = findViewById(R.id.toobal_main);
@@ -113,6 +120,22 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         if(item.getItemId() == R.id.menu_food){
             selectedFragment = new User_listProFoo_Food_Fragment();
 
+        }else if(item.getItemId() == R.id.menu_Update_pt){
+            if (bmii==null || bmii.isEmpty()){
+                alertDialogManager.showAlertDialog(
+                        User_Main_Activity.this,
+                        "NOTION",
+                        "Please complete your personal profile first."
+                );
+                selectedFragment = User;
+            }
+            else{
+                Intent intent = new Intent(User_Main_Activity.this, PTrainer_Update_Level_Activity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+
+
         }
 
         replaceFagment(selectedFragment);
@@ -129,9 +152,14 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         }
     }
     private  void  replaceFagment(Fragment fragment){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout , fragment);
-        transaction.commit();
+        if (fragment != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, fragment);
+            transaction.commit();
+        } else {
+            // Log một lỗi hoặc xử lý trường hợp khi fragment là null
+            Log.e("User_Main_Activity", "Attempted to replace fragment with null");
+        }
     }
     private class  SelecDatabase extends AsyncTask<String, Void, UserModel> {
         @Override
@@ -149,8 +177,9 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                         String Name = resultSet.getString("Name");
                         String Email = resultSet.getString("Email");
                         String Phone = resultSet.getString("Phone");
-                        String img = resultSet.getString("IMG");
-                        userModel = new UserModel(id, Name, Email , Phone, img);
+                        String Bmi = resultSet.getString("BMI");
+                        String level = resultSet.getString("Level");
+                        userModel = new UserModel(id, Name, Email , Phone, Bmi , Integer.parseInt(level));
                         return userModel;
                     }
                 } catch (SQLException e) {
@@ -172,6 +201,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                     nameLeft.setText(result.getName());
                     emailLeft.setText(result.getEmail());
                     phoneLeft.setText(result.getPhone());
+                    bmii = result.getBMI();
             } else {
                 Toast.makeText(User_Main_Activity.this, "User not found or error occurred", Toast.LENGTH_SHORT).show();
             }

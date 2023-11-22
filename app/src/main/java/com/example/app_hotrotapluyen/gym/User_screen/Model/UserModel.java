@@ -81,6 +81,15 @@ public class UserModel {
         this.rate = rate;
     }
 
+    public UserModel(String idUser, String name, String phone, String email, String BMI, int level) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.BMI = BMI;
+        Level = level;
+    }
+
     public UserModel(String idUser, String name, String phone, String cretificate, String prize, String evaluate, int experience, int managers, float rate) {
         this.idUser = idUser;
         this.name = name;

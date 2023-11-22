@@ -99,7 +99,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
                         String name = resultSet.getString("Name");
                         String Userid = resultSet.getString("ID_User");
                         String Dregree = resultSet.getString("cretificate");
-                        String prize = resultSet.getString("prize");
+
                         String phone = resultSet.getString("Phone");
                         String Evaluate = resultSet.getString("Evaluate");
                         Float rate = resultSet.getFloat("Rate");
@@ -107,7 +107,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
                         float rateFormat = Float.parseFloat(decimalFormat.format(rate));
                         int people = resultSet.getInt("People");
                         int Experience = resultSet.getInt("Experience");
-                        userList = new UserModel(Userid , name,phone,Dregree,prize, Evaluate ,Experience, people , rateFormat);
+                        userList = new UserModel(Userid , name,phone,Dregree,"prize", Evaluate ,Experience, people , rateFormat);
                         return userList;
                     }
                 } catch (SQLException e) {

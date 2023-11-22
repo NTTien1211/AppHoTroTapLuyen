@@ -20,11 +20,7 @@
         <activity
             android:name=".gym.PTrainer.PTrainer_Update_Level_Activity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".gym.User_screen.User_Repair_Inf_Activity"
@@ -62,7 +58,11 @@
         <activity
             android:name=".gym.login_regis.LoginActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".gym.splash.SplashActivity"
