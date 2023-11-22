@@ -71,6 +71,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_ptrainer_update_level);
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien", Context.MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
+
         if (!isMediaManagerInitialized) {
             Map config = new HashMap();
             config.put("cloud_name", "dlpqr1jhm");
@@ -84,6 +85,8 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         imageUrls = new String[4];
         imageViews = new ImageView[4];
         anhxa();
+        GetUserTask getUserTask = new GetUserTask();
+        getUserTask.execute();
         setToolbar(actionBar, "UPDATE PTRAINER");
         String[] name = new String[3];
         name[0] = User_prize_update_pt_inormation1.getText().toString();
@@ -234,7 +237,6 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         @Override
         protected UserModel doInBackground(Void... voids) {
             Connection connection = JdbcConnect.connect();
-            UserModel userModel = null;
 
             if (connection != null) {
                 try {
@@ -244,14 +246,17 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
-                        String nameOut = resultSet.getString("Name");
-                        String UseridOUT = resultSet.getString("ID_User");
-                        String emailOUT = resultSet.getString("Email");
-                        String weightOUT = resultSet.getString("Weight");
-                        String phoneOUT = resultSet.getString("Phone");
-                        String hightOUT = resultSet.getString("Height");
-                        String genderOUT = resultSet.getString("Gender");
-                        userModel = new UserModel(UseridOUT, nameOut, phoneOUT, emailOUT, weightOUT, hightOUT, genderOUT);
+                        String name = resultSet.getString("Name");
+                        String Userid = resultSet.getString("ID_User");
+                        String email = resultSet.getString("Email");
+                        String weight = resultSet.getString("Weight");
+                        String phone = resultSet.getString("Phone");
+                        String hight = resultSet.getString("Height");
+                        String gender = resultSet.getString("Gender");
+                        String BMI = resultSet.getString("BMI");
+                        String img = resultSet.getString("IMG");
+                        userModel = new UserModel(Userid , name,phone,email,weight, hight ,gender,BMI, img);
+                        return userModel;
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -270,8 +275,8 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         protected void onPostExecute(UserModel success) {
             if (success != null) {
                 // Update UI with retrieved data
-//                 profile_pic_image_view_userupdate;
-                Picasso.get().load(success.getImg()).transform(new CircleTransform()).into(profile_pic_image_view_userupdate);
+                String a =success.getImg();
+                Picasso.get().load(a).transform(new CircleTransform()).into(profile_pic_image_view_userupdate);
                  User_user_inormation_update.setText(success.getName());
                  User_phone_userUpdate_inormation.setText(success.getPhone());
                  User_email_userUpdate_inormation.setText(success.getEmail());
