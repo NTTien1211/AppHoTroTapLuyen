@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,14 +18,23 @@
         tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
+            android:name=".gym.PTrainer.PTrainer_Update_Level_Activity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".gym.User_screen.User_Repair_Inf_Activity"
             android:exported="false" />
         <activity
             android:name=".gym.PTrainer.Upload_gif_Activity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".gym.User_screen.Pro_StartPlan_Activity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".gym.User_screen.ProChil_Inf_NextBack_Activity"
             android:exported="false" />
@@ -36,7 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".gym.User_screen.User_PT_Inf_Activity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".gym.User_screen.User_Mess_Chat_Activity"
             android:exported="false" />
@@ -52,15 +62,11 @@
         <activity
             android:name=".gym.login_regis.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".gym.splash.SplashActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

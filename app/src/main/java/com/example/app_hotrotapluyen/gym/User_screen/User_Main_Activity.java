@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,12 +19,14 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.login_regis.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -41,6 +44,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     Toolbar toolbar ;
     UserModel userModel;
     NavigationView navigationView;
+    TextView logout_av;
     private static final int Fagment_food = 0;
     int mCurrenFagment;
     @Override
@@ -71,6 +75,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         nameLeft = headerView.findViewById(R.id.UserName_UserMain);
         emailLeft = headerView.findViewById(R.id.Gmai_UserMain);
         phoneLeft = headerView.findViewById(R.id.Phone_UserMain);
+        logout_av = findViewById(R.id.logout_av);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,6 +91,15 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                 }
                 loadFragment(selectedFragment);
                 return true;
+            }
+        });
+
+        logout_av.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(User_Main_Activity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -135,7 +149,8 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                         String Name = resultSet.getString("Name");
                         String Email = resultSet.getString("Email");
                         String Phone = resultSet.getString("Phone");
-                        userModel = new UserModel(id, Name, Email , Phone);
+                        String img = resultSet.getString("IMG");
+                        userModel = new UserModel(id, Name, Email , Phone, img);
                         return userModel;
                     }
                 } catch (SQLException e) {

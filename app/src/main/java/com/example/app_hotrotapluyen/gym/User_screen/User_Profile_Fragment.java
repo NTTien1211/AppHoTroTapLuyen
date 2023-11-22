@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.squareup.picasso.Picasso;
 
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -38,6 +41,7 @@ public class User_Profile_Fragment extends Fragment {
             ,BMI_user_profile ,User_user_inormation;
     Button btn_update_user_profile;
     UserModel userModel;
+    ImageView profile_pic_image_view_profile;
     String idUser;
     LinearLayout color_back_bmi;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +54,7 @@ public class User_Profile_Fragment extends Fragment {
         User_user_inormation = view.findViewById(R.id.User_user_inormation);
         weight_ptIn_User = view.findViewById(R.id.weight_ptIn_User);
         Height_ptIn_dgree = view.findViewById(R.id.Height_ptIn_dgree);
+        profile_pic_image_view_profile = view.findViewById(R.id.profile_pic_image_view_profile);
         BMI_user_profile = view.findViewById(R.id.BMI_user_profile);
         btn_update_user_profile = view.findViewById(R.id.btn_update_user_profile);
         color_back_bmi = view.findViewById(R.id.color_back_bmi);
@@ -90,7 +95,9 @@ public class User_Profile_Fragment extends Fragment {
                         String phone = resultSet.getString("Phone");
                         String hight = resultSet.getString("Height");
                         String gender = resultSet.getString("Gender");
-                        userModel = new UserModel(Userid , name,phone,email,weight, hight ,gender);
+                        String BMI = resultSet.getString("BMI");
+                        String img = resultSet.getString("IMG");
+                        userModel = new UserModel(Userid , name,phone,email,weight, hight ,gender,BMI, img);
                         return userModel;
                     }
                 } catch (SQLException e) {
@@ -116,19 +123,21 @@ public class User_Profile_Fragment extends Fragment {
                 User_email_user_inormation.setText(userList.getEmail());
                 weight_ptIn_User.setText(userList.getWeight());
                 Height_ptIn_dgree.setText(userList.getHight());
-
+                String img = userList.getImg();
+                if (img == null || img.isEmpty()){
+                    profile_pic_image_view_profile.setImageDrawable(getResources().getDrawable(R.drawable.person_icon));
+                }
+                else {
+                    Picasso.get().load(img).transform(new CircleTransform()).into(profile_pic_image_view_profile);
+                }
                 if (userList.getWeight() == null && userList.getHight() ==null ){
                     BMI_user_profile.setText("0");
                 }
                 else {
-                    float we = Float.parseFloat(userList.getWeight());
-                    float he = Float.parseFloat(userList.getHight());
-                    float bmi =  we / (he*he);
-                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                    decimalFormat.setRoundingMode(RoundingMode.CEILING);
 
-                    String formattedBmi = decimalFormat.format(bmi);
-                    BMI_user_profile.setText(formattedBmi);
+                    BMI_user_profile.setText(userList.getBMI());
+                    String text =  userList.getBMI();
+                    float bmi = Float.parseFloat(text.replace("," ,"."));
                     if (bmi <= 18.5) {
                         color_back_bmi.setBackgroundColor(getResources().getColor(R.color.lavender)); // Thay thế colorBlue bằng màu bạn muốn sử dụng
                     } else if (bmi <= 24.9) {

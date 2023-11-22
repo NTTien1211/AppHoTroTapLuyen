@@ -54,7 +54,26 @@
         app:headerLayout="@layout/header_navigation_user"
         android:layout_gravity="start"
         android:background="@color/white"
-        app:menu="@menu/left_menu_nav"/>
+        app:menu="@menu/left_menu_nav">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_logout_24"/>
+            <TextView android:id="@+id/logout_av"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:fontFamily="@font/poppinssemibold"
+                android:text="Logout" />
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
 <!--    app:labelVisibilityMode="labeled"-->

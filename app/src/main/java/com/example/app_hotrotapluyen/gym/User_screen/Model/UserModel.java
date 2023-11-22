@@ -13,12 +13,24 @@ public class UserModel {
     private String weight;
     private String hight;
     private String gender;
+    private String BMI;
     private Timestamp creatTimestamp;
     private  int Level;
 
     private int experience;
     private int managers;
     private float rate;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    private String img;
+
 
 
     // Constructors
@@ -37,6 +49,14 @@ public class UserModel {
         this.name = name;
         this.phone = phone;
         Email = email;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.img = img;
     }
 
     public UserModel(String idUser, String name, String phone, int level) {
@@ -83,6 +103,29 @@ public class UserModel {
         this.gender = gender;
     }
 
+    public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender, String BMI, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+        this.img = img;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender, String BMI) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+    }
+
     public String getEmail() {
         return Email;
     }
@@ -97,6 +140,14 @@ public class UserModel {
 
     public void setCreatTimestamp(Timestamp creatTimestamp) {
         this.creatTimestamp = creatTimestamp;
+    }
+
+    public String getBMI() {
+        return BMI;
+    }
+
+    public void setBMI(String BMI) {
+        this.BMI = BMI;
     }
 
     public int getLevel() {
