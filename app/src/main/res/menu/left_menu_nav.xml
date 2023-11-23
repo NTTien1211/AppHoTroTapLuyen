@@ -25,6 +25,10 @@
                     android:id="@+id/menu_Update_pt"
                     android:title="Update_PT"
                     android:icon="@drawable/oval"/>
+                <item
+                    android:id="@+id/follow_us"
+                    android:title="Follow Us"
+                    android:icon="@drawable/baseline_flash_on_24"/>
             </menu>
     </item>
 </menu>

@@ -52,7 +52,6 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
         anhxa();
         SelecDatabase selecDatabase = new SelecDatabase();
         selecDatabase.execute(idPT);
-
     }
 
     private void anhxa() {

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/whirk"
     tools:context=".gym.User_screen.User_Mess_Fragment">
 
     <LinearLayout
@@ -72,12 +73,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMessage_History"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:visibility="visible"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="visible" />
     </RelativeLayout>
 
 

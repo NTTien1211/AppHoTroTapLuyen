@@ -29,11 +29,11 @@
 
     <string name="bmi_label">BMI: %f</string>
     <!-- res/values/arrays.xml -->
-        <string-array name="levels_array">
-            <item>Beginner</item>
-            <item>Intermediate</item>
-            <item>Advanced</item>
-        </string-array>
+    <string-array name="levels_array">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
     <string-array name="day_array">
         <item>Day 1</item>
         <item>Day 2</item>
@@ -44,5 +44,21 @@
         <item>Day 7</item>
 
     </string-array>
+
+    <string name="link_instagram">
+        <a href="https://www.instagram.com/"> <u>Instagram</u>.</a>
+    </string>
+    <string name="link_facebook">
+        <a href="https://www.facebook.com/profile.php?id=100041273850472">Facebook</a>
+    </string>
+    <string name="link_linkedin">
+        <a href="https://www.linkedin.com/in/nguyen-thanh-tien-a5150b27b/">Linkedin</a>
+    </string>
+    <string name="link_twitter">
+        <a style="text-decoration: underline" href="https://www.instagram.com/">Twitter</a>
+    </string>
+    <string name="link_playstore">
+        <a href="#">Play Store</a>
+    </string>
 
 </resources>

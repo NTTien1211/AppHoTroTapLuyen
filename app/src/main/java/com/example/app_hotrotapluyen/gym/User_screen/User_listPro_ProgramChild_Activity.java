@@ -99,7 +99,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
         SelecDatabase selecDatabase1 = new SelecDatabase();
         selecDatabase1.execute();
 
-        if (Integer.parseInt(level)  == 1){
+        if (Integer.parseInt(level)  == 1 || Integer.parseInt(level)  == 2){
             add_program_pt_child.setVisibility(View.VISIBLE);
             add_program_pt_child.setOnClickListener(new View.OnClickListener() {
                 @Override

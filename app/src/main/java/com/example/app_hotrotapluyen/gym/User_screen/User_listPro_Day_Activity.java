@@ -66,7 +66,7 @@ public class User_listPro_Day_Activity extends AppCompatActivity {
         DAYMODEL = new ArrayList<>();
         SelecDatabase selecDatabase1 = new SelecDatabase();
         selecDatabase1.execute();
-        if (Integer.parseInt(level)  == 1){
+        if (Integer.parseInt(level)  == 1 || Integer.parseInt(level)  == 2){
             add_programDay_pt.setVisibility(View.VISIBLE);
             add_programDay_pt.setOnClickListener(new View.OnClickListener() {
                 @Override

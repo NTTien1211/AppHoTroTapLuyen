@@ -18,11 +18,20 @@
         tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
+            android:name=".gym.User_screen.User_Follow_Us_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".gym.Admin.Admin_Approve_Registration_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".gym.PTrainer.PTrainer_Home_Fagment"
+            android:exported="false" />
+        <activity
             android:name=".gym.PTrainer.PTrainer_Add_Program_Activity"
             android:exported="false" />
         <activity
             android:name=".gym.PTrainer.PTrainer_Update_Level_Activity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".gym.User_screen.User_Repair_Inf_Activity"
             android:exported="false" />

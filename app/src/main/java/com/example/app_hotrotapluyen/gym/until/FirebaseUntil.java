@@ -3,6 +3,7 @@ package com.example.app_hotrotapluyen.gym.until;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,12 +66,30 @@ public class FirebaseUntil {
         return FirebaseFirestore.getInstance().collection("chatrooms");
     }
 
-    public static DocumentReference getOtherUserFromChatroom(List<String> userIds){
-        if(userIds.get(0).equals(FirebaseUntil.currentUserId())){
-            return allUserCollectionReference().document(userIds.get(1));
-        }else{
-            return allUserCollectionReference().document(userIds.get(0));
-        }
+    public static void getOtherUserFromChatroom(List<String> userIds, OnUserFetchListener listener) {
+        String otherUserId = (userIds.get(0).equals(currentUserId())) ? userIds.get(1) : userIds.get(0);
+        DocumentReference otherUserRef = allUserCollectionReference().document(otherUserId);
+
+        otherUserRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                UserModel otherUserModel = task.getResult().toObject(UserModel.class);
+                if (listener != null) {
+                    listener.onUserFetched(otherUserModel);
+                }
+            } else {
+                // Xử lý lỗi
+            }
+        });
+    }
+
+    public static DocumentReference getUserFromId(String userId) {
+        // Assuming 'users' is the collection name where user information is stored
+        // Adjust the collection name based on your Firestore setup
+        return FirebaseFirestore.getInstance().collection("users").document(userId);
+    }
+    // Định nghĩa một giao diện để xử lý callback khi thông tin người dùng được lấy về
+    public interface OnUserFetchListener {
+        void onUserFetched(UserModel user);
     }
 
     public static String timestampToString(Timestamp timestamp){

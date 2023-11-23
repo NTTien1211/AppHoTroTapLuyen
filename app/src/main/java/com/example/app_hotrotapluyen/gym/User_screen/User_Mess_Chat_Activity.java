@@ -59,6 +59,7 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
         idUser = sharedPreferences.getString("userID","");
         otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
         ChatRoomID = FirebaseUntil.getChatroomId(idUser,otherUser.getIdUser());
+        Log.d("User_Mess_Chat_Activity", "ChatRoomID: " + ChatRoomID);
 //        Toast.makeText(this, "" + FirebaseUntil.currentUserId() + " hbfqf " + otherUser.getIdUser(), Toast.LENGTH_SHORT).show();
 
         Toolbar actionBar = findViewById(R.id.toolbarCgat);

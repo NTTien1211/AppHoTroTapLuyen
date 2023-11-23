@@ -67,7 +67,7 @@ public class User_listProFoo_Fragment extends Fragment {
         SelecDatabase selecDatabase1 = new SelecDatabase();
         selecDatabase1.execute();
 
-        if (Integer.parseInt(level)  == 1){
+        if (Integer.parseInt(level)  == 1|| Integer.parseInt(level)  == 2){
             add_program_pt.setVisibility(View.VISIBLE);
             add_program_pt.setOnClickListener(new View.OnClickListener() {
                 @Override

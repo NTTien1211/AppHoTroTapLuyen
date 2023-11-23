@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
+import com.example.app_hotrotapluyen.gym.Admin.Admin_Home_Fragment;
+import com.example.app_hotrotapluyen.gym.Admin.Admin_Over_Browser_Fragment;
 import com.example.app_hotrotapluyen.gym.PTrainer.PTrainer_Update_Level_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
@@ -43,7 +46,7 @@ import java.util.List;
 public class User_Main_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottomNavigationView;
     String idUser;
-    TextView nameLeft, emailLeft , phoneLeft;
+    TextView nameLeft, emailLeft , phoneLeft ,levelAcc;
     DrawerLayout drawerLayout ;
     Toolbar toolbar ;
     UserModel userModel;
@@ -53,9 +56,12 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     private static final int Fagment_food = 0;
     int mCurrenFagment;
     final Fragment HomeU = new User_Home_Fragment();
+    final Fragment HomeAdmin = new Admin_Home_Fragment();
     final Fragment MessU = new User_Mess_Fragment();
     final Fragment List = new User_listProFoo_Fragment();
     final Fragment User = new User_Profile_Fragment();
+    final Fragment OverAdmin = new Admin_Over_Browser_Fragment();
+    String level;
     AlertDialogManager alertDialogManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +70,12 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
 
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
+        level = sharedPreferences.getString("levelID" ,"");
         SelecDatabase selecDatabase = new SelecDatabase();
+
         selecDatabase.execute(idUser);
         alertDialogManager = new AlertDialogManager();
-        loadFragment(HomeU);
+
         bottomNavigationView =findViewById(R.id.menu);
         toolbar = findViewById(R.id.toobal_main);
         drawerLayout =findViewById(R.id.Drawlayout);
@@ -82,19 +90,57 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         nameLeft = headerView.findViewById(R.id.UserName_UserMain);
         emailLeft = headerView.findViewById(R.id.Gmai_UserMain);
         phoneLeft = headerView.findViewById(R.id.Phone_UserMain);
+        levelAcc = headerView.findViewById(R.id.levelAcc);
         logout_av = findViewById(R.id.logout_av);
+        int colorAccent = ContextCompat.getColor(this, R.color.xanhla);
+        int colorAccent1 = ContextCompat.getColor(this, R.color.bmi_normal_weight);
+        int colorAccent2 = ContextCompat.getColor(this, R.color.colorAccent);
+
+        if (Integer.parseInt(level) == 2 ){
+            levelAcc.setText("AD");
+            levelAcc.setTextColor(colorAccent);
+            loadFragment(HomeAdmin);
+            navigationView.getMenu().findItem(R.id.menu_Update_pt).setVisible(false);
+
+        }else if (Integer.parseInt(level) == 1 ) {
+            levelAcc.setText("PT");
+            levelAcc.setTextColor(colorAccent1);
+            loadFragment(HomeU);
+            navigationView.getMenu().findItem(R.id.menu_Update_pt).setVisible(false);
+        }
+        else {
+            levelAcc.setText("US");
+            levelAcc.setTextColor(colorAccent2);
+            loadFragment(HomeU);
+            navigationView.getMenu().findItem(R.id.menu_Update_pt).setVisible(true);
+
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
                 if(item.getItemId() == R.id.menu_Home){
-                    selectedFragment =  HomeU;
+                    if (Integer.parseInt(level) ==2 ){
+                        selectedFragment =  HomeAdmin;
+                    }
+                    else {
+                        selectedFragment =  HomeU;
+                    }
+
                 }else if (item.getItemId() == R.id.menu_Mess){
                     selectedFragment = MessU ;
                 }else if (item.getItemId() == R.id.menu_prog){
                     selectedFragment = List ;
                 }else if (item.getItemId() == R.id.menu_user) {
                     selectedFragment = User;
+                }else  if(item.getItemId() == R.id.menu_Over){
+                    if (Integer.parseInt(level) == 2 ){
+                        selectedFragment =  OverAdmin;
+                    }
+                    else {
+//                        selectedFragment =  HomeU;
+                    }
+
                 }
                 loadFragment(selectedFragment);
                 return true;
@@ -121,20 +167,31 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
             selectedFragment = new User_listProFoo_Food_Fragment();
 
         }else if(item.getItemId() == R.id.menu_Update_pt){
-            if (bmii==null || bmii.isEmpty()){
-                alertDialogManager.showAlertDialog(
-                        User_Main_Activity.this,
-                        "NOTION",
-                        "Please complete your personal profile first."
-                );
-                selectedFragment = User;
-            }
-            else{
-                Intent intent = new Intent(User_Main_Activity.this, PTrainer_Update_Level_Activity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+                if (bmii==null || bmii.isEmpty()){
+                    alertDialogManager.showAlertDialog(
+                            User_Main_Activity.this,
+                            "NOTION",
+                            "Please complete your personal profile first."
+                    );
+                    selectedFragment = User;
+                }
+                else{
+                    Intent intent = new Intent(User_Main_Activity.this, PTrainer_Update_Level_Activity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
 
+
+        }else if(item.getItemId() == R.id.setting){
+            selectedFragment = new User_Setting_Fragment();
+
+        }else if(item.getItemId() == R.id.feedbackApp){
+            selectedFragment = new User_Rate_App_Fragment();
+
+        }else if(item.getItemId() == R.id.follow_us){
+            Intent intent = new Intent(User_Main_Activity.this, User_Follow_Us_Activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
 
         }
 
@@ -202,6 +259,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                     emailLeft.setText(result.getEmail());
                     phoneLeft.setText(result.getPhone());
                     bmii = result.getBMI();
+
             } else {
                 Toast.makeText(User_Main_Activity.this, "User not found or error occurred", Toast.LENGTH_SHORT).show();
             }

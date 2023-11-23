@@ -66,7 +66,9 @@ public class User_Mess_Fragment extends Fragment {
         return view;
     }
     void setupRecycleview(String searchIN) {
-
+        if (searchUserRecyMessAdapter != null) {
+            searchUserRecyMessAdapter.stopListening();
+        }
         Query query = FirebaseUntil.allUserCollectionReference()
                 .whereGreaterThanOrEqualTo("phone",searchIN)
                 .whereLessThanOrEqualTo("phone",searchIN+'\uf8ff');
@@ -87,7 +89,9 @@ public class User_Mess_Fragment extends Fragment {
 
     }
     void setupRecyclerViewHistory(){
-
+        if (recentChatMessAdapter != null) {
+            recentChatMessAdapter.stopListening();
+        }
         Query query = FirebaseUntil.allChatroomCollectionReference()
                 .whereArrayContains("userIds",idUser)
                 .orderBy("lastMessageTimestamp",Query.Direction.DESCENDING);

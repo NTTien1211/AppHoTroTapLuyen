@@ -30,6 +30,8 @@ public class UserModel {
     }
 
     private String img;
+    private String[] prizeNames;
+    private String[] prizeImgs;
 
 
 
@@ -137,6 +139,20 @@ public class UserModel {
         this.img = img;
     }
 
+    public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender, String BMI, int level, int experience, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+        Level = level;
+        this.experience = experience;
+        this.img = img;
+    }
+
     public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender, String BMI) {
         this.idUser = idUser;
         this.name = name;
@@ -146,6 +162,36 @@ public class UserModel {
         this.hight = hight;
         this.gender = gender;
         this.BMI = BMI;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String cretificate, String weight, String hight, String gender, String BMI, int experience, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.cretificate = cretificate;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+        this.experience = experience;
+        this.img = img;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String cretificate, String weight, String hight, String gender, String BMI, int experience, String img, String[] prizeNames, String[] prizeImgs) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.cretificate = cretificate;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+        this.experience = experience;
+        this.img = img;
+        this.prizeNames = prizeNames;
+        this.prizeImgs = prizeImgs;
     }
 
     public String getEmail() {
@@ -274,6 +320,22 @@ public class UserModel {
 
     public void setEvaluate(String evaluate) {
         Evaluate = evaluate;
+    }
+
+    public String[] getPrizeNames() {
+        return prizeNames;
+    }
+
+    public void setPrizeNames(String[] prizeNames) {
+        this.prizeNames = prizeNames;
+    }
+
+    public String[] getPrizeImgs() {
+        return prizeImgs;
+    }
+
+    public void setPrizeImgs(String[] prizeImgs) {
+        this.prizeImgs = prizeImgs;
     }
 }
 

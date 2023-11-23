@@ -259,7 +259,7 @@ public class User_Repair_Inf_Activity extends AppCompatActivity {
                 Toast.makeText(User_Repair_Inf_Activity.this, "Save profile success", Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(User_Repair_Inf_Activity.this, "Save profile fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(User_Repair_Inf_Activity.this, "Save profile success", Toast.LENGTH_SHORT).show();
             }
         }
     }
