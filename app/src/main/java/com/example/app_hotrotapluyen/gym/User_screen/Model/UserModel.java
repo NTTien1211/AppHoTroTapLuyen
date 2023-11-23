@@ -102,6 +102,19 @@ public class UserModel {
         this.rate = rate;
     }
 
+    public UserModel(String idUser, String name, String phone, String cretificate, String prize, String evaluate, int experience, int managers, float rate, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        this.cretificate = cretificate;
+        this.prize = prize;
+        Evaluate = evaluate;
+        this.experience = experience;
+        this.managers = managers;
+        this.rate = rate;
+        this.img = img;
+    }
+
     public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender) {
         this.idUser = idUser;
         this.name = name;

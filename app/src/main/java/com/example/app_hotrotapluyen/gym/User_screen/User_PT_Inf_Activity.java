@@ -21,6 +21,7 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Grid_Home_UserPT_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.squareup.picasso.Picasso;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,7 +36,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
     TextView User_pt_inormation ,User_Manager_pt_inormation , User_year_pt_inormation,User_rate_pt_inormation
             ,Phone_ptIn_User ,List_ptIn_dgree ,List_ptIn_prize;
     String idPT;
-    ImageView User_pt_rate;
+    ImageView User_pt_rate ,profile_pic_image_view_cPTinf;
     UserModel userList ;
 
     LinearLayout starLayout;
@@ -64,6 +65,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
         List_ptIn_prize = findViewById(R.id.List_ptIn_prize);
 //        User_pt_rate = findViewById(R.id.User_pt_rate);
         starLayout = findViewById(R.id.User_pt_layout_rate);
+        profile_pic_image_view_cPTinf = findViewById(R.id.profile_pic_image_view_cPTinf);
         starLayout.setGravity(Gravity.CENTER);
     }
 
@@ -107,7 +109,8 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
                         float rateFormat = Float.parseFloat(decimalFormat.format(rate));
                         int people = resultSet.getInt("People");
                         int Experience = resultSet.getInt("Experience");
-                        userList = new UserModel(Userid , name,phone,Dregree,"prize", Evaluate ,Experience, people , rateFormat);
+                        String img = resultSet.getString("IMG");
+                        userList = new UserModel(Userid , name,phone,Dregree,"prize", Evaluate ,Experience, people , rateFormat,img);
                         return userList;
                     }
                 } catch (SQLException e) {
@@ -134,7 +137,13 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
                 User_rate_pt_inormation.setText(String.valueOf(userList.getRate()));
                 List_ptIn_dgree.setText(userList.getCretificate());
                 List_ptIn_prize.setText(userList.getPrize());
-
+                String img = userList.getImg();
+                if (img == null || img.isEmpty()){
+                    profile_pic_image_view_cPTinf.setImageDrawable(getResources().getDrawable(R.drawable.person_icon));
+                }
+                else {
+                    Picasso.get().load(img).transform(new CircleTransform()).into(profile_pic_image_view_cPTinf);
+                }
                 for (int i = 0; i < userList.getRate(); i++) {
                     ImageView starImageView = new ImageView(User_PT_Inf_Activity.this); // Chú ý vào this
                     starImageView.setLayoutParams(new LinearLayout.LayoutParams(

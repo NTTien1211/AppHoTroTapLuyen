@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     tools:context=".gym.User_screen.User_PT_Inf_Activity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <RelativeLayout
             android:background="@drawable/cnhat_boduoi"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:id="@+id/profile_pic_image_view_chatMess"
+                android:id="@+id/profile_pic_image_view_cPTinf"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_centerInParent="true"
@@ -41,7 +41,7 @@
                 android:id="@+id/User_pt_inormation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profile_pic_image_view_chatMess"
+                android:layout_below="@id/profile_pic_image_view_cPTinf"
                 android:fontFamily="@font/poppinsbold"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
@@ -381,19 +381,6 @@
                 android:backgroundTint="@color/colorAccent"
                 android:background="@drawable/rounded_background"
                 android:textAllCaps="false"/>
-            <Button
-                android:id="@+id/Btn_Pt_User_CHat"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Chat"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:textColor="#ffffff"
-                android:backgroundTint="@color/rednhat"
-                android:background="@drawable/rounded_background"
-                android:textAllCaps="false"/>
-
         </LinearLayout>
     </LinearLayout>
 

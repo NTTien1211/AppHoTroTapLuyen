@@ -3,14 +3,19 @@ package com.example.app_hotrotapluyen.gym.User_screen.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.DayPRo_model;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
@@ -46,6 +51,15 @@ public class Program_Day_User_Child_Adapter extends RecyclerView.Adapter<Program
         holder.listpro_dayChild_name.setText(item.getNameProChi());
         // Assuming item.getImg() now returns a URL or resource ID
 //        Picasso.get().load(item.getImg()).into(holder.img_proChild);
+//        String gifUrl = holder.img_proChild.
+        // Sử dụng Glide để tải và hiển thị GI
+        String url = item.getImg();
+        Log.d("TAG", "onBindViewHolder: " +url);
+        Glide.with(holder.itemView.getContext())
+                .load(url)
+                .apply(RequestOptions.placeholderOf(R.drawable.person_icon)) // Placeholder image while loading
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(holder.img_proChild);
 
         holder.listpro_dayChiil_unil.setText(String.valueOf(item.getUnil()));
 

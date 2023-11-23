@@ -13,6 +13,8 @@ public class Program_child_Model implements Serializable {
     private String Infomat;
     private String Img;
 
+    public Program_child_Model() {
+    }
 
     public Program_child_Model(long unil) {
         Unil = unil;
@@ -23,11 +25,25 @@ public class Program_child_Model implements Serializable {
         Unil = unil;
     }
 
+    public Program_child_Model(String nameProChi, long unil, String img) {
+        NameProChi = nameProChi;
+        Unil = unil;
+        Img = img;
+    }
+
     public Program_child_Model(String nameProChi, String nameDay, long unil, String infomat) {
         NameProChi = nameProChi;
         NameDay = nameDay;
         Unil = unil;
         Infomat = infomat;
+    }
+
+    public Program_child_Model(String nameProChi, String nameDay, long unil, String infomat, String img) {
+        NameProChi = nameProChi;
+        NameDay = nameDay;
+        Unil = unil;
+        Infomat = infomat;
+        Img = img;
     }
 
     public Program_child_Model(String nameProChi, String nameDay, long unil) {
@@ -84,7 +100,12 @@ public class Program_child_Model implements Serializable {
         Infomat = infomat;
     }
 
-
+    public int compareTo(Program_child_Model another) {
+        // Giả sử tên ngày có dạng "Day1", "Day2", ..., "Day7"
+        int ngay1 = Integer.parseInt(this.getNameDay().substring(3));
+        int ngay2 = Integer.parseInt(another.getNameDay().substring(3));
+        return Integer.compare(ngay1, ngay2);
+    }
     public String getImg() {
         return Img;
     }

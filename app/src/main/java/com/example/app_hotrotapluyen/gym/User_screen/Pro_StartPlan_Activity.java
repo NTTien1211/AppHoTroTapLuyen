@@ -108,7 +108,7 @@ public class Pro_StartPlan_Activity extends AppCompatActivity {
     }
     private void fn_countdown( long unit) {
         layout_main.setVisibility(View.VISIBLE);
-        String gifUrl = "https://gymvisual.com/img/p/1/0/0/8/3/10083.gif";
+        String gifUrl = programChildModel.get(currentProgramIndex).getImg();;
         et_timer.setText(programChildModel.get(currentProgramIndex).getNameProChi());
         // Sử dụng Glide để tải và hiển thị GIF
         Glide.with(this)
@@ -177,7 +177,7 @@ public class Pro_StartPlan_Activity extends AppCompatActivity {
         if (currentProgramIndex < programChildModel.size()) {
             layout_main.setVisibility(View.GONE);
             tv_nextprogram.setText(programChildModel.get(currentProgramIndex).getNameProChi());
-            String gifUrl = "https://gymvisual.com/img/p/1/0/0/8/3/10083.gif";
+            String gifUrl = programChildModel.get(currentProgramIndex).getImg();
 
             // Sử dụng Glide để tải và hiển thị GIF
             Glide.with(this)
@@ -272,7 +272,7 @@ public class Pro_StartPlan_Activity extends AppCompatActivity {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
-                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo, Program_Child.Unit as ProgramChildUnit, Program_Child.Img " +
+                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo, Program_Child.Unit as ProgramChildUnit, Program_Child.Img as  Program_ChildImg " +
                             "FROM Day " +
                             "JOIN Program_Child ON Day.ID_Day = Program_Child.ID_Day " +
                             "JOIN Program ON Day.ID_Pro = Program.ID_Pro " +
@@ -285,8 +285,9 @@ public class Pro_StartPlan_Activity extends AppCompatActivity {
 
                     while (resultSet.next()) {
                         String name = resultSet.getString("ProgramChildName");
+                        String img = resultSet.getString("Program_ChildImg");
                         unil = resultSet.getString("ProgramChildUnit");
-                        Program_child_Model pt = new Program_child_Model(name,  Long.valueOf(unil));
+                        Program_child_Model pt = new Program_child_Model(name,  Long.valueOf(unil) , img);
                         programChildModel.add(pt);
                     }
 

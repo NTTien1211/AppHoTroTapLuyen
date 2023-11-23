@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.Program_child_Model;
+import com.squareup.picasso.Picasso;
 
 
 public class Prochill_inf_Fragment extends Fragment {
@@ -33,6 +34,7 @@ public class Prochill_inf_Fragment extends Fragment {
             if (program_child_Model!=null){
                 tv_question.setText(program_child_Model.getNameProChi());
                 inf_chill_pr.setText(program_child_Model.getInfomat());
+                Picasso.get().load(program_child_Model.getImg()).into(im_child_pr);
             }
         }
 

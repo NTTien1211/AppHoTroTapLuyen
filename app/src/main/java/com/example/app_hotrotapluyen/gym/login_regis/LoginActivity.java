@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("userID",userDetails.getIdUser());
-                    editor.putBoolean(String.valueOf(userDetails.getLevel())  , false);
+                    editor.putString( "levelID" ,String.valueOf(userDetails.getLevel()));
                     editor.apply();
 //                    setUsername(nameFir, phonFir); // Gọi hàm để đặt thông tin người dùng
                     Intent intent = new Intent(LoginActivity.this, User_Main_Activity.class);

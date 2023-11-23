@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,16 +73,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien", Context.MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
 
-        if (!isMediaManagerInitialized) {
-            Map config = new HashMap();
-            config.put("cloud_name", "dlpqr1jhm");
-            config.put("api_key", "187745367395712");
-            config.put("api_secret", "-_7wEP5n5Il_4lpiZRm2f1XgAxg");
 
-            MediaManager.init(this, config);
-
-            isMediaManagerInitialized = true;
-        }
         imageUrls = new String[4];
         imageViews = new ImageView[4];
         anhxa();
@@ -276,6 +268,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
             if (success != null) {
                 // Update UI with retrieved data
                 String a =success.getImg();
+                Log.d("TAG", "onPostExec22ute: " +a);
                 Picasso.get().load(a).transform(new CircleTransform()).into(profile_pic_image_view_userupdate);
                  User_user_inormation_update.setText(success.getName());
                  User_phone_userUpdate_inormation.setText(success.getPhone());

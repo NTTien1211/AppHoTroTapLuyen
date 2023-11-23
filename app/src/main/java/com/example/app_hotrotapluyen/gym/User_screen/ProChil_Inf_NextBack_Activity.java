@@ -131,7 +131,7 @@ public class ProChil_Inf_NextBack_Activity extends AppCompatActivity {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
-                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo, Program_Child.Unit as ProgramChildUnit, Program_Child.Img, Program_Child.Information as ProgramChildInformation " +
+                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo, Program_Child.Unit as ProgramChildUnit, Program_Child.Img as Program_Childimg, Program_Child.Information as ProgramChildInformation " +
                             "FROM Day " +
                             "JOIN Program_Child ON Day.ID_Day = Program_Child.ID_Day " +
                             "JOIN Program ON Day.ID_Pro = Program.ID_Pro " +
@@ -147,7 +147,8 @@ public class ProChil_Inf_NextBack_Activity extends AppCompatActivity {
                         String day = resultSet.getString("DayName");
                         String unil = resultSet.getString("ProgramChildUnit");
                         String Inf = resultSet.getString("ProgramChildInformation");
-                        Program_child_Model pt = new Program_child_Model(name,day,Long.valueOf(unil) ,Inf);
+                        String Img = resultSet.getString("Program_Childimg");
+                        Program_child_Model pt = new Program_child_Model(name,day,Long.valueOf(unil) ,Inf , Img);
                         mList.add(pt);
                     }
 
