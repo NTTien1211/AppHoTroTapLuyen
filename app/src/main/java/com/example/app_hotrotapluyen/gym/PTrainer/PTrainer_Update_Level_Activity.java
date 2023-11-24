@@ -2,12 +2,15 @@ package com.example.app_hotrotapluyen.gym.PTrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.User_screen.User_Repair_Inf_Activity;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -60,11 +64,12 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
             User_BMI_userUpdate_inormation;
 //    update
     EditText User_Name_exper_update_pt_inormation ,User_prize_update_pt_inormation1 ,User_prize_update_pt_inormation2,
-        User_prize_update_pt_inormation3;
+        User_prize_update_pt_inormation3 ,User_Name_money_update_pt_inormation;
     ImageView User_cretificate_update_pt_inormation_img ,User_prize_update_pt_inormation_img1,User_prize_update_pt_inormation_img2
             ,User_prize_update_pt_inormation_img3;
     private String[] imageUrls ; // Mảng để lưu trữ 3 địa chỉ ảnh
     private ImageView[] imageViews;
+    String[] name;
     String cere;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_ptrainer_update_level);
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien", Context.MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
+        MediaManagerInitializer.initializeMediaManager(this);
 
 
         imageUrls = new String[4];
@@ -80,7 +86,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         GetUserTask getUserTask = new GetUserTask();
         getUserTask.execute();
         setToolbar(actionBar, "UPDATE PTRAINER");
-        String[] name = new String[3];
+        name= new String[3];
         name[0] = User_prize_update_pt_inormation1.getText().toString();
         name[1] = User_prize_update_pt_inormation2.getText().toString();
         name[2] = User_prize_update_pt_inormation3.getText().toString();
@@ -93,6 +99,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new RegisterUserTask().execute(User_Name_exper_update_pt_inormation.getText().toString(), cere,
+                        User_Name_money_update_pt_inormation.getText().toString(),
                         Arrays.toString(Arrays.asList(name).toArray(new String[0])),
                         Arrays.toString(Arrays.asList(imageUrls).toArray(new String[0])));
             }
@@ -111,6 +118,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
 // Hàm chọn ảnh
 
     }
+
     private void pickImage(int index) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -138,9 +146,20 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
         User_prize_update_pt_inormation_img1=findViewById(R.id.User_prize_update_pt_inormation_img1);
         User_prize_update_pt_inormation_img2=findViewById(R.id.User_prize_update_pt_inormation_img2);
         User_prize_update_pt_inormation_img3=findViewById(R.id.User_prize_update_pt_inormation_img3);
+        User_Name_money_update_pt_inormation=findViewById(R.id.User_Name_money_update_pt_inormation);
+
+
     }
 
+    @Override
+    public void onBackPressed() {
+        // Gửi broadcast để thông báo cho activity1 là cần làm mới
+        Intent intent = new Intent("refresh_activity1_event");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
+        // Đảm bảo rằng bạn vẫn thực hiện việc đóng activity2
+        super.onBackPressed();
+    }
     private void setToolbar(Toolbar toolbar, String name){
         setSupportActionBar(toolbar);
         SpannableString spannableString = new SpannableString(name);
@@ -163,8 +182,9 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
                 try {
                     String exper = params[0];
                     String cretificate = params[1];
-                    String[] names = params[2].substring(1, params[2].length() - 1).split(", ");
-                    String[] imgs = params[3].substring(1, params[3].length() - 1).split(", ");
+                    int money = Integer.parseInt(params[2]);
+                    String[] names = params[3].substring(1, params[3].length() - 1).split(", ");
+                    String[] imgs = params[4].substring(1, params[4].length() - 1).split(", ");
 
                     String query = "SELECT * FROM Users WHERE ID_User = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -172,12 +192,13 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
-                        String updateUserQuery = "UPDATE Users SET Experience=?, cretificate=?, Status=? WHERE ID_User=?";
+                        String updateUserQuery = "UPDATE Users SET Experience=?, cretificate=?,Money=?, Status=? WHERE ID_User=?";
                         PreparedStatement updateStatement = connection.prepareStatement(updateUserQuery);
                         updateStatement.setString(1, exper);
                         updateStatement.setString(2, imgs[0]);
-                        updateStatement.setString(3,"Waiting");
-                        updateStatement.setString(4, idUser); // ID_User để xác định dòng cần cập nhật
+                        updateStatement.setInt(3, money);
+                        updateStatement.setString(4,"Waiting");
+                        updateStatement.setString(5, idUser); // ID_User để xác định dòng cần cập nhật
                         int rowsUpdatedUser = updateStatement.executeUpdate();
 
                         // Update Prize table
@@ -218,6 +239,7 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(PTrainer_Update_Level_Activity.this, "Waiting Admin", Toast.LENGTH_SHORT).show();
+                onBackPressed();
 
             }
         }
@@ -246,8 +268,10 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
                         String hight = resultSet.getString("Height");
                         String gender = resultSet.getString("Gender");
                         String BMI = resultSet.getString("BMI");
+                        String Money = resultSet.getString("Money");
                         String img = resultSet.getString("IMG");
-                        userModel = new UserModel(Userid , name,phone,email,weight, hight ,gender,BMI, img);
+                        int in =  (Money != null) ? Integer.valueOf(Money) : 0;
+                        userModel = new UserModel(Userid , name,phone,email,weight, hight ,gender,BMI, in ,  img);
                         return userModel;
                     }
                 } catch (SQLException e) {
@@ -269,11 +293,12 @@ public class PTrainer_Update_Level_Activity extends AppCompatActivity {
                 // Update UI with retrieved data
                 String a =success.getImg();
                 Log.d("TAG", "onPostExec22ute: " +a);
-                Picasso.get().load(a).transform(new CircleTransform()).into(profile_pic_image_view_userupdate);
+                 Picasso.get().load(a).transform(new CircleTransform()).into(profile_pic_image_view_userupdate);
                  User_user_inormation_update.setText(success.getName());
                  User_phone_userUpdate_inormation.setText(success.getPhone());
                  User_email_userUpdate_inormation.setText(success.getEmail());
                  User_BMI_userUpdate_inormation.setText(success.getBMI());
+                User_Name_money_update_pt_inormation.setText(String.valueOf(success.getMoney()));
                 String text =  success.getBMI();
                 float bmi = Float.parseFloat(text.replace("," ,"."));
                 if (bmi <= 18.5) {

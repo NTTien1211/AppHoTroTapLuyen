@@ -42,6 +42,7 @@ import com.example.app_hotrotapluyen.gym.User_screen.Model.DayPRo_model;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.Program_child_Model;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -69,7 +70,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
     FloatingActionButton add_program_pt_child;
     List<Program_child_Model> DAYMODEL;
      ImageView img_add_child_exper_update_pt_inormation;
-    private static boolean isMediaManagerInitialized = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,16 +78,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
         idDay = sharedPreferences.getLong("id_idDay",0);
         level = sharedPreferences.getString("levelID","");
-        if (!isMediaManagerInitialized) {
-            Map config = new HashMap();
-            config.put("cloud_name", "dlpqr1jhm");
-            config.put("api_key", "187745367395712");
-            config.put("api_secret", "-_7wEP5n5Il_4lpiZRm2f1XgAxg");
-
-            MediaManager.init(this, config);
-
-            isMediaManagerInitialized = true;
-        }
+        MediaManagerInitializer.initializeMediaManager(this);
         recycle_lispro_day_user = findViewById(R.id.recycle_lispro_day_user_child);
         tNameday = findViewById(R.id.tNameDayChild);
         tSlbtapChild = findViewById(R.id.tSlbtapChild);

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
@@ -57,6 +58,8 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 GetUserUpdate getUserUpdate = new GetUserUpdate();
                 getUserUpdate.execute();
+                Toast.makeText(Admin_Approve_Registration_Activity.this, "Update level", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         });
         btn_update_userPT_profile_Deny.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +67,8 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 DenyUserUpdate denyUserUpdate = new DenyUserUpdate();
                 denyUserUpdate.execute();
+                Toast.makeText(Admin_Approve_Registration_Activity.this, "Deny level", Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         });
 
@@ -138,7 +143,7 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
             if (connection != null) {
                 try {
                     // Update the user level to 1
-                    String updateQuery = "UPDATE Users SET Level = 1 WHERE ID_User = ?";
+                    String updateQuery = "UPDATE Users SET Level = 1, Status ='' WHERE ID_User = ?";
                     PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
                     updateStatement.setString(1, idUser);
                     updateStatement.executeUpdate();

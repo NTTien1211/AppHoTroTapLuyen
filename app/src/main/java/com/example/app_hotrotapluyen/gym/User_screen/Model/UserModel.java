@@ -16,6 +16,7 @@ public class UserModel {
     private String BMI;
     private Timestamp creatTimestamp;
     private  int Level;
+    private  int Money;
 
     private int experience;
     private int managers;
@@ -40,10 +41,14 @@ public class UserModel {
         // Empty constructor
     }
 
-    public UserModel(String idUser, String name, String phone) {
+    public UserModel(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public UserModel(String idUser, String name, String img) {
         this.idUser = idUser;
         this.name = name;
-        this.phone = phone;
+        this.img = img;
     }
 
     public UserModel(String idUser, String name, String phone, String email) {
@@ -117,6 +122,20 @@ public class UserModel {
         this.img = img;
     }
 
+    public UserModel(String idUser, String name, String phone, String cretificate, String prize, String evaluate, int money, int experience, int managers, float rate, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        this.cretificate = cretificate;
+        this.prize = prize;
+        Evaluate = evaluate;
+        Money = money;
+        this.experience = experience;
+        this.managers = managers;
+        this.rate = rate;
+        this.img = img;
+    }
+
     public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender) {
         this.idUser = idUser;
         this.name = name;
@@ -136,6 +155,19 @@ public class UserModel {
         this.hight = hight;
         this.gender = gender;
         this.BMI = BMI;
+        this.img = img;
+    }
+
+    public UserModel(String idUser, String name, String phone, String email, String weight, String hight, String gender, String BMI, int money, String img) {
+        this.idUser = idUser;
+        this.name = name;
+        this.phone = phone;
+        Email = email;
+        this.weight = weight;
+        this.hight = hight;
+        this.gender = gender;
+        this.BMI = BMI;
+        Money = money;
         this.img = img;
     }
 
@@ -308,6 +340,14 @@ public class UserModel {
 
     public String getPrize() {
         return prize;
+    }
+
+    public int getMoney() {
+        return Money;
+    }
+
+    public void setMoney(int money) {
+        Money = money;
     }
 
     public void setPrize(String prize) {

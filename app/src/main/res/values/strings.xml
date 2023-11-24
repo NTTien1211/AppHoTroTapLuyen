@@ -34,6 +34,11 @@
         <item>Intermediate</item>
         <item>Advanced</item>
     </string-array>
+    <string-array name="session_array">
+        <item>morning</item>
+        <item>noon</item>
+        <item>night</item>
+    </string-array>
     <string-array name="day_array">
         <item>Day 1</item>
         <item>Day 2</item>

@@ -159,8 +159,7 @@
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <RelativeLayout
                     android:layout_margin="5dp"
@@ -204,6 +203,7 @@
                         android:layout_marginLeft="25dp"
                         />
                     <LinearLayout
+                        android:layout_below="@id/Phone_ptIn_User"
                         android:layout_alignParentBottom="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -256,13 +256,13 @@
                         android:layout_below="@+id/icon_list_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dregree"
+                        android:text="Money /h"
                         android:fontFamily="@font/poppinssemibold"
                         android:textSize="15sp"
                         android:layout_marginLeft="25dp"
                         />
                     <TextView
-                        android:id="@+id/List_ptIn_dgree"
+                        android:id="@+id/List_ptIn_money"
                         android:layout_below="@+id/List_ptIn_User1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -276,7 +276,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                 android:layout_margin="10dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/img_dgree"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.9"
+                    android:layout_height="150dp"/>
+                <TextView
+                    android:layout_below="@+id/List_ptIn_User1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Dregree"
+                    android:rotation="90"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="25dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <RelativeLayout
                     android:layout_margin="5dp"

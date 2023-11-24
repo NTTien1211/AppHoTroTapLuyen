@@ -32,6 +32,7 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.PTrainer.Upload_gif_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -63,16 +64,8 @@ public class User_Repair_Inf_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_repair_inf);
-        if (!isMediaManagerInitialized) {
-            Map config = new HashMap();
-            config.put("cloud_name", "dlpqr1jhm");
-            config.put("api_key", "187745367395712");
-            config.put("api_secret", "-_7wEP5n5Il_4lpiZRm2f1XgAxg");
+        MediaManagerInitializer.initializeMediaManager(this);
 
-            MediaManager.init(this, config);
-
-            isMediaManagerInitialized = true;
-        }
 
 
 

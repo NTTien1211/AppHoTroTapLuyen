@@ -11,9 +11,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,6 +66,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     final Fragment List = new User_listProFoo_Fragment();
     final Fragment User = new User_Profile_Fragment();
     final Fragment OverAdmin = new Admin_Over_Browser_Fragment();
+    final Fragment OverU = new User_Over_Fragment();
     String level;
     AlertDialogManager alertDialogManager;
     @Override
@@ -138,7 +144,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                         selectedFragment =  OverAdmin;
                     }
                     else {
-//                        selectedFragment =  HomeU;
+                        selectedFragment =  OverU;
                     }
 
                 }
@@ -155,10 +161,39 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                 finish();
             }
         });
+
     }
 
+    private BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Xử lý sự kiện nhận được khi activity2 gửi broadcast
+            String action = intent.getAction();
+            if ("refresh_activity1_event".equals(action)) {
+                // Thực hiện các hành động làm mới ở đây
+                loadData();
+            }
+        }
+    };
 
+    private void loadData() {
+        SelecDatabase selecDatabase = new SelecDatabase();
+        selecDatabase.execute(idUser);
+    }
 
+    protected void onResume() {
+        super.onResume();
+        // Đăng ký BroadcastReceiver để lắng nghe sự kiện refresh từ activity2
+        IntentFilter intentFilter = new IntentFilter("refresh_activity1_event");
+        LocalBroadcastManager.getInstance(this).registerReceiver(refreshReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Hủy đăng ký BroadcastReceiver khi activity1 tạm dừng
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(refreshReceiver);
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id  = item.getItemId();
@@ -171,7 +206,17 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                     alertDialogManager.showAlertDialog(
                             User_Main_Activity.this,
                             "NOTION",
-                            "Please complete your personal profile first."
+                            "Please complete your personal profile first.",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Người dùng ấn đồng ý
+                                    // Tạo Intent để khởi tạo lại Activity
+                                    Intent intent = getIntent();
+                                    finish(); // Kết thúc Activity hiện tại
+                                    startActivity(intent); // Khởi tạo lại Activity
+                                }
+                            }
                     );
                     selectedFragment = User;
                 }

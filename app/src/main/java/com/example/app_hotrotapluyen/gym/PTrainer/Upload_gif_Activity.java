@@ -1,6 +1,8 @@
 package com.example.app_hotrotapluyen.gym.PTrainer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,6 +16,10 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.app_hotrotapluyen.R;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -48,7 +54,55 @@ public class Upload_gif_Activity extends AppCompatActivity {
             intent.setType("image/*");
             startActivityForResult(intent, 1);
         });
+
+        String accountNumber = "08652645337";
+        double amount = getAmountFromApp(); // Hàm này cần được triển khai để lấy số tiền từ màn hình app
+
+// Tạo URI Intent từ thông tin tài khoản và số tiền
+        String paymentUriIntent = createPaymentUriIntent(accountNumber, amount);
+
+// Tạo mã QR code từ URI Intent
+        Bitmap bitmap = generateQRCode(paymentUriIntent);
+
+// Hiển thị mã QR code trong ImageView
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setImageBitmap(bitmap);
+
     }
+
+    private double getAmountFromApp() {
+        // Triển khai hàm này để lấy số tiền từ màn hình app của bạn
+        // Ví dụ: return 100.0 để lấy số tiền là 100
+        return 100.0;
+    }
+
+    private String createPaymentUriIntent(String accountNumber, double amount) {
+        // Ví dụ: "upi://pay?pa=youraccount@yourbank&pn=Your%20Name&mc=123&tid=123456&tr=123456789&tn=Payment%20Description&am=100.0&cu=INR&url=https://yourbank.com"
+        return "upi://pay?pa=" + accountNumber + "&am=" + amount + "&cu=VND&tn=Payment%20to%20TPBank";
+    }
+
+
+    private Bitmap generateQRCode(String data) {
+        try {
+            QRCodeWriter writer = new QRCodeWriter();
+            BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, 512, 512);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

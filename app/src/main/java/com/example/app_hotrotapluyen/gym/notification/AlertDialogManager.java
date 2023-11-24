@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 
 public class AlertDialogManager {
 
-    public void showAlertDialog(Context context, String title, String message) {
+    public void showAlertDialog(Context context, String title, String message, DialogInterface.OnClickListener positiveClickListener) {
         // Tạo một đối tượng AlertDialog.Builder
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
@@ -22,6 +22,7 @@ public class AlertDialogManager {
                 dialog.dismiss(); // Đóng dialog sau khi người dùng nhấn nút đồng ý
             }
         });
+        alertDialogBuilder.setPositiveButton("OK", positiveClickListener);
 
         // Hiển thị dialog
         AlertDialog alertDialog = alertDialogBuilder.create();

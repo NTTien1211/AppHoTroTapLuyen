@@ -74,6 +74,7 @@ public class User_listProFoo_Fragment extends Fragment {
                 public void onClick(View v) {
                     // Hiển thị dialog thêm name và level
                     showAddDialog(getContext());
+
                 }
             });
 
@@ -82,6 +83,11 @@ public class User_listProFoo_Fragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void loaddata() {
+        SelecDatabase selecDatabase1 = new SelecDatabase();
+        selecDatabase1.execute();
     }
 
     private void showAddDialog(Context context) {
@@ -125,6 +131,7 @@ public class User_listProFoo_Fragment extends Fragment {
 
                 // Đóng dialog
                 dialog.dismiss();
+                loaddata();
             }
         });
 
