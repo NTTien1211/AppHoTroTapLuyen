@@ -3,6 +3,9 @@ package com.example.app_hotrotapluyen.gym.Admin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import com.example.app_hotrotapluyen.gym.Admin.Adapter.Admin_Over_Br_Adapter;
 import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.BookModel;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
+import com.example.app_hotrotapluyen.gym.User_screen.User_feedback_rate_Activity;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.squareup.picasso.Picasso;
 
@@ -37,26 +41,43 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
     TextView name_user_admin_brower_PT , name_user_admin_brower_phone_PT;
     TextView name_user_admin_brower_user , name_user_admin_brower_phone_user;
     TextView Time_book_ptIn_User ,Money_book_ptIn_User;
-    Button btn_admin_broser_check;
+    Button btn_admin_broser_check ,btn_user_feedback_check;
     ImageView admin_broser_imgPT , admin_broser_imgUS;
     Long idBook;
+    String level;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_browser_end);
+        SharedPreferences sharedPreferences = getSharedPreferences("GymTien", Context.MODE_PRIVATE);
+        level = sharedPreferences.getString("levelID" ,"");
         annxa();
         setToolbar(toolbar_broser, "");
         idBook = getIntent().getExtras().getLong("ID_Book_ts");
         SelecDatabase selecDatabase = new SelecDatabase();
         selecDatabase.execute();
+        if (Integer.parseInt(level) == 2){
+            btn_user_feedback_check.setVisibility(View.GONE);
+            btn_admin_broser_check.setVisibility(View.VISIBLE);
+            btn_admin_broser_check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AcceptRequest().execute();
+                    onBackPressed();
+                }
+            });
+        }else  if (Integer.parseInt(level) == 0 || Integer.parseInt(level) == 1) {
+            btn_user_feedback_check.setVisibility(View.VISIBLE);
+            btn_admin_broser_check.setVisibility(View.GONE);
+            btn_user_feedback_check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Admin_Browser_End_Activity.this , User_feedback_rate_Activity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
-        btn_admin_broser_check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AcceptRequest().execute();
-                onBackPressed();
-            }
-        });
     }
     private void setToolbar(Toolbar toolbar, String name){
         setSupportActionBar(toolbar);
@@ -219,6 +240,7 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
         btn_admin_broser_check = findViewById(R.id.btn_admin_broser_check);
         admin_broser_imgUS = findViewById(R.id.admin_broser_imgUS);
         admin_broser_imgPT = findViewById(R.id.admin_broser_imgPT);
+        btn_user_feedback_check = findViewById(R.id.btn_user_feedback_check);
 
     }
 

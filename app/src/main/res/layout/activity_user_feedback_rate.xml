@@ -1,0 +1,99 @@
+<!-- res/layout/activity_main.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    tools:context=".gym.User_screen.User_feedback_rate_Activity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toobar_feedback"/>
+    <TextView
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppinsregular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please select number of stars"
+        />
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:progressTint="@color/bmi_normal_weight"
+        android:progressBackgroundTint="@color/lightgray"
+        android:layout_gravity="center"
+        android:stepSize="0.5"/>
+    <TextView
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppinsregular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your rating of the coach will help us improve the application and bring you the best experience"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_gravity="center"
+            android:id="@+id/robot_json"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:visibility="visible"
+            app:lottie_loop="true"
+            android:layout_centerHorizontal="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="robot.json" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/robot_json"
+            app:lottie_rawRes="@raw/prog_bar"
+            android:id="@+id/bar_anim"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_marginBottom="6dp"
+            android:layout_height="5dp"/>
+        <TextView
+            android:id="@+id/ts"
+            android:layout_below="@id/bar_anim"
+            android:gravity="center"
+            android:fontFamily="@font/poppinssemibold"
+            android:paddingBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please fill in feedback"/>
+        <EditText
+            android:padding="10dp"
+            android:background="@drawable/rounded_background2"
+            android:layout_below="@+id/ts"
+            android:layout_width="match_parent"
+            android:id="@+id/feedback_information_us"
+            android:layout_height="150dp"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnFeedback_us_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="18.7dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/rounded_background2"
+        android:fontFamily="@font/poppinsmedium"
+        android:gravity="center"
+        android:text="Feedback"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+</LinearLayout>

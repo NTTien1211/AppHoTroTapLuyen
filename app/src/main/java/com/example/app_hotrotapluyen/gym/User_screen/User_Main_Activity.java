@@ -241,6 +241,8 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
+        }else if(item.getItemId() == R.id.History_book){
+            selectedFragment[0] = new Admin_Over_Browser_Fragment();
         }
 
         replaceFagment(selectedFragment[0]);

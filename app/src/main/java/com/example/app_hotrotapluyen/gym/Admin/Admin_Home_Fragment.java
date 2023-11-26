@@ -94,7 +94,7 @@ public class Admin_Home_Fragment extends Fragment {
                 adminHomeUserPTAdapter = new Admin_Home_UserPT_Adapter(userList , getActivity());
                 recyclerView.setAdapter(adminHomeUserPTAdapter);
             } else {
-                Toast.makeText(getActivity(), "User not found or error occurred", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "User not found or error occurred", Toast.LENGTH_SHORT).show();
             }
         }
     }
