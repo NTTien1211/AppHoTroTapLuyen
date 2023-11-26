@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -106,6 +107,7 @@ public class Register_OTP_Activity extends AppCompatActivity {
                                 ResendingToken = forceResendingToken ;
                                 Toast.makeText(Register_OTP_Activity.this, "OTP Successfully", Toast.LENGTH_SHORT).show();
                                 setInProgress(false);
+                                sendSms(userphone, "Your OTP is: " + verificationCode);
                             }
                         });
         if (isResend){
@@ -134,6 +136,18 @@ public class Register_OTP_Activity extends AppCompatActivity {
                 }
             });
     }
+
+    private void sendSms(String phoneNumber, String message) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            Toast.makeText(getApplicationContext(), "SMS sent", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "SMS failed, please try again later!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
 
     void setInProgress (boolean inProgress){
         if (inProgress){

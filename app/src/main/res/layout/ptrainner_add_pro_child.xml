@@ -21,7 +21,7 @@
             android:textSize="15sp"/>
         <EditText
             android:layout_margin="10dp"
-            android:id="@+id/User_Name_exper_update_pt_inormation"
+            android:id="@+id/User_Name_exper_update_pt_inormation_dialog"
             android:padding="5dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

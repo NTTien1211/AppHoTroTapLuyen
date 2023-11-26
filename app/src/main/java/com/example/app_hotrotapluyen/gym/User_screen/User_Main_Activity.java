@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -197,9 +198,9 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id  = item.getItemId();
-        Fragment selectedFragment = null;
+        final Fragment[] selectedFragment = {null};
         if(item.getItemId() == R.id.menu_food){
-            selectedFragment = new User_listProFoo_Food_Fragment();
+            selectedFragment[0] = new User_listProFoo_Food_Fragment();
 
         }else if(item.getItemId() == R.id.menu_Update_pt){
                 if (bmii==null || bmii.isEmpty()){
@@ -212,13 +213,15 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Người dùng ấn đồng ý
                                     // Tạo Intent để khởi tạo lại Activity
+
                                     Intent intent = getIntent();
                                     finish(); // Kết thúc Activity hiện tại
                                     startActivity(intent); // Khởi tạo lại Activity
+                                    selectedFragment[0] = User;
                                 }
                             }
                     );
-                    selectedFragment = User;
+
                 }
                 else{
                     Intent intent = new Intent(User_Main_Activity.this, PTrainer_Update_Level_Activity.class);
@@ -228,10 +231,10 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
 
 
         }else if(item.getItemId() == R.id.setting){
-            selectedFragment = new User_Setting_Fragment();
+            selectedFragment[0] = new User_Setting_Fragment();
 
         }else if(item.getItemId() == R.id.feedbackApp){
-            selectedFragment = new User_Rate_App_Fragment();
+            selectedFragment[0] = new User_Rate_App_Fragment();
 
         }else if(item.getItemId() == R.id.follow_us){
             Intent intent = new Intent(User_Main_Activity.this, User_Follow_Us_Activity.class);
@@ -240,7 +243,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
 
         }
 
-        replaceFagment(selectedFragment);
+        replaceFagment(selectedFragment[0]);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

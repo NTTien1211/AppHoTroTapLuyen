@@ -338,7 +338,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
             super.onPostExecute(program_child_Model);
             if (program_child_Model != null && program_child_Model.size() > 0) {
                 recycle_lispro_day_user.setLayoutManager(new LinearLayoutManager(User_listPro_ProgramChild_Activity.this,RecyclerView.VERTICAL,false));
-                proGramDayUserAdapter = new Program_Day_User_Child_Adapter(program_child_Model);
+                proGramDayUserAdapter = new Program_Day_User_Child_Adapter(program_child_Model , User_listPro_ProgramChild_Activity.this);
                 recycle_lispro_day_user.setAdapter(proGramDayUserAdapter);
                 tNameday.setText(dayname);
                 tSlbtapChild.setText(String.valueOf(program_child_Model.size()));

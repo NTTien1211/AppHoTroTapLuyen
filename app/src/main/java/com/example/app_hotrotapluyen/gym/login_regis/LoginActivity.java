@@ -1,14 +1,15 @@
 package com.example.app_hotrotapluyen.gym.login_regis;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -16,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
+import com.example.app_hotrotapluyen.gym.notification.ApiClient;
+import com.example.app_hotrotapluyen.gym.notification.ApiService;
+import com.example.app_hotrotapluyen.gym.notification.NotificationMessaging;
+import com.example.app_hotrotapluyen.gym.notification.Response;
 import com.example.app_hotrotapluyen.gym.until.FirebaseUntil;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -41,6 +46,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username;
@@ -48,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView signupText;
     Button loginButton;
     UserModel userModel;
+    public static final String ChannelID = "default_channel_id" ;
     HomeU_pt homeUPt;
     String nameFir, phonFir;
     Spinner spinner;
@@ -61,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         until();
         click();
-
-
+        createChannelNotification();
 
 
     }
@@ -74,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 String UserName = username.getText().toString();
                 String PassWords = password.getText().toString();
                 loginAndFetchUserDetails(UserName, PassWords);
+
             }
         });
         signupText.setOnClickListener(new View.OnClickListener() {
@@ -132,16 +143,74 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("userID",userDetails.getIdUser());
                     editor.putString( "levelID" ,String.valueOf(userDetails.getLevel()));
                     editor.apply();
-//                    setUsername(nameFir, phonFir); // Gọi hàm để đặt thông tin người dùng
+                    UpdateFunsion(Long.parseLong(user.getIdUser()));
+//                    setUsername(nameFir,nFir); // Gọi hàm để đặt thông tin người dùng
                     Intent intent = new Intent(LoginActivity.this, User_Main_Activity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(LoginActivity.this, "Ktra lai thong tin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Ktra lai thong tin đăng nhập", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
     }
 
+    private void  UpdateFunsion(Long id){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        String token = task.getResult();
+                        LoginUpdateToken(id ,token );
+                    }
+                });
+
+    }
+    public void LoginUpdateToken(  Long idUser,  String newTokendevice) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                Connection connection = JdbcConnect.connect();
+                if (connection != null) {
+                    try {
+                        String updateQuery = "UPDATE Users SET Tokendevice = ? WHERE ID_User = ?";
+                        PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+                        preparedStatement.setString(1, newTokendevice); // Set the new token device value
+                        preparedStatement.setLong(2, idUser); // Set the user ID for the update
+                        int rowsAffected = preparedStatement.executeUpdate();
+                        if (rowsAffected > 0) {
+                            // Update successful
+                            System.out.println("Update successful.");
+                        } else {
+                            // No rows were updated, user not found or no changes made
+                            System.out.println("User not found or no changes made.");
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            connection.close();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return newTokendevice;
+            }
+
+            @Override
+            protected void onPostExecute(String token) {
+                if (!token.isEmpty()) {
+
+                } else {
+                    Toast.makeText(LoginActivity.this, "Ktra lai thong tin token", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
 
     @SuppressLint("WrongViewCast")
     private void until() {
@@ -217,9 +286,14 @@ void setUsername(final UserModel user) {
         }
         // Kiểm tra xem người dùng đã tồn tại hay chưa bằng số điện thoại
 }
+    private void createChannelNotification(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(ChannelID,"default_channel_id",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
 
-
-
-
+        }
+    }
 
 }

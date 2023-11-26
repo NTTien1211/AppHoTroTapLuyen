@@ -64,10 +64,10 @@ public class User_listProFoo_Fragment extends Fragment {
         level = sharedPreferences.getString("levelID" ,"");
         idUser = sharedPreferences.getString("userID" ,"");
         itemList = new ArrayList<>();
-        SelecDatabase selecDatabase1 = new SelecDatabase();
-        selecDatabase1.execute();
 
         if (Integer.parseInt(level)  == 1|| Integer.parseInt(level)  == 2){
+            SelecDatabasePT selecDatabase2 = new SelecDatabasePT();
+            selecDatabase2.execute();
             add_program_pt.setVisibility(View.VISIBLE);
             add_program_pt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,6 +79,8 @@ public class User_listProFoo_Fragment extends Fragment {
             });
 
         }else {
+            SelecDatabase selecDatabase1 = new SelecDatabase();
+            selecDatabase1.execute();
             add_program_pt.setVisibility(View.GONE);
         }
 
@@ -86,8 +88,8 @@ public class User_listProFoo_Fragment extends Fragment {
     }
 
     private void loaddata() {
-        SelecDatabase selecDatabase1 = new SelecDatabase();
-        selecDatabase1.execute();
+        SelecDatabasePT selecDatabase2 = new SelecDatabasePT();
+        selecDatabase2.execute();
     }
 
     private void showAddDialog(Context context) {
@@ -233,22 +235,81 @@ public class User_listProFoo_Fragment extends Fragment {
 
                     String query = "SELECT Program.ID_Pro AS ProgramId, Program.Name AS ProgramName, Users.Name AS TrainerName, Program.Level " +
                             "FROM Program " +
-                            "INNER JOIN Users ON Program.ID_User = Users.ID_User";
+                            "INNER JOIN Users ON Program.ID_User = Users.ID_User " +
+                            "WHERE (Users.Level = 2) OR (Program.ID_User IN ( " +
+                            "    SELECT DISTINCT ID_User_Give " +
+                            "    FROM Book " +
+                            "    WHERE ID_User = ? " +
+                            "))";
 
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setLong(1, Long.parseLong(idUser));
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    while (resultSet.next()) {
+                        Long idPro = resultSet.getLong("ProgramId");
+                        String name = resultSet.getString("ProgramName");
+                        String PTname = resultSet.getString("TrainerName");
+                        String level = resultSet.getString("Level");
+                        int i = Integer.parseInt(String.valueOf(idPro));
+                        ProgramModel pt = new ProgramModel(i,name, PTname, level);
+                        programModel.add(pt);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Log.d("TAG", "doInBackground: " +e);
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return  programModel ;
+        }
+
+        @Override
+        protected void onPostExecute(List<ProgramModel> programModel) {
+            super.onPostExecute(programModel);
+            if (programModel != null && programModel.size() > 0) {
+                // TODO: Use the result (UserModel) as needed
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+                programUserPRAdapter = new Program_UserPR_Adapter(programModel);
+                recyclerView.setAdapter(programUserPRAdapter);
+
+            } else {
+                Toast.makeText(getActivity(), "User not found or error occurred", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private class SelecDatabasePT extends AsyncTask<String, Void, List<ProgramModel> > {
+        List<ProgramModel> programModel = new ArrayList<>();
+        @Override
+        protected List<ProgramModel>  doInBackground(String... strings) {
+            Connection connection = JdbcConnect.connect();
+            if (connection != null) {
+                try {
+
+                    String query = "SELECT Program.ID_Pro AS ProgramId, Program.Name AS ProgramName, Users.Name AS TrainerName, Program.Level " +
+                            "FROM Program " +
+                            "INNER JOIN Users ON Program.ID_User = Users.ID_User";
 
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     ResultSet resultSet = preparedStatement.executeQuery();
 
                     while (resultSet.next()) {
-                        int idPro = resultSet.getInt("ProgramId");
+                        Long idPro = resultSet.getLong("ProgramId");
                         String name = resultSet.getString("ProgramName");
                         String PTname = resultSet.getString("TrainerName");
                         String level = resultSet.getString("Level");
-                        ProgramModel pt = new ProgramModel(idPro,name, PTname, level);
+                        int i = Integer.parseInt(String.valueOf(idPro));
+                        ProgramModel pt = new ProgramModel(i,name, PTname, level);
                         programModel.add(pt);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    Log.d("TAG", "doInBackground: " +e);
                 } finally {
                     try {
                         connection.close();

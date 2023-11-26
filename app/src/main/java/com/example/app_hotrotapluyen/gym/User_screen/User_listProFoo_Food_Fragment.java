@@ -113,7 +113,7 @@ public class User_listProFoo_Food_Fragment extends Fragment {
     private void showAddDialog(Context context) {
         // Sử dụng AlertDialog.Builder để tạo dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Add program");
+        builder.setTitle("Add Food");
 
 
         // Inflate layout cho dialog

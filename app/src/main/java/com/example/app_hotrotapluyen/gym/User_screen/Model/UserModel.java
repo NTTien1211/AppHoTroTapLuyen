@@ -34,7 +34,7 @@ public class UserModel {
     private String[] prizeNames;
     private String[] prizeImgs;
 
-
+    private  String tokenUS;
 
     // Constructors
     public UserModel() {
@@ -44,6 +44,7 @@ public class UserModel {
     public UserModel(String idUser) {
         this.idUser = idUser;
     }
+
 
     public UserModel(String idUser, String name, String img) {
         this.idUser = idUser;
@@ -376,6 +377,14 @@ public class UserModel {
 
     public void setPrizeImgs(String[] prizeImgs) {
         this.prizeImgs = prizeImgs;
+    }
+
+    public String getTokenUS() {
+        return tokenUS;
+    }
+
+    public void setTokenUS(String tokenUS) {
+        this.tokenUS = tokenUS;
     }
 }
 

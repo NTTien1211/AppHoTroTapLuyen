@@ -20,14 +20,26 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.login_regis.LoginActivity;
+import com.example.app_hotrotapluyen.gym.notification.ApiClient;
+import com.example.app_hotrotapluyen.gym.notification.ApiService;
+import com.example.app_hotrotapluyen.gym.notification.NotificationMessaging;
+import com.example.app_hotrotapluyen.gym.notification.Response;
 import com.squareup.picasso.Picasso;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class Admin_Approve_Registration_Activity extends AppCompatActivity {
     ImageView profile_pic_image_view_userupdate_apporve,User_cretificate_update_pt_inormation_img_apporve,
@@ -42,6 +54,7 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
     Button btn_update_userPT_profile_Accept, btn_update_userPT_profile_Deny;
     UserModel userModel = null ;
     List<String> prizeNameList = new ArrayList<>();
+    String myString;
     List<String> prizeImgList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +71,6 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 GetUserUpdate getUserUpdate = new GetUserUpdate();
                 getUserUpdate.execute();
-                Toast.makeText(Admin_Approve_Registration_Activity.this, "Update level", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
         });
@@ -133,13 +145,13 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
             }
             return null; // You may return null or any other appropriate value
         }
+
     }
 
     private class GetUserUpdate extends AsyncTask<Void, Void, UserModel> {
         @Override
         protected UserModel doInBackground(Void... voids) {
             Connection connection = JdbcConnect.connect();
-
             if (connection != null) {
                 try {
                     // Update the user level to 1
@@ -158,7 +170,121 @@ public class Admin_Approve_Registration_Activity extends AppCompatActivity {
                     }
                 }
             }
-            return null; // You may return null or any other appropriate value
+            return userModel; // You may return null or any other appropriate value
+        }
+
+        @Override
+        protected void onPostExecute(UserModel userModel) {
+            if (userModel != null){
+                Toast.makeText(Admin_Approve_Registration_Activity.this, "Update level", Toast.LENGTH_SHORT).show();
+               // String token = "f66WY2pwT1KIszzYiCa2bc:APA91bEQ0Q4exOlBj83pv5eNNxrZP6RsBVqLhdajIs83AmyhlXcmXRYegp2oNu7GLaaEOl6pU2wd2-ujN0FA-_RmNDF8pO4CN0CMYApiaR0YpkZhFnMT_t-fYUvdVk7Wh30FtD8i7XoO";
+                String title = "Notification" , content = "Admin update level PT" ;
+                String img = "string";
+                Map<String, String> data = new HashMap<>();
+                data.put("key1", "value1");
+                data.put("key2", "value2");
+
+                GetTokenByUser tokendiver = new GetTokenByUser(idUser);
+                tokendiver.execute();
+
+                try {
+                    // Wait for the AsyncTask to finish (Note: This is a blocking operation and might cause ANR in the UI thread)
+                    String token = tokendiver.get();
+
+                    // Now you have the token, you can use it in another part of your code
+                    if (token != null) {
+                        // Use the token
+                        // Example: Print the token
+                        Log.d("TAG", "tokennnn: " + token);
+                        NotificationRent(token, title, content, img, data);
+                        System.out.println("Token: " + token);
+                    } else {
+                        // Handle the case where the token is null (AsyncTask failed)
+                        System.out.println("Failed to retrieve token.");
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // Preserve the interrupt status
+                    e.printStackTrace();
+                    // Handle InterruptedException
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                    // Handle ExecutionException
+                }
+
+
+            }
+            else {
+                Toast.makeText(Admin_Approve_Registration_Activity.this, "Fail level", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void NotificationRent(String token, String title, String body, String img, Map<String,String> data){
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        NotificationMessaging notificationMessaging = new NotificationMessaging(token,title,body,img,data);
+        Call<Response> call = apiService.sendNotification(notificationMessaging);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if (response.isSuccessful()) {
+                    Response responseAll = response.body();
+                    Toast.makeText(Admin_Approve_Registration_Activity.this, "" + responseAll, Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", "onResponse Noti: " + responseAll.getMessage());
+                } else {
+                    Log.e("TAG", "onResponse Notielse: " + response.code());
+                    Log.e("TAG", "onResponse Notifition: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Toast.makeText(Admin_Approve_Registration_Activity.this, "Lỗi kết nối mạng hoặc máy chủ không phản hồi", Toast.LENGTH_SHORT).show();
+                Log.e("TAG", "Api calling: ",t);
+            }
+        });
+    }
+    public class GetTokenByUser extends AsyncTask<Void, Void, String> {
+        private String idUser;
+        private String token;
+
+        // Constructor để nhận ID_User
+        public GetTokenByUser(String idUser) {
+            this.idUser = idUser;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            Connection connection = JdbcConnect.connect();
+
+            if (connection != null) {
+                try {
+                    // Select Tokendevice from Users WHERE ID_User = ?
+                    String selectQuery = "SELECT Tokendevice FROM Users WHERE ID_User = ?";
+                    try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+                        selectStatement.setString(1, idUser);
+
+                        try (ResultSet resultSet = selectStatement.executeQuery()) {
+                            if (resultSet.next()) {
+                                token = resultSet.getString("Tokendevice");
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return token;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Do something with the result, e.g., assign it to a variable
+            myString = result;
         }
     }
 

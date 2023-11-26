@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.FoodModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
     private Context context;
     private Activity activity;
     ImageView img_add_food_exper_update_pt_inormation;
+
 
     public void setData(List<FoodModel> foodList) {
         if (foodList != null) {
@@ -70,6 +73,8 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FoodModel item = foodModel.get(position);
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("GymTien", Context.MODE_PRIVATE);
+        String level = sharedPreferences.getString("levelID","");
 
         // Assuming that your FoodModel has getters for the properties
         holder.name_food_user_ca.setText(item.getName());
@@ -80,7 +85,10 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddDialog(item);
+                if( Integer.parseInt(level)  == 1 || Integer.parseInt(level)  ==2){
+                    showAddDialog(item);
+                }
+
             }
         });
     }
