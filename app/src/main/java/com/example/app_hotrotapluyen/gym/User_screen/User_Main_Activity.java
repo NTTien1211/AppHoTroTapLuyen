@@ -78,6 +78,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
         idUser = sharedPreferences.getString("userID","");
         level = sharedPreferences.getString("levelID" ,"");
+        Toast.makeText(this, "level" + level, Toast.LENGTH_SHORT).show();
         SelecDatabase selecDatabase = new SelecDatabase();
 
         selecDatabase.execute(idUser);

@@ -116,6 +116,11 @@ public class User_Profile_Fragment extends Fragment {
         @Override
         protected void onPostExecute(UserModel userList) {
             super.onPostExecute(userList);
+            if (!isAdded()) {
+                // Fragment đã bị detach, không thể truy cập context nữa
+                return;
+            }
+
             if (userList != null ) {
                 User_Male_pt_inormation.setText(userList.getGender());
                 User_user_inormation.setText(userList.getName());

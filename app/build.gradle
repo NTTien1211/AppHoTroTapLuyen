@@ -45,11 +45,9 @@ dependencies {
 
 //    firebash
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
-    implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.firebase:firebase-auth")
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.2'
-
     implementation 'com.caverock:androidsvg:1.4'
 
 //lottieVersion
@@ -80,9 +78,6 @@ dependencies {
 
 //    notification
     implementation("com.google.firebase:firebase-messaging")
-    implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //API HTTP
     implementation 'com.android.volley:volley:1.2.1'
@@ -92,6 +87,13 @@ dependencies {
     implementation 'com.github.VishnuSivadasVS:Advanced-HttpURLConnection:1.2'
     //okhttp toc độ mạng
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+//map
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.github.jd-alexander:library:1.1.0'
+    implementation 'com.google.maps:google-maps-services:0.15.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -4,6 +4,35 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_height="match_parent">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       android:layout_marginBottom="10dp"
+       android:layout_height="wrap_content">
+       <TextView
+           android:id="@+id/titi"
+           android:layout_width="wrap_content"
+           android:fontFamily="@font/poppinssemibold"
+           android:textSize="20sp"
+           android:layout_marginLeft="10dp"
+           android:padding="10dp"
+           android:layout_height="wrap_content"
+           android:text="Overall"/>
+       <TextView
+           android:background="@drawable/rounded_background2"
+           android:id="@+id/mongmuon"
+           android:layout_toEndOf="@+id/titi"
+           android:layout_width="match_parent"
+           android:fontFamily="@font/poppinssemibold"
+           android:textSize="20sp"
+           android:layout_marginLeft="10dp"
+           android:padding="10dp"
+           android:gravity="center"
+           android:layout_height="wrap_content"
+           android:text="Overall"/>
+   </RelativeLayout>
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -12,6 +41,7 @@
         android:firstDayOfWeek="2"
         android:weekDayTextAppearance="@style/WeekDayTextAppearance"
         android:minDate="1609459200000"
+        android:layout_span="7"
     />
 
 

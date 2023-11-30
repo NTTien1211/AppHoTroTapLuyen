@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,12 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cloudinary.android.MediaManager;
@@ -30,6 +33,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.CircleTransform;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.FoodModel;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.FoodSelectionListener;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.squareup.picasso.Picasso;
@@ -40,16 +44,19 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adapter.ViewHolder> {
     private List<FoodModel> foodModel;
     private String imageUrl;
+    private Set<Integer> selectedPositions = new HashSet<>();
     private Context context;
     private Activity activity;
     ImageView img_add_food_exper_update_pt_inormation;
-
+    private FoodSelectionListener foodSelectionListener;
 
     public void setData(List<FoodModel> foodList) {
         if (foodList != null) {
@@ -58,10 +65,15 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
         }
     }
 
-    public Food_Recycle_Adapter(List<FoodModel> foodList, Activity activity) {
+    public Food_Recycle_Adapter(List<FoodModel> foodList, Activity activity, Context context) {
         this.foodModel = foodList != null ? foodList : new ArrayList<>();
         this.activity = activity;
+        this.context = context; // Add this line to initialize context
     }
+    public void setFoodSelectionListener(FoodSelectionListener listener) {
+        this.foodSelectionListener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -81,16 +93,43 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
         holder.calo_food_ptIn_User.setText("Calories: " + item.getCalo());
         holder.unil_food_ptIn_User.setText("Unit: " + item.getUnit() + " /g");
         Picasso.get().load(item.getImg()).transform(new CircleTransform()).into(holder.profile_pic_image_view_food);
-
+        if (selectedPositions.contains(position)) {
+            holder.layoutBap.setBackgroundResource(R.drawable.rounded_background4); // Change to your desired background resource
+        } else {
+            holder.layoutBap.setBackgroundResource(R.drawable.rounded_background3); // Change to your default background resource
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( Integer.parseInt(level)  == 1 || Integer.parseInt(level)  ==2){
+                if (Integer.parseInt(level) == 1 || Integer.parseInt(level) == 2) {
                     showAddDialog(item);
-                }
+                } else {
+                    int adapterPosition = holder.getAdapterPosition();
 
+                    if (selectedPositions.contains(adapterPosition)) {
+                        selectedPositions.remove(adapterPosition);
+                    } else {
+                        selectedPositions.add(adapterPosition);
+                    }
+
+                    // Cập nhật giao diện
+                    notifyDataSetChanged();
+
+                    // Cập nhật tổng calo
+                    int totalCalories = getTotalCaloriesOfSelectedItems();
+                    if (foodSelectionListener != null) {
+                        foodSelectionListener.onFoodItemSelected(totalCalories);
+                    }
+                }
             }
         });
+    }
+    public int getTotalCaloriesOfSelectedItems() {
+        int totalCalories = 0;
+        for (Integer position : selectedPositions) {
+            totalCalories += Integer.parseInt(foodModel.get(position).getCalo());
+        }
+        return totalCalories;
     }
 
     private void showAddDialog(FoodModel foodModel) {
@@ -191,7 +230,6 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
 
     private class UpdateFoodInDatabase extends AsyncTask<FoodModel, Void, Void> {
@@ -348,13 +386,28 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
         public ImageView profile_pic_image_view_food;
         public TextView name_food_user_ca;
         public TextView calo_food_ptIn_User, unil_food_ptIn_User;
-
+        public LinearLayout layoutBap;
         public ViewHolder(View itemView) {
             super(itemView);
             profile_pic_image_view_food = itemView.findViewById(R.id.profile_pic_image_view_food);
             name_food_user_ca = itemView.findViewById(R.id.name_food_user_ca);
             calo_food_ptIn_User = itemView.findViewById(R.id.calo_food_ptIn_User);
             unil_food_ptIn_User = itemView.findViewById(R.id.unil_food_ptIn_User);
-        }
+            layoutBap = itemView.findViewById(R.id.layout_bap);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Lấy vị trí của mục đã nhấp
+                    int adapterPosition = getAdapterPosition();
+
+                    // Xử lý sự kiện click cho mục tại vị trí adapterPosition
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        // Thực hiện các hành động bạn muốn khi một mục được nhấp vào
+                        // Ví dụ: mở hộp thoại, chuyển hướng đến màn hình chi tiết, v.v.
+                    }
+                }
+            });
+            }
+
     }
 }

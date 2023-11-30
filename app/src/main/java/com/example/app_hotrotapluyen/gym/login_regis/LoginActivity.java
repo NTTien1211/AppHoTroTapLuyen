@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -67,13 +68,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        getUsername();
-
 
         until();
         click();
-        createChannelNotification();
-
+//        createChannelNotification();
 
     }
 
@@ -115,7 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                             String name = resultSet.getString("Name");
                             String phone = resultSet.getString("Phone");
                             int level = resultSet.getInt("Level");
-                            return new UserModel(userId, name, phone , level);
+                            userModel = new UserModel(userId, name, phone , level);
+                            return userModel;
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -127,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 }
-                return null;
+                return userModel;
             }
 
             @Override
@@ -135,8 +134,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (userDetails != null) {
                     String nameFir = userDetails.getName();
                     String phonFir = userDetails.getPhone();
-                    UserModel user = new UserModel(userDetails.getIdUser(), nameFir, phonFir);
-
+                    String level  = String.valueOf(userDetails.getLevel());
+                    UserModel user = new UserModel(userDetails.getIdUser(), nameFir, phonFir,level);
                     setUsername(user);
                     SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -144,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString( "levelID" ,String.valueOf(userDetails.getLevel()));
                     editor.apply();
                     UpdateFunsion(Long.parseLong(user.getIdUser()));
-//                    setUsername(nameFir,nFir); // Gọi hàm để đặt thông tin người dùng
                     Intent intent = new Intent(LoginActivity.this, User_Main_Activity.class);
                     startActivity(intent);
                 } else {
@@ -221,25 +219,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-//    void setUsername(User user) {
-//        FirebaseUntil.allUserCollectionReference().add(user)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        // Tài liệu đã được thêm thành công
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                // Xử lý lỗi ở đây
-//                Log.e("Firebase", "Lỗi: " + e.getMessage());
-//            }
-//        });
-//        ;
-//    }
+
 void setUsername(final UserModel user) {
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     if (currentUser != null) {
+        Log.d("TAG", "setUsername: " + currentUser);
         String userId = currentUser.getUid();
         String username = user.getName();
         if (userModel != null) {
@@ -283,7 +267,9 @@ void setUsername(final UserModel user) {
                     });
 
         }
-        }
+        }else {
+        Log.d("TAG", "setUsername: " + currentUser);
+    }
         // Kiểm tra xem người dùng đã tồn tại hay chưa bằng số điện thoại
 }
     private void createChannelNotification(){

@@ -70,7 +70,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
     FloatingActionButton add_program_pt_child;
     List<Program_child_Model> DAYMODEL;
      ImageView img_add_child_exper_update_pt_inormation;
-
+    double sumcalo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -301,7 +301,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
-                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo, Program_Child.Unit AS ProgramChildUnit, Program_Child.Img AS Program_ChildImg " +
+                    String query = "SELECT Day.Day AS DayName, Program_Child.Name AS ProgramChildName, Program_Child.Calo AS  Program_ChildCalo, Program_Child.Unit AS ProgramChildUnit, Program_Child.Img AS Program_ChildImg " +
                             "FROM Day " +
                             "JOIN Program_Child ON Day.ID_Day = Program_Child.ID_Day " +
                             "JOIN Program ON Day.ID_Pro = Program.ID_Pro " +

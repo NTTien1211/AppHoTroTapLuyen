@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -28,16 +29,30 @@ import java.sql.Timestamp;
 public class User_feedback_rate_Activity extends AppCompatActivity {
     private RatingBar ratingBar;
     private Button submitButton;
-    String idUsser;
+    EditText feedback_information_us;
+    String idUsser , idUserr_give;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_feedback_rate);
         ratingBar = findViewById(R.id.ratingBar);
+        feedback_information_us = findViewById(R.id.feedback_information_us);
+        submitButton = findViewById(R.id.btnFeedback_us_rate);
         Toolbar actionBar = findViewById(R.id.toobar_feedback);
         setToolbar(actionBar, "Rate Personal Trainer");
         SharedPreferences sharedPreferences = getSharedPreferences("GymTien", Context.MODE_PRIVATE);
         idUsser = sharedPreferences.getString("userID" ,"");
+        idUserr_give = sharedPreferences.getString("id_people_give" ,"");
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String rating = String.valueOf(ratingBar.getRating());
+                String inf = feedback_information_us.getText().toString();
+                new BookPTTask().execute(idUserr_give,idUsser ,inf, rating);
+            }
+        });
+
     }
     private void setToolbar(Toolbar toolbar, String name){
         setSupportActionBar(toolbar);
@@ -52,11 +67,7 @@ public class User_feedback_rate_Activity extends AppCompatActivity {
             }
         });
     }
-    public void submitRating(View view) {
-        float rating = ratingBar.getRating();
-        // Xử lý đánh giá, ví dụ: lưu vào cơ sở dữ liệu, gửi lên server, ...
-        Toast.makeText(this, "Đã đánh giá " + rating + " sao", Toast.LENGTH_SHORT).show();
-    }
+
 
     private class BookPTTask extends AsyncTask<String, Void, Boolean> {
 
@@ -71,10 +82,11 @@ public class User_feedback_rate_Activity extends AppCompatActivity {
                     // Lấy thông tin người dùng (ID_User)
                     String idUser = strings[1];
                     String information = strings[2];
-                    double rate = Double.parseDouble(strings[3]);
+                    String rate =strings[3];
 
                     // Lấy thời gian hiện tại
                     Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                    double rateValue = Double.parseDouble(rate);
 
                     // Thêm dữ liệu vào bảng Book
                     String query = "INSERT INTO Feedback (ID_User_Give,Time,Information,Rate, ID_User) VALUES (?, ?, ?, ?, ?)";
@@ -82,7 +94,7 @@ public class User_feedback_rate_Activity extends AppCompatActivity {
                     preparedStatement.setString(1, idPT);
                     preparedStatement.setTimestamp(2, currentTime);
                     preparedStatement.setString(3, information);
-                    preparedStatement.setDouble(4, rate);
+                    preparedStatement.setDouble(4, rateValue);
                     preparedStatement.setString(5, idUser);
 
 

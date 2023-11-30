@@ -14,14 +14,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
@@ -29,8 +34,10 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Adapter.Food_Recycle_Adapter;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.CalodiModel;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.FoodModel;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.ProgramModel;
+import com.example.app_hotrotapluyen.gym.jdbcConnect.FoodSelectionListener;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.MediaManagerInitializer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,21 +45,28 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User_listProFoo_Food_Fragment extends Fragment {
+public class User_listProFoo_Food_Fragment extends Fragment implements FoodSelectionListener {
     RecyclerView recyclerViewMorning, recyclerViewNoon, recyclerViewNight;
     Food_Recycle_Adapter adapterMorning, adapterNoon, adapterNight;
     String level , idUser;
     String imageUrl;
-    FloatingActionButton add_food_pt;
+    String caloin;
+    CalodiModel calodiModel;
+    private ProgressBar progressBarView;
+    FloatingActionButton add_food_pt ,chekc_save_caloin;
     ImageView img_add_food_exper_update_pt_inormation;
+    private TextView sumCaloTextView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,7 +79,9 @@ public class User_listProFoo_Food_Fragment extends Fragment {
         recyclerViewNoon = view.findViewById(R.id.recycle_food_noon);
         recyclerViewNight = view.findViewById(R.id.recycle_food_night);
         add_food_pt = view.findViewById(R.id.add_food_pt);
-
+         sumCaloTextView = view.findViewById(R.id.sum_calo_food);
+        chekc_save_caloin = view.findViewById(R.id.chekc_save_caloin);
+        progressBarView = view.findViewById(R.id.progress_calofood);
         LinearLayoutManager layoutManagerMorning = new LinearLayoutManager(getActivity());
         LinearLayoutManager layoutManagerNoon = new LinearLayoutManager(getActivity());
         LinearLayoutManager layoutManagerNight = new LinearLayoutManager(getActivity());
@@ -73,6 +89,7 @@ public class User_listProFoo_Food_Fragment extends Fragment {
         recyclerViewMorning.setLayoutManager(layoutManagerMorning);
         recyclerViewNoon.setLayoutManager(layoutManagerNoon);
         recyclerViewNight.setLayoutManager(layoutManagerNight);
+
 
         SelectFoodFromDatabase selectFoodFromDatabase = new SelectFoodFromDatabase();
         try {
@@ -82,10 +99,12 @@ public class User_listProFoo_Food_Fragment extends Fragment {
             List<FoodModel> noonList = filterBySession(foodList, "noon");
             List<FoodModel> nightList = filterBySession(foodList, "night");
 
-            adapterMorning = new Food_Recycle_Adapter(morningList , getActivity());
-            adapterNoon = new Food_Recycle_Adapter(noonList,getActivity());
-            adapterNight = new Food_Recycle_Adapter(nightList,getActivity());
-
+            adapterMorning = new Food_Recycle_Adapter(morningList , getActivity() ,getContext());
+            adapterNoon = new Food_Recycle_Adapter(noonList,getActivity(),getContext());
+            adapterNight = new Food_Recycle_Adapter(nightList,getActivity(),getContext());
+            adapterMorning.setFoodSelectionListener(this);
+            adapterNoon.setFoodSelectionListener(this);
+            adapterNight.setFoodSelectionListener(this);
             recyclerViewMorning.setAdapter(adapterMorning);
             recyclerViewNoon.setAdapter(adapterNoon);
             recyclerViewNight.setAdapter(adapterNight);
@@ -107,7 +126,13 @@ public class User_listProFoo_Food_Fragment extends Fragment {
         }else {
             add_food_pt.setVisibility(View.GONE);
         }
-
+        new SelectCalodi().execute();
+        chekc_save_caloin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new UpdateOrInsertCalodi().execute();
+            }
+        });
         return view;
     }
     private void showAddDialog(Context context) {
@@ -185,6 +210,15 @@ public class User_listProFoo_Food_Fragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    @Override
+    public void onFoodItemSelected(int totalCalories) {
+        sumCaloTextView.setText(String.valueOf(totalCalories));
+        caloin = sumCaloTextView.getText().toString();
+        progressBarView.setProgress(Integer.parseInt(caloin));
+    }
+
+    // Define the interface in your adapter
 
     private class AddFoodToDatabase extends AsyncTask<FoodModel, Void, Void> {
 
@@ -338,4 +372,106 @@ public class User_listProFoo_Food_Fragment extends Fragment {
             return foodList;
         }
     }
+    private class SelectCalodi extends AsyncTask<String, Void, CalodiModel> {
+
+        @Override
+        protected CalodiModel doInBackground(String... strings) {
+            Connection connection = JdbcConnect.connect();
+            if (connection != null) {
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                try {
+                    String query = "SELECT * FROM Calodi where Time = ? and ID_User = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setTimestamp(1, currentTime);
+                    preparedStatement.setLong(2, Long.parseLong(idUser));
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    if (resultSet.next()) {
+                        Long id = resultSet.getLong("ID_Ca");
+                        String caloOut = resultSet.getString("CaloOUT");
+
+                        calodiModel = new CalodiModel();
+                        calodiModel.setID_Ca(id);
+                        calodiModel.setCaloOut(caloOut);
+
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return calodiModel;
+        }
+
+        @Override
+        protected void onPostExecute(CalodiModel calodiModel) {
+            if (calodiModel!=null){
+                if (calodiModel.getCaloOut() == null){
+                    progressBarView.setMax(2000);
+                }
+                progressBarView.setMax(Integer.parseInt(calodiModel.getCaloOut()));
+            }
+            else {
+
+            }
+        }
+    }
+
+    private class UpdateOrInsertCalodi extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Connection connection = JdbcConnect.connect();
+            if (connection != null) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH) + 1; // Tháng bắt đầu từ 0
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                String currentDate = year + "-" + month + "-" + day;
+                try {
+                    // Kiểm tra xem đã có dữ liệu cho ngày hôm nay chưa
+                    String selectQuery = "SELECT * FROM Calodi WHERE Time = ? AND ID_User = ?";
+                    PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+                    selectStatement.setDate(1, Date.valueOf(currentDate));
+                    selectStatement.setLong(2, Long.parseLong(idUser));
+                    ResultSet resultSet = selectStatement.executeQuery();
+
+                    if (resultSet.next()) {
+                        // Nếu đã có dữ liệu, thực hiện update
+                        String updateQuery = "UPDATE Calodi SET calo_in = ? WHERE Time = ? AND ID_User = ?";
+                        PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                        updateStatement.setString(1, caloin);
+                        updateStatement.setDate(2, Date.valueOf(currentDate));
+                        updateStatement.setString(3, idUser);
+                        updateStatement.executeUpdate();
+                    } else {
+                        // Nếu chưa có dữ liệu, thực hiện insert mới
+                        String insertQuery = "INSERT INTO Calodi (Time, calo_in, ID_User) VALUES (?, ?, ?)";
+                        PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+                        insertStatement.setDate(1, Date.valueOf(currentDate));
+                        insertStatement.setString(2, caloin);
+                        insertStatement.setString(3, idUser);
+                        insertStatement.executeUpdate();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Log.d("TAG", "doInBackgroundIN: " +e);
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+    }
+
 }

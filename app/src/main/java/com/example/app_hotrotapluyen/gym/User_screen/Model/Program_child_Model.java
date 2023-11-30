@@ -31,11 +31,11 @@ public class Program_child_Model implements Serializable {
         Img = img;
     }
 
-    public Program_child_Model(String nameProChi, String nameDay, long unil, String infomat) {
+    public Program_child_Model(String nameProChi, String calo, long unil, String img) {
         NameProChi = nameProChi;
-        NameDay = nameDay;
+        Calo = calo;
         Unil = unil;
-        Infomat = infomat;
+        Img = img;
     }
 
     public Program_child_Model(String nameProChi, String nameDay, long unil, String infomat, String img) {
