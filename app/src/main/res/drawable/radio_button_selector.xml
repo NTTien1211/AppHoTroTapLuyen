@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- RadioButton unchecked state -->
+    <item android:drawable="@drawable/rounded_background2" android:state_checked="false" />
+    <!-- RadioButton checked state -->
+    <item android:drawable="@drawable/rounded_background4" android:state_checked="true" />
+</selector>

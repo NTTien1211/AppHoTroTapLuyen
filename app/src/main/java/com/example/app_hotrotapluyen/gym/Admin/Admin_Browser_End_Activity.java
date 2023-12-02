@@ -39,7 +39,7 @@ import java.util.List;
 public class Admin_Browser_End_Activity extends AppCompatActivity {
     Toolbar toolbar_broser;
     TextView name_user_admin_brower_PT , name_user_admin_brower_phone_PT;
-    TextView name_user_admin_brower_user , name_user_admin_brower_phone_user;
+    TextView name_user_admin_brower_user , name_user_admin_brower_phone_user ,TimeMonth_book_ptIn_User ,time_inday_book;
     TextView Time_book_ptIn_User ,Money_book_ptIn_User;
     Button btn_admin_broser_check ,btn_user_feedback_check;
     ImageView admin_broser_imgPT , admin_broser_imgUS;
@@ -101,7 +101,7 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
             Connection connection = JdbcConnect.connect();
             if (connection != null) {
                 try {
-                    String query = "SELECT Book.ID_Book, Book.ID_User_Give, Book.Time as Time, Book.Money as Money, Book.Status, " +
+                    String query = "SELECT Book.ID_Book, Book.ID_User_Give, Book.Time as Time, Book.Money as Money, Book.Status,Book.timein_day as Time_inday,Book.duration as Duration," +
                             "Book.ID_User, Users1.Name AS UserName, Users1.IMG AS UserIMG, Users1.Phone AS UserPhone, " +
                             "Users1.Email AS UserEmail, Users2.Name AS GiverName, Users2.IMG AS GiverIMG, " +
                             "Users2.Phone AS GiverPhone, Users2.Email AS GiverEmail " +
@@ -127,6 +127,8 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
                         Timestamp time = resultSet.getTimestamp("Time");
                         double money = resultSet.getDouble("Money");
                         String status = resultSet.getString("Status");
+                        int duration = resultSet.getInt("Duration");
+                        String Time_inday = resultSet.getString("Time_inday");
 
                         Long userUSId = resultSet.getLong("ID_User");
                         String userName = resultSet.getString("UserName");
@@ -135,7 +137,7 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
                         String userEmail = resultSet.getString("UserEmail");
                         UserModel userUS = new UserModel(String.valueOf(userUSId), userName, userPhone, userEmail, userImg);
 
-                        BookModel bookModel = new BookModel(id, userPT, time, money, status, userUS);
+                        BookModel bookModel = new BookModel(id, userPT, time, money, status, userUS,duration,Time_inday);
                         userList.add(bookModel);
 
 
@@ -178,6 +180,8 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
 
                     // Set text for Time and Money
                     Time_book_ptIn_User.setText(String.valueOf(firstBook.getTimeDay()));
+                    TimeMonth_book_ptIn_User.setText(String.valueOf(firstBook.getDuration()));
+                    time_inday_book.setText(String.valueOf(firstBook.getTimein_day()));
                     Money_book_ptIn_User.setText(String.valueOf(firstBook.getMoney()));
                 } else {
                     // Handle the case where either userGive or userUS is null
@@ -243,6 +247,8 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
         admin_broser_imgUS = findViewById(R.id.admin_broser_imgUS);
         admin_broser_imgPT = findViewById(R.id.admin_broser_imgPT);
         btn_user_feedback_check = findViewById(R.id.btn_user_feedback_check);
+        TimeMonth_book_ptIn_User = findViewById(R.id.TimeMonth_book_ptIn_User);
+        time_inday_book = findViewById(R.id.time_inday_book);
 
     }
 

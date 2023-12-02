@@ -44,22 +44,10 @@
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"
-                android:rotation="90"
-                android:text="PTPT"
-                android:fontFamily="@font/unifrakturmaguntiaregular"
-                android:textSize="18sp"
-                android:textStyle="bold" />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
@@ -81,12 +69,19 @@
                     android:textSize="18sp"
                     android:fontFamily="@font/poppinsregular" />
             </LinearLayout>
+
             <ImageView
+                android:layout_gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_circle"
+                android:src="@drawable/person_icon"
+                android:padding="4dp"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/white"
+                android:layout_centerInParent="true"
                 android:id="@+id/admin_broser_imgPT"
-                android:padding="10dp"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"/>
+                />
 
         </LinearLayout>
         <LinearLayout
@@ -96,11 +91,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_circle"
+                android:src="@drawable/person_icon"
+                android:padding="4dp"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/white"
+                android:layout_centerInParent="true"
                 android:id="@+id/admin_broser_imgUS"
-                android:padding="10dp"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"/>
+                />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_gravity="center"
@@ -126,28 +128,20 @@
                     android:textSize="18sp"
                     android:fontFamily="@font/poppinsregular" />
             </LinearLayout>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"
-                android:rotation="90"
-                android:text="USUSU"
-                android:fontFamily="@font/unifrakturmaguntiaregular"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
-        <RelativeLayout
-            android:layout_margin="5dp"
+        <LinearLayout
+            android:layout_margin="10dp"
             android:background="@drawable/cnhat_boca"
             android:backgroundTint="@color/purple_nhat"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/icon1"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -155,19 +149,21 @@
                 />
 
             <TextView
-                android:layout_below="@id/icon1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="Time unit"
                 android:id="@+id/text1"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:fontFamily="@font/poppinssemibold"
                 android:textSize="15sp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="10dp"
                 />
             <TextView
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:id="@+id/Time_book_ptIn_User"
-                android:layout_below="@id/text1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0985664533"
                 android:fontFamily="@font/poppinssemibold"
@@ -175,7 +171,48 @@
                 android:layout_marginLeft="25dp"
                 />
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/cnhat_boca"
+            android:backgroundTint="@color/purple_nhat"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:src="@drawable/baseline_access_time_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="Time book (Month)"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/TimeMonth_book_ptIn_User"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/poppinssemibold"
+                android:gravity="center"
+                android:text="0985664533"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
         <LinearLayout
             android:background="@drawable/cnhat_boduoi"
             android:backgroundTint="@color/purple_nhat"
@@ -209,20 +246,71 @@
 
 
         </LinearLayout>
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="center"
-            android:id="@+id/robot_json"
-            android:layout_width="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_alignParentRight="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="150dp"
-            android:visibility="visible"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="end.json" />
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:layout_margin="10dp"
+           android:layout_gravity="center"
+           android:orientation="horizontal">
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+               <RelativeLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical">
+                   <TextView
+                       android:id="@+id/dd"
+                       android:layout_centerHorizontal="true"
+                       android:background="@drawable/duongkedoc"
+                       android:layout_width="1dp"
+                       android:layout_height="match_parent"
+                       />
+                   <ImageView
+                       android:layout_below="@+id/dd"
+                       android:id="@id/icon2"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/point"/>
+                   <TextView
+                       android:id="@+id/dd1"
+                       android:layout_below="@id/icon2"
+                       android:layout_centerHorizontal="true"
+                       android:background="@drawable/duongkedoc"
+                       android:layout_width="1dp"
+                       android:layout_height="match_parent"
+                       />
+                   <ImageView
+                       android:id="@id/icon3"
+                       android:layout_below="@+id/dd1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/point"/>
+                   <TextView
+                       android:layout_below="@id/icon3"
+                       android:layout_centerHorizontal="true"
+                       android:background="@drawable/duongkedoc"
+                       android:layout_width="1dp"
+                       android:layout_height="match_parent"
+                       />
+               </RelativeLayout>
+
+
+           </LinearLayout>
+           <TextView
+               android:id="@+id/time_inday_book"
+               android:gravity="center"
+               android:layout_marginLeft="10dp"
+               android:layout_toRightOf="@+id/dd1"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:fontFamily="@font/poppinssemibold"
+               android:text="2 AM - 4 AM"/>
+       </LinearLayout>
+
         <Button
             android:id="@+id/btn_admin_broser_check"
             android:layout_width="match_parent"

@@ -95,5 +95,11 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 
+//Qr
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+//mont
+
+
 }
 apply plugin: 'com.google.gms.google-services'

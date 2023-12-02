@@ -3,6 +3,7 @@ package com.example.app_hotrotapluyen.gym.User_screen;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -74,7 +75,10 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String money = List_ptIn_money.getText().toString();
-                new BookPTTask().execute(idPT , idUser , money);
+                Intent intent = new Intent(User_PT_Inf_Activity.this, User_Book_pt_time_Activity.class);
+                intent.putExtra("idPtss" , idPT);
+                intent.putExtra("moneybook" , money);
+                startActivity(intent);
             }
         });
     }
@@ -193,65 +197,7 @@ public class User_PT_Inf_Activity extends AppCompatActivity {
             }
         }
     }
-    private class BookPTTask extends AsyncTask<String, Void, Boolean> {
 
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            Connection connection = JdbcConnect.connect();
-            if (connection != null) {
-                try {
-                    // Lấy thông tin người được book (ID_User_Give)
-                    String idPT = strings[0];
-
-                    // Lấy thông tin người dùng (ID_User)
-                    String idUser = strings[1];
-                    double money = Double.parseDouble(strings[2]);
-
-                    // Lấy thời gian hiện tại
-                    Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
-                    // Thêm dữ liệu vào bảng Book
-                    String query = "INSERT INTO Book (ID_User_Give,Time,Money,Status, ID_User) VALUES (?, ?, ?, ?, ?)";
-                    PreparedStatement preparedStatement = connection.prepareStatement(query);
-                    preparedStatement.setString(1, idPT);
-                    preparedStatement.setTimestamp(2, currentTime);
-                    preparedStatement.setDouble(3, money);
-                    preparedStatement.setString(4, "waiting");
-                    preparedStatement.setString(5, idUser);
-
-
-                    // Đặt Status là "waiting" (hoặc giá trị khác tùy theo yêu cầu)
-
-                    // Thực hiện truy vấn và cập nhật bảng Book
-                    int rowsAffected = preparedStatement.executeUpdate();
-
-                    // Trả về true nếu có ít nhất một hàng bị ảnh hưởng (truy vấn thành công)
-                    return rowsAffected > 0;
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    Log.e("TAG", "prinrrrr: " + e );
-                } finally {
-                    try {
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            // Trả về false nếu có lỗi xảy ra hoặc không có hàng nào bị ảnh hưởng
-            return false;
-        }
-
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                Toast.makeText(User_PT_Inf_Activity.this, "Success", Toast.LENGTH_SHORT).show();
-                onBackPressed();
-            } else {
-                Toast.makeText(User_PT_Inf_Activity.this, "Fail", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
 
 }

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/whirk"
+    android:scrollbars="vertical"
+    tools:context=".gym.User_screen.User_Book_pt_time_Activity">
+    <androidx.appcompat.widget.Toolbar
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar_book"/>
+    <TextView
+        android:id="@+id/User_pt_inormation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="8dp"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginTop="30dp"
+        android:text="You check time book"
+        android:textSize="18sp" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- First Column -->
+            <RadioButton
+                android:background="@drawable/radio_button_selector"
+                android:id="@+id/radioBtn1"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 AM - 7 AM"
+                android:button="@null" />
+
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:button="@null"
+                android:background="@drawable/radio_button_selector"
+                android:text="7 AM - 9 AM" />
+
+            <!-- Second Column -->
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:button="@null"
+                android:background="@drawable/radio_button_selector"
+                android:text="2 PM - 4 PM" />
+
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn4"
+                android:button="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@drawable/radio_button_selector"
+                android:text="4 PM - 6 PM" />
+
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn5"
+                android:button="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@drawable/radio_button_selector"
+                android:text="6 PM - 8 PM" />
+
+        </RadioGroup>
+    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/text_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="8dp"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginTop="30dp"
+        android:text="Duration"
+        android:textSize="18sp" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- First Column -->
+            <RadioButton
+                android:background="@drawable/radio_button_selector"
+                android:id="@+id/radioBtn7"
+                android:padding="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="70dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="6 tháng"
+                android:button="@null" />
+
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn8"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="center"
+                android:button="@null"
+                android:background="@drawable/radio_button_selector"
+                android:text="1 năm" />
+
+            <!-- Second Column -->
+            <RadioButton
+                android:layout_marginRight="10dp"
+                android:id="@+id/radioBtn9"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="center"
+                android:button="@null"
+                android:background="@drawable/radio_button_selector"
+                android:text="2 năm" />
+
+
+        </RadioGroup>
+    </HorizontalScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="8dp"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginTop="30dp"
+        android:text="Banking QRCODE"
+        android:textSize="18sp" />
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="centerInside"
+         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="8dp"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="30dp"
+            android:text="Total (VND): "
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/moneyTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_background4"
+            android:padding="10dp"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="30dp"
+            android:text="1000"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnGetTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:fontFamily="@font/poppinssemibold"
+        android:text="Payment decision" />
+
+</LinearLayout>
