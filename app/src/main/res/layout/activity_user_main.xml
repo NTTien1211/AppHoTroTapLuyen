@@ -13,38 +13,54 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:id="@+id/ms"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toobal_main"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+      <LinearLayout
+          android:id="@+id/ms"
+          android:background="@color/white"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <com.google.android.material.appbar.AppBarLayout
+              android:layout_width="80dp"
+              android:background="@color/white"
+              android:layout_height="wrap_content">
+              <androidx.appcompat.widget.Toolbar
+                  android:id="@+id/toobal_main"
+                  android:background="@color/white"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  />
 
-        </com.google.android.material.appbar.AppBarLayout>
+          </com.google.android.material.appbar.AppBarLayout>
+          <ImageView
+              android:layout_gravity="center"
+              android:layout_width="60dp"
+              android:layout_height="60dp"
+              android:src="@drawable/logo_black"/>
+          <TextView
+              android:gravity="center"
+              android:fontFamily="@font/poppinssemibold"
+              android:textSize="20dp"
+              android:layout_gravity="center"
+              android:layout_centerHorizontal="true"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="TIENGYM"/>
+
+      </LinearLayout>
         <FrameLayout
             android:layout_below="@id/ms"
-            android:layout_above="@+id/bottomAppBar"
+            android:layout_above="@+id/menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/frame_layout"/>
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottomAppBar"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/rounded_background2"
-            tools:ignore="BottomAppBar">
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/menu"
+                android:layout_alignParentBottom="true"
                 android:background="@color/lanhat"
                 app:menu="@menu/bottom_menu"/>
-        </com.google.android.material.bottomappbar.BottomAppBar>
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView

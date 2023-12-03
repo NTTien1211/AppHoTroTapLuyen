@@ -20,9 +20,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -35,6 +39,7 @@ import android.widget.Toast;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.Admin.Admin_Home_Fragment;
 import com.example.app_hotrotapluyen.gym.Admin.Admin_Over_Browser_Fragment;
+import com.example.app_hotrotapluyen.gym.Admin.Admin_Pro_Fragment;
 import com.example.app_hotrotapluyen.gym.PTrainer.PTrainer_Update_Level_Activity;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
@@ -68,6 +73,7 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
     final Fragment User = new User_Profile_Fragment();
     final Fragment OverAdmin = new Admin_Over_Browser_Fragment();
     final Fragment OverU = new User_Over_Fragment();
+    final Fragment AdminPr = new Admin_Pro_Fragment();
     String level;
     AlertDialogManager alertDialogManager;
     @Override
@@ -86,12 +92,14 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
 
         bottomNavigationView =findViewById(R.id.menu);
         toolbar = findViewById(R.id.toobal_main);
+
         drawerLayout =findViewById(R.id.Drawlayout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(User_Main_Activity.this , drawerLayout, toolbar ,
                                             R.string.navigation_draw_open , R.string.navigation_draw_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView = findViewById(R.id.navigrionbar_main);
         navigationView.setNavigationItemSelectedListener(User_Main_Activity.this);
         View headerView = navigationView.getHeaderView(0);
@@ -140,7 +148,12 @@ public class User_Main_Activity extends AppCompatActivity implements NavigationV
                 }else if (item.getItemId() == R.id.menu_prog){
                     selectedFragment = List ;
                 }else if (item.getItemId() == R.id.menu_user) {
-                    selectedFragment = User;
+                    if (Integer.parseInt(level) ==2 ){
+                        selectedFragment = AdminPr;
+                    }
+                    else {
+                        selectedFragment =  User;
+                    }
                 }else  if(item.getItemId() == R.id.menu_Over){
                     if (Integer.parseInt(level) == 2 ){
                         selectedFragment =  OverAdmin;

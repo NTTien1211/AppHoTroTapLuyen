@@ -20,6 +20,16 @@ public class BookModel {
         Users = users;
     }
 
+    public BookModel(Long ID_Book, UserModel user_Give, Timestamp timeDay, Double money, String status, UserModel users, String timein_day) {
+        this.ID_Book = ID_Book;
+        User_Give = user_Give;
+        TimeDay = timeDay;
+        Money = money;
+        Status = status;
+        Users = users;
+        this.timein_day = timein_day;
+    }
+
     public BookModel(Long ID_Book, UserModel user_Give, Timestamp timeDay, Double money, String status, UserModel users, int duration, String timein_day) {
         this.ID_Book = ID_Book;
         User_Give = user_Give;

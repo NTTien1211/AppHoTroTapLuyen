@@ -120,5 +120,16 @@ public class User_feedback_rate_Activity extends AppCompatActivity {
             // Trả về false nếu có lỗi xảy ra hoặc không có hàng nào bị ảnh hưởng
             return false;
         }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (aBoolean){
+                onBackPressed();
+                Toast.makeText(User_feedback_rate_Activity.this, "Feedback sent successfully", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(User_feedback_rate_Activity.this, "There was an error during processing", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

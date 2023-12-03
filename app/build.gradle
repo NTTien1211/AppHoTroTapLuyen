@@ -99,6 +99,10 @@ dependencies {
     implementation 'com.google.zxing:core:3.4.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 //mont
+// For Card view
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+
 
 
 }

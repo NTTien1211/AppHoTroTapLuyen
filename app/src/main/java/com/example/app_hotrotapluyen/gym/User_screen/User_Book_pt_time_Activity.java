@@ -62,7 +62,7 @@ public class User_Book_pt_time_Activity extends AppCompatActivity {
         setToolbar(actionBar, "PT Check Book");
         anhxa();
         Calendar currentDate = Calendar.getInstance();
-
+        new CheckBookedTimeTask().execute(idPt);
         // Thêm 6 tháng
 
 
@@ -221,76 +221,7 @@ public class User_Book_pt_time_Activity extends AppCompatActivity {
             return this;
         }
     }
-//    private class BookPTTask extends AsyncTask<String, Void, Boolean> {
 //
-//        @Override
-//        protected Boolean doInBackground(String... strings) {
-//            Connection connection = JdbcConnect.connect();
-//            if (connection != null) {
-//                try {
-//                    // Lấy thông tin người được book (ID_User_Give)
-//                    String idPT = strings[0];
-//
-//                    // Lấy thông tin người dùng (ID_User)
-//                    String idUser = strings[1];
-//                    double money = Double.parseDouble(strings[2]);
-//                    String timeday = strings[3];
-//                    int duration = Integer.parseInt(strings[4]);
-//
-//                    // Lấy thời gian hiện tại
-//                    Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-//
-//                    // Thêm dữ liệu vào bảng Book
-//                    String query = "INSERT INTO Book (ID_User_Give, Time, Money, Status, timein_day, duration, ID_User) " +
-//                            "VALUES (?, ?, ?, ?, ?, ?, ?) " +
-//                            "ON DUPLICATE KEY UPDATE " +
-//                            "ID_User_Give = VALUES(ID_User_Give), " +
-//                            "Time = VALUES(Time), " +
-//                            "Money = VALUES(Money), " +
-//                            "Status = VALUES(Status), " +
-//                            "timein_day = VALUES(timein_day), " +
-//                            "duration = VALUES(duration), " +
-//                            "ID_User = VALUES(ID_User)";
-//
-//                    PreparedStatement preparedStatement = connection.prepareStatement(query);
-//                    preparedStatement.setString(1, idPT);
-//                    preparedStatement.setTimestamp(2, currentTime);
-//                    preparedStatement.setDouble(3, money);
-//                    preparedStatement.setString(4, "waiting");
-//                    preparedStatement.setString(5, timeday);
-//                    preparedStatement.setInt(6, duration);
-//                    preparedStatement.setString(7, idUser);
-//
-//                    // Thực hiện truy vấn
-//                    int rowsAffected = preparedStatement.executeUpdate();
-//
-//                    // Trả về true nếu có ít nhất một hàng bị ảnh hưởng (truy vấn thành công)
-//                    return rowsAffected > 0;
-//
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                    Log.e("TAG", "prinrrrr: " + e );
-//                } finally {
-//                    try {
-//                        connection.close();
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//            // Trả về false nếu có lỗi xảy ra hoặc không có hàng nào bị ảnh hưởng
-//            return false;
-//        }
-//
-//        protected void onPostExecute(Boolean success) {
-//            if (success) {
-//                Toast.makeText(User_Book_pt_time_Activity.this, "Success", Toast.LENGTH_SHORT).show();
-//                onBackPressed();
-//            } else {
-//                Toast.makeText(User_Book_pt_time_Activity.this, "Fail", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
     private class BookPTTask extends AsyncTask<String, Void, Boolean> {
 
         // Hàm kiểm tra xem dữ liệu đã tồn tại hay không
@@ -390,7 +321,49 @@ public class User_Book_pt_time_Activity extends AppCompatActivity {
             }
         }
     }
+    private class CheckBookedTimeTask extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                String idPT = strings[0];
+
+                Connection connection = JdbcConnect.connect();
+                if (connection != null) {
+                    try {
+                        String query = "SELECT timein_day FROM Book WHERE ID_User_Give = ?";
+                        PreparedStatement preparedStatement = connection.prepareStatement(query);
+                        preparedStatement.setString(1, idPT);
+
+                        ResultSet resultSet = preparedStatement.executeQuery();
+                        if (resultSet.next()) {
+                            return resultSet.getString("timein_day");
+                        }
+                    } finally {
+                        connection.close();
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Log.e("TAG", "Error checking booked time: " + e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String bookedTime) {
+            if (bookedTime != null) {
+                // Set the corresponding RadioButton in radioGroup1 as checked and change its color to red
+                for (int i = 0; i < radioGroup1.getChildCount(); i++) {
+                    RadioButton radioButton = (RadioButton) radioGroup1.getChildAt(i);
+                    if (radioButton.getText().toString().equals(bookedTime)) {
+                        radioButton.setChecked(true);
+                        radioButton.setBackgroundResource(R.drawable.rounded_background);
+                    }
+                }
+            }
+        }
+    }
     private void anhxa() {
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);

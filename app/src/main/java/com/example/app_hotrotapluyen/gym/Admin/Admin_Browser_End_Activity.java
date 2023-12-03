@@ -170,9 +170,10 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
                     name_user_admin_brower_PT.setText(userGive.getName());
                     name_user_admin_brower_phone_PT.setText(userGive.getPhone());
                     Picasso.get().load(userGive.getImg()).into(admin_broser_imgPT);
-                    SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = Admin_Browser_End_Activity.this.getSharedPreferences("GymTien", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("id_people_give", String.valueOf(userGive.getIdUser()));
+                    editor.apply();
                     // Set text for User (userUS)
                     name_user_admin_brower_user.setText(userUS.getName());
                     name_user_admin_brower_phone_user.setText(userUS.getPhone());
@@ -193,7 +194,7 @@ public class Admin_Browser_End_Activity extends AppCompatActivity {
             }
         }
     }
-    private class AcceptRequest extends AsyncTask<Void, Void, Boolean> {
+    private class  AcceptRequest extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {
             Connection connection = JdbcConnect.connect();
