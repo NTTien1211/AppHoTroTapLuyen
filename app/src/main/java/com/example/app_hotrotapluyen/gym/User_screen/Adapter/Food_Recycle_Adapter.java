@@ -57,6 +57,10 @@ public class Food_Recycle_Adapter extends RecyclerView.Adapter<Food_Recycle_Adap
     private Activity activity;
     ImageView img_add_food_exper_update_pt_inormation;
     private FoodSelectionListener foodSelectionListener;
+    public interface FoodSelectionCallback {
+        void onFoodItemSelected(int totalCalories);
+    }
+
 
     public void setData(List<FoodModel> foodList) {
         if (foodList != null) {

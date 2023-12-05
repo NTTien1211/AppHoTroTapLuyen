@@ -110,6 +110,22 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (chatRecyclerAdapter != null) {
+            chatRecyclerAdapter.startListening();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (chatRecyclerAdapter != null) {
+            chatRecyclerAdapter.stopListening();
+        }
+    }
+
     void setupChatRecyclerView(){
         Query query = FirebaseUntil.getChatroomMessageReference(ChatRoomID)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
@@ -133,26 +149,30 @@ public class User_Mess_Chat_Activity extends AppCompatActivity {
     }
 
     void sendMessToUser(String mess , String idUser) {
-        chatroomModel.setLastMessageTimestamp(Timestamp.now());
-        chatroomModel.setLastMessageSenderId(idUser);
-        chatroomModel.setLastMessage(mess);
-        FirebaseUntil.getChatroomReference(ChatRoomID).set(chatroomModel);
-        String currentUserId = FirebaseUntil.currentUserId();
-        Log.d("User_Mess_Chat_Activity", "Sending message from user: " + currentUserId);
-        ChatMessModel chatMessageModel = new ChatMessModel(mess,idUser,Timestamp.now());
+        if (chatroomModel != null) {
+            chatroomModel.setLastMessageTimestamp(Timestamp.now());
+            chatroomModel.setLastMessageSenderId(idUser);
+            chatroomModel.setLastMessage(mess);
+            FirebaseUntil.getChatroomReference(ChatRoomID).set(chatroomModel);
+            String currentUserId = FirebaseUntil.currentUserId();
+            Log.d("User_Mess_Chat_Activity", "Sending message from user: " + currentUserId);
+            ChatMessModel chatMessageModel = new ChatMessModel(mess, idUser, Timestamp.now());
 
 //        Toast.makeText(this, " " + mess + " " + FirebaseUntil.currentUserId() + " " +Timestamp.now(), Toast.LENGTH_SHORT).show();
-        // Cập nhật mô hình phòng chat và sau đó gửi tin nhắn
-        FirebaseUntil.getChatroomMessageReference(ChatRoomID).add(chatMessageModel)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if(task.isSuccessful()){
-                            chat_message_input.setText("");
+            // Cập nhật mô hình phòng chat và sau đó gửi tin nhắn
+            FirebaseUntil.getChatroomMessageReference(ChatRoomID).add(chatMessageModel)
+                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                chat_message_input.setText("");
 
+                            }
                         }
-                    }
-                });
+                    });
+        }else {
+            Log.e("User_Mess_Chat_Activity", "chatroomModel is null");
+        }
     }
 
     void getOrCreateChatroomModel(){

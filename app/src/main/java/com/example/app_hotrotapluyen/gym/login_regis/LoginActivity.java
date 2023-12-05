@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.gym.User_screen.Model.HomeU_pt;
+import com.example.app_hotrotapluyen.gym.User_screen.Model.MessageList;
 import com.example.app_hotrotapluyen.gym.notification.ApiClient;
 import com.example.app_hotrotapluyen.gym.notification.ApiService;
 import com.example.app_hotrotapluyen.gym.notification.NotificationMessaging;
@@ -33,8 +34,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -67,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_login);
 
         until();
@@ -136,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     String nameFir = userDetails.getName();
                     String phonFir = userDetails.getPhone();
                     String level  = String.valueOf(userDetails.getLevel());
+                    setupFirebase(nameFir , phonFir , "avt");
                     UserModel user = new UserModel(userDetails.getIdUser(), nameFir, phonFir,level);
                     setUsername(user);
                     SharedPreferences sharedPreferences = getSharedPreferences("GymTien",MODE_PRIVATE);
@@ -211,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
         }.execute();
     }
 
-    @SuppressLint("WrongViewCast")
+
     private void until() {
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
@@ -221,58 +227,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-void setUsername(final UserModel user) {
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    if (currentUser != null) {
-        Log.d("TAG", "setUsername: " + currentUser);
-        String userId = currentUser.getUid();
-        String username = user.getName();
-        if (userModel != null) {
-            userModel.setName(username);
-        } else {
-            userModel = new UserModel(userId, user.getName(), user.getPhone(),1);
-            FirebaseUntil.allUserCollectionReference()
-                    .whereEqualTo("phone", user.getPhone())
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot querySnapshot) {
-                            if (querySnapshot.isEmpty()) {
-                                // Người dùng chưa tồn tại, thêm vào cơ sở dữ liệu
-                                FirebaseUntil.allUserCollectionReference()
-                                        .add(user)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                // Tài liệu đã được thêm thành công
+    void setUsername(final UserModel user) {
+                userModel = new UserModel(user.getIdUser(), user.getName(), user.getPhone(),1);
+                FirebaseUntil.allUserCollectionReference()
+                        .whereEqualTo("phone", user.getPhone())
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot querySnapshot) {
+                                if (querySnapshot.isEmpty()) {
+                                    // Người dùng chưa tồn tại, thêm vào cơ sở dữ liệu
+                                    FirebaseUntil.allUserCollectionReference()
+                                            .add(user)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    // Tài liệu đã được thêm thành công
 
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.e("Firebase", "Lỗi khi thêm người dùng: " + e.getMessage());
-                                            }
-                                        });
-                            } else {
-                                Log.d("Firebase", "Người dùng đã tồn tại");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.e("Firebase", "Lỗi khi thêm người dùng: " + e.getMessage());
+                                                }
+                                            });
+                                } else {
+                                    Log.d("Firebase", "Người dùng đã tồn tại");
+                                }
                             }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Xử lý lỗi khi kiểm tra người dùng tồn tại hay không
-                            Log.e("Firebase", "Lỗi khi kiểm tra người dùng: " + e.getMessage());
-                        }
-                    });
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Xử lý lỗi khi kiểm tra người dùng tồn tại hay không
+                                Log.e("Firebase", "Lỗi khi kiểm tra người dùng: " + e.getMessage());
+                            }
+                        });
 
-        }
-        }else {
-        Log.d("TAG", "setUsername: " + currentUser);
-    }
+            }
+
         // Kiểm tra xem người dùng đã tồn tại hay chưa bằng số điện thoại
-}
+
     private void createChannelNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(ChannelID,"default_channel_id",
@@ -282,5 +278,25 @@ void setUsername(final UserModel user) {
 
         }
     }
+    public void setupFirebase(String phone,String name,String avt){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        MessageList messageList = new MessageList(name,phone,avt);
+        myRef.child(phone).setValue(messageList)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        Log.d("Firebase", "Data successfully written to the database");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Write failed
+                        Log.e("Firebase", "Error writing to the database: " + e.getMessage());
+                    }
+                });
 
+    }
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_hotrotapluyen.R;
@@ -32,6 +33,7 @@ import java.util.List;
 public class Admin_Over_Browser_Fragment extends Fragment {
     RecyclerView recycle_browser_admin;
     Admin_Over_Br_Adapter adminOverBrAdapter;
+    TextView TvHI;
     String level;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,7 @@ public class Admin_Over_Browser_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin__over__browser, container, false);
         recycle_browser_admin = view.findViewById(R.id.recycle_browser_admin);
+        TvHI = view.findViewById(R.id.TvHI);
         recycle_browser_admin.setLayoutManager(new LinearLayoutManager(getContext()));
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("GymTien", Context.MODE_PRIVATE);
         level = sharedPreferences.getString("levelID" ,"");
@@ -48,6 +51,7 @@ public class Admin_Over_Browser_Fragment extends Fragment {
             SelecDatabase selecDatabase = new SelecDatabase();
             selecDatabase.execute();
         }else {
+            TvHI.setText("HISTORY");
             SelecDatabaseHIS selecDatabase1 = new SelecDatabaseHIS();
             selecDatabase1.execute();
         }

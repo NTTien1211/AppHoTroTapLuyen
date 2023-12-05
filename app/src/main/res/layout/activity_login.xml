@@ -14,7 +14,7 @@
     <ImageView
         android:layout_width="230dp"
         android:layout_height="0dp"
-        android:layout_weight="1.3"
+        android:layout_weight="1.4"
         android:background="@drawable/logo_while"/>
 
 

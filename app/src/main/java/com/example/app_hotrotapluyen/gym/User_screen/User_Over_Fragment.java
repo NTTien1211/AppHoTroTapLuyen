@@ -263,10 +263,16 @@ public class User_Over_Fragment extends Fragment {
         ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < calodiModels.size(); i++) {
-            entries.add(new BarEntry(i, Float.parseFloat(calodiModels.get(i).getCaloIn())));
-            entries.add(new BarEntry(i + 1, Float.parseFloat(calodiModels.get(i).getCaloOut())));
-            entries.add(new BarEntry(i + 2, Float.parseFloat(calodiModels.get(i).getCaloIn()) +
-                    Float.parseFloat(calodiModels.get(i).getCaloOut())));
+            if (calodiModels.get(i).getCaloIn() == null || calodiModels.get(i).getCaloOut() == null){
+                Toast.makeText(getContext(), "Please Complete your exercises and menu", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                entries.add(new BarEntry(i, Float.parseFloat(calodiModels.get(i).getCaloIn())));
+                entries.add(new BarEntry(i + 1, Float.parseFloat(calodiModels.get(i).getCaloOut())));
+                entries.add(new BarEntry(i + 2, Float.parseFloat(calodiModels.get(i).getCaloIn()) +
+                        Float.parseFloat(calodiModels.get(i).getCaloOut())));
+            }
+
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "Calo");

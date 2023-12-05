@@ -3,9 +3,14 @@ package com.example.app_hotrotapluyen.gym.User_screen;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -27,16 +32,31 @@ import com.bumptech.glide.Glide;
 import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Locale;
 
-public class User_Profile_Fragment extends Fragment {
+public class User_Profile_Fragment extends Fragment implements OnMapReadyCallback {
     TextView User_Male_pt_inormation, User_phone_user_inormation, User_email_user_inormation,weight_ptIn_User,Height_ptIn_dgree
             ,BMI_user_profile ,User_user_inormation;
     Button btn_update_user_profile;
@@ -44,6 +64,12 @@ public class User_Profile_Fragment extends Fragment {
     ImageView profile_pic_image_view_profile;
     String idUser;
     LinearLayout color_back_bmi;
+    TextView locationInfoTextView;
+    private GoogleMap mMap;
+    private Geocoder geocoder;
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -71,6 +97,19 @@ public class User_Profile_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+        geocoder = new Geocoder(requireActivity(), Locale.getDefault());
+        locationInfoTextView = view.findViewById(R.id.locationInfoTextView);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+        // Check for location permissions
+        if (checkLocationPermission()) {
+            // If permissions are granted, initialize the map
+            initMap(view);
+        } else {
+            // Request location permissions
+            requestLocationPermission();
+        }
+
         return view;
     }
     private class SelecDatabase extends AsyncTask<String, Void, UserModel> {
@@ -159,6 +198,109 @@ public class User_Profile_Fragment extends Fragment {
 
             } else {
                 Toast.makeText(getContext(), "User not found or error occurred", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private boolean checkLocationPermission() {
+        return ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestLocationPermission() {
+        // Request location permissions
+        ActivityCompat.requestPermissions(requireActivity(),
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                LOCATION_PERMISSION_REQUEST_CODE);
+    }
+
+    private void initMap(View view) {
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Check for location permissions again
+        if (checkLocationPermission()) {
+            // Show the "My Location" button for easy navigation to the current location
+            mMap.setMyLocationEnabled(true);
+
+            // Show the current location with a red dot icon
+            showCurrentLocation();
+        }
+    }
+
+    // Inside UserMapFragment class
+
+    private void showCurrentLocation() {
+        // Get the last known location
+        try {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                            try {
+                                // Reverse geocode the location to get an address
+                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                if (!addresses.isEmpty()) {
+                                    Address address = addresses.get(0);
+
+                                    // Update the TextView with the address information
+                                    updateLocationInfoTextView(address);
+
+                                    // Add a marker with a red dot icon
+                                    MarkerOptions markerOptions = new MarkerOptions()
+                                            .position(currentLatLng)
+                                            .title(address.getAddressLine(0)) // Display the first line of the address
+                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                    Marker marker = mMap.addMarker(markerOptions);
+
+                                    // Move the camera to the current location
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); // Zoom level can be changed
+
+                                    // Display a message when clicking the marker (optional)
+                                    mMap.setOnMarkerClickListener(marker1 -> {
+                                        Toast.makeText(requireActivity(), "Marker Clicked", Toast.LENGTH_SHORT).show();
+                                        return true;
+                                    });
+                                } else {
+                                    Toast.makeText(requireActivity(), "Unable to get address for current location", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(requireActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateLocationInfoTextView(Address address) {
+        if (locationInfoTextView != null) {
+            StringBuilder locationInfo = new StringBuilder();
+            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                locationInfo.append(address.getAddressLine(i)).append("\n");
+            }
+            locationInfoTextView.setText(locationInfo.toString().trim());
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // If the user grants permission, initialize the map
+                initMap(getView());
+            } else {
+                Toast.makeText(requireActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }

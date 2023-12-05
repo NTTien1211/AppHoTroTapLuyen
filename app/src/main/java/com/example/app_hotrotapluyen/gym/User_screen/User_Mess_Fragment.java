@@ -69,6 +69,7 @@ public class User_Mess_Fragment extends Fragment {
         if (searchUserRecyMessAdapter != null) {
             searchUserRecyMessAdapter.stopListening();
         }
+
         Query query = FirebaseUntil.allUserCollectionReference()
                 .whereGreaterThanOrEqualTo("phone",searchIN)
                 .whereLessThanOrEqualTo("phone",searchIN+'\uf8ff');
@@ -84,8 +85,6 @@ public class User_Mess_Fragment extends Fragment {
         recyclerViewMessage.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewMessage.setAdapter(searchUserRecyMessAdapter);
         searchUserRecyMessAdapter.startListening();
-
-
 
     }
     void setupRecyclerViewHistory(){
@@ -120,7 +119,6 @@ public class User_Mess_Fragment extends Fragment {
         if (recentChatMessAdapter != null) {
             recentChatMessAdapter.startListening();
         }
-
     }
 
     @Override
@@ -134,10 +132,13 @@ public class User_Mess_Fragment extends Fragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        if(searchUserRecyMessAdapter!=null)
+        if (searchUserRecyMessAdapter != null) {
             searchUserRecyMessAdapter.startListening();
+        }
     }
+
 }

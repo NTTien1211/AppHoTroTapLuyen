@@ -128,7 +128,7 @@ public class User_listPro_ProgramChild_Activity extends AppCompatActivity {
 //        dialogView.setBackgroundResource(R.drawable.rounded_background2);
 
         // Ánh xạ các thành phần trong dialog
-        final EditText User_Name_exper_update_pt_inormation = dialogView.findViewById(R.id.User_Name_exper_update_pt_inormation);
+        final EditText User_Name_exper_update_pt_inormation = dialogView.findViewById(R.id.User_Name_exper_update_pt_inormation_dialog);
         final EditText Information_add_child_exper_update_pt_inormation = dialogView.findViewById(R.id.Information_add_child_exper_update_pt_inormation);
         final EditText add_pro_chill_calo = dialogView.findViewById(R.id.add_pro_chill_calo);
         final EditText add_pro_chill_unil = dialogView.findViewById(R.id.add_pro_chill_unil);

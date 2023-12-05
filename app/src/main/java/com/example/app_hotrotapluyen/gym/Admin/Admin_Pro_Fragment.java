@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +16,11 @@ import com.example.app_hotrotapluyen.R;
 import com.example.app_hotrotapluyen.gym.User_screen.Model.UserModel;
 import com.example.app_hotrotapluyen.gym.jdbcConnect.JdbcConnect;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -45,6 +50,33 @@ public class Admin_Pro_Fragment extends Fragment {
         tvAdmin = view.findViewById(R.id.tvAdmin);
         pieChart = view.findViewById(R.id.piechart);
         new  SelectDatabase().execute();
+        BarChart barChart = view.findViewById(R.id.barChart);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(1, 10));
+        entries.add(new BarEntry(2, 20));
+        entries.add(new BarEntry(3, 30));
+
+        // Sử dụng ContextCompat.getColor() để lấy giá trị màu từ ID màu
+        int colorLavender = ContextCompat.getColor(requireContext(), R.color.lavender);
+        int colorBmiObesity = ContextCompat.getColor(requireContext(), R.color.bmi_obesity);
+        int colorPurple200 = ContextCompat.getColor(requireContext(), R.color.purple_200);
+
+        BarDataSet dataSet = new BarDataSet(entries, "Values");
+
+// Tạo danh sách màu cho từng cột
+        List<Integer> colors = new ArrayList<>();
+        colors.add(colorLavender);
+        colors.add(colorBmiObesity);
+        colors.add(colorPurple200);
+
+        dataSet.setColors(colors);
+
+        BarData data = new BarData(dataSet);
+
+        barChart.setData(data);
+        barChart.setFitBars(true);
+        barChart.invalidate();
 
         return view;
     }

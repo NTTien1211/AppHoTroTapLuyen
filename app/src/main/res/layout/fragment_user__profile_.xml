@@ -16,28 +16,41 @@
         <RelativeLayout
             android:background="@drawable/cnhat_boduoi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             >
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                />
 
             <ImageView
                 android:id="@+id/profile_pic_image_view_profile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="9dp"
                 android:background="@drawable/bg_circle"
                 android:padding="4dp"
-                android:src="@drawable/person_icon"
-                android:layout_marginBottom="20dp"/>
+                android:src="@drawable/person_icon" />
 
             <TextView
                 android:id="@+id/User_user_inormation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profile_pic_image_view_profile"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/profile_pic_image_view_profile"
                 android:fontFamily="@font/poppinsbold"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
+                android:padding="2dp"
+                android:layout_marginLeft="-10dp"
+                android:background="@drawable/rounded_background2"
                 android:text="Username"
                 android:textSize="18sp" />
 
@@ -53,7 +66,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+            <RelativeLayout
+                android:background="@drawable/cnhat_boca"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/icoa"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_location_on_24"/>
+                <TextView
+                    android:layout_toRightOf="@id/icoa"
+                    android:id="@+id/locationInfoTextView"
+                    android:padding="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
             <LinearLayout
                 android:padding="10dp"
                 android:background="@drawable/cnhat_boca"
@@ -62,6 +97,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/User_Male_pt_inormation"
                     android:padding="5dp"

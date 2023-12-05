@@ -99,7 +99,7 @@ public class User_listProFoo_Food_Fragment extends Fragment implements FoodSelec
             List<FoodModel> noonList = filterBySession(foodList, "noon");
             List<FoodModel> nightList = filterBySession(foodList, "night");
 
-            adapterMorning = new Food_Recycle_Adapter(morningList , getActivity() ,getContext());
+            adapterMorning = new Food_Recycle_Adapter(morningList, getActivity(), getContext());
             adapterNoon = new Food_Recycle_Adapter(noonList,getActivity(),getContext());
             adapterNight = new Food_Recycle_Adapter(nightList,getActivity(),getContext());
             adapterMorning.setFoodSelectionListener(this);
@@ -108,6 +108,10 @@ public class User_listProFoo_Food_Fragment extends Fragment implements FoodSelec
             recyclerViewMorning.setAdapter(adapterMorning);
             recyclerViewNoon.setAdapter(adapterNoon);
             recyclerViewNight.setAdapter(adapterNight);
+            int itemCount1 = adapterMorning.getItemCount();
+            int itemCount2 = adapterNoon.getItemCount();
+            int itemCount3 = adapterNight.getItemCount();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,6 +219,12 @@ public class User_listProFoo_Food_Fragment extends Fragment implements FoodSelec
     public void onFoodItemSelected(int totalCalories) {
         sumCaloTextView.setText(String.valueOf(totalCalories));
         caloin = sumCaloTextView.getText().toString();
+
+        // Assuming you want the progress bar to represent the total calories out of a fixed value (e.g., 2000)
+        int maxCalories = 2000; // Set your desired maximum calories here
+        progressBarView.setMax(maxCalories);
+
+        // Update the progress bar based on the total calories
         progressBarView.setProgress(Integer.parseInt(caloin));
     }
 

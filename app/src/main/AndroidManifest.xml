@@ -29,11 +29,9 @@
         <activity
             android:name=".gym.User_screen.User_Book_pt_time_Activity"
             android:exported="false" />
-        <activity
-            android:name=".gym.User_screen.User_map_Activity"
-            android:exported="true">
-
-        </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDzLjflSf2C_37Lv2x4l50jQcNWpTYmvis" />
 
         <meta-data
             android:name="com.google.android.gms.version"
